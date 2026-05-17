@@ -10,6 +10,7 @@ import AdSlot from '../components/AdSlot.astro';
 import NewsletterSignup from '../components/NewsletterSignup.astro';
 import SocialShare from '../components/SocialShare.astro';
 import RelatedPosts from '../components/RelatedPosts.astro';
+import Comments from '../components/Comments.astro';
 import { SITE_AUTHOR, SITE_URL } from '../consts';
 import { estimateReadingTime } from '../utils/readingTime';
 
@@ -108,6 +109,9 @@ const shareUrl = new URL(Astro.url.pathname, SITE_URL).toString();
 
 				<!-- ── Social share ─────────────────────────────────────────── -->
 				<SocialShare url={shareUrl} title={title} />
+
+				<!-- ── Comments (Giscus / GitHub Discussions) ───────────────── -->
+				<Comments />
 
 				<!-- ── Footer flourish ──────────────────────────────────────── -->
 				<div class="container">

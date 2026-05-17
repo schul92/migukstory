@@ -1,0 +1,74 @@
+---
+/**
+ * Giscus comments — GitHub Discussions powered, no spam, AdSense-safe.
+ *
+ * Reader logs in with GitHub to comment. Discussion per article auto-created
+ * on first comment using the article's pathname as the unique key.
+ *
+ * Config locked to:
+ *   repo:        schul92/migukstory
+ *   repo-id:     R_kgDOSgLQ3w
+ *   category:    Announcements (maintainer-restricted to prevent random threads)
+ *   category-id: DIC_kwDOSgLQ384C9RY6
+ *   mapping:     pathname  (each /blog/[slug] gets its own discussion)
+ *   lang:        ko
+ *
+ * Prereq: giscus GitHub app must be installed on the repo:
+ *   https://github.com/apps/giscus → Install → select schul92/migukstory
+ */
+---
+
+<section class="comments-section">
+	<header class="comments-head">
+		<h2>댓글</h2>
+		<p class="comments-sub">
+			GitHub 계정으로 댓글을 남길 수 있습니다 · 스팸 차단 · 공개 토론
+		</p>
+	</header>
+
+	<script
+		src="https://giscus.app/client.js"
+		data-repo="schul92/migukstory"
+		data-repo-id="R_kgDOSgLQ3w"
+		data-category="Announcements"
+		data-category-id="DIC_kwDOSgLQ384C9RY6"
+		data-mapping="pathname"
+		data-strict="1"
+		data-reactions-enabled="1"
+		data-emit-metadata="0"
+		data-input-position="bottom"
+		data-theme="light"
+		data-lang="ko"
+		data-loading="lazy"
+		crossorigin="anonymous"
+		async
+	></script>
+</section>
+
+<style>
+	.comments-section {
+		max-width: var(--reading-width);
+		margin: var(--s-5) auto var(--s-4);
+		padding: var(--s-3) var(--s-2);
+		border-top: 1px solid var(--rule);
+	}
+	.comments-head {
+		margin-bottom: var(--s-3);
+	}
+	.comments-head h2 {
+		font-family: var(--font-display);
+		font-size: 1.6rem;
+		margin: 0 0 0.3em;
+		color: var(--ink);
+		letter-spacing: -0.02em;
+	}
+	.comments-sub {
+		font-size: 0.85rem;
+		color: var(--ink-light);
+		margin: 0;
+	}
+	/* Style the giscus iframe wrapper */
+	:global(.giscus) {
+		margin-top: var(--s-2);
+	}
+</style>
