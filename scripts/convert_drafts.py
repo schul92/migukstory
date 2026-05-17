@@ -85,13 +85,13 @@ def parse_draft(path: Path) -> dict:
     if m:
         tags = [s.strip() for s in m.group(1).split(",") if s.strip()]
 
-    # Strip footer (sources, labels, meta)
-    body_clean = re.sub(
-        r"\n---\s*\n\*\*(출처|라벨|메타).*$",
-        "",
-        body,
-        flags=re.DOTALL,
-    ).strip()
+    # Keep 출처 (sources) in body for SEO + credibility.
+    # Only strip the **라벨(태그):** and **메타 설명:** lines (those become frontmatter).
+    body_clean = body
+    body_clean = re.sub(r"\n+\*\*라벨\(태그\):\*\*[^\n]+", "", body_clean)
+    body_clean = re.sub(r"\n+\*\*메타 설명:\*\*[^\n]+", "", body_clean)
+    # If the only remaining footer item after these is empty horizontal rule, clean it
+    body_clean = re.sub(r"\n+---\s*\n*$", "", body_clean).strip()
 
     # Determine slug
     stem = path.stem

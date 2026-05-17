@@ -114,3 +114,13 @@ A. 영주권 유지를 위해서는 **1년 이상 미국 외 체류는 피해야
 ## 마무리
 
 부모님 초청은 미국 가족 이민 카테고리 중 가장 빠르고 확실한 길이지만, 서류 한 장의 실수로도 1년 이상의 지연이 발생할 수 있는 절차입니다. 특히 **계부모 초청, B-2 신분 전환, 소득 미달 케이스** 등 복잡한 사안은 반드시 경험 있는 이민 변호사와 상담하신 후 진행하시기를 권해 드립니다. 본 글은 일반 정보 제공 목적이며 법률 자문이 아니므로, 실제 신청 전에는 USCIS 공식 자료와 전문가의 검토를 함께 받으시기 바랍니다.
+
+---
+
+**출처(Sources):**
+- [USCIS - I-130, Petition for Alien Relative](https://www.uscis.gov/i-130)
+- [USCIS - Case Processing Times](https://egov.uscis.gov/processing-times)
+- [USCIS - I-864P, HHS Poverty Guidelines for Affidavit of Support](https://www.uscis.gov/i-864p)
+- [USCIS - Form G-1055 Fee Schedule](https://www.uscis.gov/g-1055)
+- [U.S. Embassy & Consulate in the Republic of Korea - Visa Information](https://kr.usembassy.gov/visas/important-visa-information/)
+- [Travel.State.Gov - Affidavit of Support](https://travel.state.gov/content/travel/en/us-visas/immigrate/the-immigrant-visa-process/step-1-submit-a-petition/affidavit-of-support.html)

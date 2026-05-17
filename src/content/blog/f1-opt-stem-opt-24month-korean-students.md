@@ -91,3 +91,15 @@ A. 일반 OPT는 10일 안에 DSO에 새 고용주 정보를 보고하면 됩니
 OPT와 STEM OPT는 단순한 행정 절차가 아니라 한국 유학생의 미국 커리어 운명을 결정하는 핵심 도구입니다. 시간표를 놓치거나 무직 일수를 초과하면 수년간 쌓아 온 미국 경력이 한순간에 무너질 수 있습니다.
 
 본 글은 일반 정보 제공 목적이며 법률 자문이 아닙니다. 개별 상황은 반드시 학교 **DSO(Designated School Official)**와 **공인 이민 변호사(Immigration Attorney)**에게 상담을 받으시기를 강력히 권장 드립니다. 특히 H-1B 전환, 신분 공백, 여행 계획 등 복잡한 사안은 전문가의 검토 없이 진행하지 마시기 바랍니다.
+
+---
+
+**출처(Sources):**
+- [USCIS — Optional Practical Training (OPT) for F-1 Students](https://www.uscis.gov/working-in-the-united-states/students-and-exchange-visitors/optional-practical-training-opt-for-f-1-students)
+- [USCIS — Optional Practical Training Extension for STEM Students (STEM OPT)](https://www.uscis.gov/working-in-the-united-states/students-and-exchange-visitors/optional-practical-training-extension-for-stem-students-stem-opt)
+- [DHS Study in the States — STEM OPT Hub](https://studyinthestates.dhs.gov/stem-opt-hub)
+- [ICE — DHS STEM Designated Degree Program List (PDF)](https://www.ice.gov/sites/default/files/documents/stem-list.pdf)
+- [DHS Study in the States — Eligible CIP Codes for the STEM OPT Extension](https://studyinthestates.dhs.gov/stem-opt-hub/additional-resources/eligible-cip-codes-for-the-stem-opt-extension)
+- [DHS Study in the States — Form I-983 Overview](https://studyinthestates.dhs.gov/stem-opt-hub/additional-resources/form-i-983-overview)
+- [E-Verify — I-983 Training Plan FAQ](https://www.e-verify.gov/faq/as-an-employer-am-i-required-to-complete-form-i-983-training-plan-for-stem-opt-students-for)
+- [DHS Study in the States — Unemployment Counter](https://studyinthestates.dhs.gov/sevis-help-hub/student-records/fm-student-employment/unemployment-counter)

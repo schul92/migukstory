@@ -91,3 +91,14 @@ A. 텍사스 자본살인은 최대 사형 또는 가석방 없는 종신형이 
 희생자 조성래씨와 미확인 피해자께 깊은 애도를 표하며, 부상자들의 빠른 회복을 기원합니다.
 
 여러분 지역의 한인 사업 분쟁 해결 방법은 어떠한가요? 비슷한 경험이 있으시면 댓글로 공유해주세요.
+
+---
+
+**출처(Sources):**
+- [Texas Tribune — Two killed in shooting at Carrollton shopping mall](https://www.texastribune.org/2026/05/05/texas-carrollton-fatal-shooting-shopping-center/)
+- [ABC News — 2 dead, 3 injured in shootings at Texas shopping center](https://abcnews.com/US/texas-carrollton-koreatown-shopping-center-shooting/story?id=132682907)
+- [CBS Texas — Suspect arrested after Carrollton shootings tied to business dispute](https://www.cbsnews.com/texas/news/large-police-presence-in-carrollton-after-reports-of-shooting/)
+- [FOX 4 — Suspect was tired of business associates 'taking his money'](https://www.fox4news.com/news/carrollton-shooter-was-tired-business-associates-taking-his-money-report-says)
+- [WFAA — 'We're shocked': Deadly shooting sends shockwaves through Carrollton](https://www.wfaa.com/article/news/crime/deadly-shopping-plaza-shooting-sends-shockwaves-through-carrollton-community/287-179d702d-b886-4848-88de-f095dee21eae)
+- [NBC DFW — Community speaks following deadly shooting](https://www.nbcdfw.com/news/local/carrollton-investigation-korean-market/4020555/)
+- [Korea Daily English — Carrollton Korean Town Shooting Linked to Business Dispute](https://en.koreadaily.com/carrollton-korean-town-shooting/)

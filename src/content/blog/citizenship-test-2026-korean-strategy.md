@@ -94,3 +94,12 @@ A. 네, 심사관에게 "Could you repeat the question, please?"라고 정중히
 ## 마무리
 
 미국 시민권 시험 개편은 분명 부담스러운 변화이지만, 핵심은 변하지 않았습니다. **꾸준한 학습과 정확한 정보**입니다. 본인이 어떤 시험에 해당하는지, 면제 규정에 해당되는지부터 확실히 정리하시고, 매일 30분씩 6주만 투자하시면 충분히 합격하실 수 있습니다. 이 글이 도움이 되셨다면 댓글로 본인의 준비 경험이나 궁금하신 점을 남겨 주세요. 같은 길을 걷는 한인 영주권자분들께 큰 힘이 됩니다.
+
+---
+**출처(Sources):**
+- [USCIS — 2025 Civics Test 공식 안내](https://www.uscis.gov/citizenship-resource-center/naturalization-test-and-study-resources/2025-civics-test)
+- [Federal Register — Notice of Implementation of 2025 Naturalization Civics Test (2025-09-18)](https://www.federalregister.gov/documents/2025/09/18/2025-18050/notice-of-implementation-of-2025-naturalization-civics-test)
+- [USCIS — Study for the Test](https://www.uscis.gov/citizenship/find-study-materials-and-resources/study-for-the-test)
+- [USCIS — Check for Test Updates](https://www.uscis.gov/citizenship/find-study-materials-and-resources/check-for-test-updates)
+- [USCIS — Civics Questions for the 65/20 Exemption (PDF)](https://www.uscis.gov/sites/default/files/document/questions-and-answers/65-20q.pdf)
+- [USCIS — The Naturalization Interview and Test](https://www.uscis.gov/citizenship/learn-about-citizenship/the-naturalization-interview-and-test)

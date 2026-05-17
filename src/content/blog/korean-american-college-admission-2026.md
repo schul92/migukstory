@@ -77,3 +77,14 @@ A. 절대 그렇지 않습니다. 미국에는 학생을 잘 키우는 우수한
 SFFA 판결은 게임의 규칙을 바꾸었지만, 한국계 자녀에게 자동적인 합격을 보장해 주지는 않았습니다. 오히려 진정성 있는 서사, 깊이 있는 몰입, 자신만의 정체성을 풀어내는 능력이 그 어느 때보다 중요해졌습니다.
 
 부모로서 마지막으로 한 가지를 꼭 기억해 주시기 바랍니다. 아이비리그 합격이 자녀의 행복을 보장하지 않습니다. 명문대 입학은 인생의 출발점 중 하나일 뿐, 결승선이 아닙니다. 자녀가 자신만의 색깔을 잃지 않고, 부모의 기대보다 자신의 길을 찾을 수 있도록 격려해 주시는 것이 가장 큰 사랑입니다.
+
+---
+
+**출처(Sources):**
+- [Students for Fair Admissions v. Harvard — Wikipedia](https://en.wikipedia.org/wiki/Students_for_Fair_Admissions_v._Harvard)
+- [SCOTUS Opinion 20-1199 (PDF)](https://www.supremecourt.gov/opinions/22pdf/20-1199_hgdj.pdf)
+- [Stanford Law School: SFFA FAQ](https://law.stanford.edu/2023/12/12/students-for-fair-admissions-v-harvard-faq-navigating-the-evolving-implications-of-the-courts-ruling/)
+- [Harvard Crimson: Class of 2029 Admissions Data](https://www.thecrimson.com/article/2025/10/23/admissions-data-class-2029/)
+- [Harvard Magazine: Admissions after Affirmative Action](https://www.harvardmagazine.com/2024/09/admissions-after-affirmative-action)
+- [NBC News: Asian American Enrollment After Affirmative Action](https://www.nbcnews.com/news/asian-america/affirmative-action-enrollment-asian-americans-rcna170716)
+- [Goldsea: How SFFA Changed Asian American Enrollment (Feb 2026)](https://goldsea.com/article_details/how-the-sffa-decision-changed-asian-american-enrollment-in-leading-universities)

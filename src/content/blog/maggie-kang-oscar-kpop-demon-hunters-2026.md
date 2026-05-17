@@ -72,3 +72,12 @@ flowchart LR
 봉준호에서 황동혁으로, 셀린 송을 지나 매기 강까지. 한국계 영화인이 세계 영화 무대 한가운데에 서는 일이 점점 "특별한 사건"에서 "익숙한 풍경"으로 바뀌고 있습니다. 그 변화를 함께 지켜보는 일은, 미국에 사는 한인 가정에게도 작지 않은 위로이자 자긍심입니다.
 
 여러분이 다음으로 보고 싶은 한국계 미국인 이야기는 어떤 작품인가요? 1.5세·2세의 정체성 드라마, 한식당 가족 시트콤, 이민 1세대의 회고록 영화 — 댓글로 함께 이야기 나눠 주세요.
+
+---
+
+**출처(Sources):**
+- [Hollywood Reporter — KPop Demon Hunters Makes History With "Golden" Oscar Win](https://www.hollywoodreporter.com/movies/movie-news/kpop-demon-hunters-wins-oscar-best-animated-film-1236533319/)
+- [Parade — Maggie Kang Tearful Oscars Speech](https://parade.com/news/kpop-demon-hunters-maggie-kang-oscars-speech-historic-win-2026)
+- [Rolling Stone — KPop Demon Hunters Wins 2026 Oscar Best Animated Film](https://www.rollingstone.com/tv-movies/tv-movie-news/kpop-demon-hunters-wins-2026-oscar-best-animated-film-1235531214/)
+- [CBC News — How Toronto's Maggie Kang created the Netflix smash hit](https://www.cbc.ca/news/canada/toronto/maggie-kang-netflix-movie-kpop-demon-hunters-1.7596183)
+- [Sony Pictures Animation — Maggie Kang profile](https://www.sonypicturesanimation.com/our-team/filmmakers/maggie-kang)

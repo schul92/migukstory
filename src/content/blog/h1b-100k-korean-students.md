@@ -115,3 +115,10 @@ H-1B $100K 신청료 인상은 한국 유학생에게 매우 불리한 변화입
 핵심은 **시간 압박**입니다. 졸업 → OPT → STEM OPT → H-1B 변경까지 일정을 미리 계획하고, OPT 종료 전 H-1B 변경 신청을 반드시 완료해야 합니다.
 
 여러분은 어떤 비자 단계에 계신가요? 댓글로 상황 공유해주시면 함께 정보 나눠보겠습니다.
+
+---
+
+**출처(Sources):**
+- [Korea Times — H-1B visa fee surge](https://www.koreatimes.co.kr/southkorea/society/20250924/h-1b-visa-fee-surge-shuts-door-on-korean-students-us-job-hopes)
+- [American Visa Law Group — H-1B 2026 updates](https://www.usavisalaw.com/immigration-blog/h1b-visa-news-2026)
+- [U.S. Embassy Korea — Visa Information](https://kr.usembassy.gov/visas/)
