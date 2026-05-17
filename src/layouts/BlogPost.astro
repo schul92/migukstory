@@ -33,6 +33,12 @@ const currentEntry = entry || all.find(p => p.data.title === title);
 const readingMinutes = currentEntry ? estimateReadingTime(currentEntry.body || '') : 5;
 
 const shareUrl = new URL(Astro.url.pathname, SITE_URL).toString();
+
+const breadcrumbs = [
+	{ name: '홈', url: '/' },
+	...(catMeta ? [{ name: catMeta.label, url: `/category/${catMeta.slug}` }] : [{ name: '블로그', url: '/blog' }]),
+	{ name: title, url: Astro.url.pathname },
+];
 ---
 
 <html lang="ko">
@@ -41,6 +47,7 @@ const shareUrl = new URL(Astro.url.pathname, SITE_URL).toString();
 			title={title}
 			description={description}
 			article={{ pubDate, updatedDate, tags }}
+			breadcrumbs={breadcrumbs}
 		/>
 	</head>
 
@@ -49,6 +56,22 @@ const shareUrl = new URL(Astro.url.pathname, SITE_URL).toString();
 
 		<main>
 			<article>
+
+				<!-- ── Breadcrumbs (visible) ────────────────────────────────── -->
+				<nav class="crumbs" aria-label="Breadcrumb">
+					<div class="container">
+						<ol>
+							{breadcrumbs.map((b, i) => (
+								<li>
+									{i < breadcrumbs.length - 1
+										? <a href={b.url}>{b.name}</a>
+										: <span aria-current="page">{b.name}</span>}
+									{i < breadcrumbs.length - 1 && <span class="crumb-sep">›</span>}
+								</li>
+							))}
+						</ol>
+					</div>
+				</nav>
 
 				<!-- ── Article header ───────────────────────────────────────── -->
 				<header class="article-head">
@@ -136,6 +159,42 @@ const shareUrl = new URL(Astro.url.pathname, SITE_URL).toString();
 		<Footer />
 
 		<style>
+			.crumbs {
+				padding: var(--s-3) 0 0;
+				font-size: 0.78rem;
+				color: var(--ink-light);
+			}
+			.crumbs ol {
+				list-style: none;
+				margin: 0;
+				padding: 0;
+				display: flex;
+				flex-wrap: wrap;
+				gap: 0.35em;
+				align-items: center;
+			}
+			.crumbs li {
+				display: inline-flex;
+				align-items: center;
+				gap: 0.35em;
+			}
+			.crumbs a {
+				color: var(--ink-light);
+				text-decoration: none;
+				border-bottom: 1px solid transparent;
+				transition: color var(--duration) var(--ease-out);
+			}
+			.crumbs a:hover { color: var(--brick); border-bottom-color: currentColor; }
+			.crumbs [aria-current="page"] {
+				color: var(--ink-medium);
+				font-weight: 500;
+				max-width: 24ch;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+			}
+			.crumb-sep { color: var(--ink-faint); }
+
 			.article-head {
 				padding: var(--s-6) 0 var(--s-4);
 				text-align: center;

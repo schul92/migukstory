@@ -1,0 +1,269 @@
+---
+import { getCollection } from 'astro:content';
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import FormattedDate from '../components/FormattedDate.astro';
+import { SITE_TITLE } from '../consts';
+import { CATEGORIES } from '../content.config';
+
+const all = await getCollection('blog');
+const posts = all.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const byCategory = (Object.keys(CATEGORIES) as Array<keyof typeof CATEGORIES>).map((key) => {
+	const meta = CATEGORIES[key];
+	return {
+		key,
+		meta,
+		posts: posts.filter((p) => p.data.category === key),
+	};
+});
+
+const totalPosts = posts.length;
+const totalTags = new Set(posts.flatMap((p) => p.data.tags || [])).size;
+---
+
+<!doctype html>
+<html lang="ko">
+	<head>
+		<BaseHead
+			title={`전체 토픽 · 사이트맵 — ${SITE_TITLE}`}
+			description="미국 스토리의 모든 기사를 카테고리별로 한눈에. 이민·세금·건강·교육·은퇴·부동산·커뮤니티 전체 토픽."
+			breadcrumbs={[
+				{ name: '홈', url: '/' },
+				{ name: '전체 토픽', url: '/topics' },
+			]}
+		/>
+	</head>
+	<body>
+		<Header />
+		<main>
+			<div class="container">
+				<header class="hub-head">
+					<p class="eyebrow">SITEMAP · 전체 토픽</p>
+					<h1>한눈에 보는<br /><span class="brick">모든 토픽</span></h1>
+					<p class="hub-sub">
+						미국 스토리에 발행된 <strong>{totalPosts}편</strong>의 기사를
+						카테고리·태그별로 한 페이지에 모았습니다.
+						찾는 주제가 보이지 않으면 <a href="/contact">제보·요청</a> 부탁드립니다.
+					</p>
+				</header>
+
+				<section class="topic-grid">
+					{byCategory.map(({ key, meta, posts }) => (
+						<section class="topic-block" style={`--cat: ${meta.color}`}>
+							<header class="topic-block-head">
+								<a class="topic-label" href={`/category/${meta.slug}`}>
+									<span class="dot" aria-hidden="true"></span>
+									{meta.label}
+								</a>
+								<span class="topic-count">{posts.length}편</span>
+							</header>
+							{posts.length === 0 ? (
+								<p class="empty">곧 업데이트됩니다.</p>
+							) : (
+								<ul class="topic-list">
+									{posts.map((p) => (
+										<li>
+											<a href={`/blog/${p.id}/`}>
+												<span class="t-date"><FormattedDate date={p.data.pubDate} /></span>
+												<span class="t-title">{p.data.title}</span>
+											</a>
+										</li>
+									))}
+								</ul>
+							)}
+							{posts.length > 0 && (
+								<a class="cat-more" href={`/category/${meta.slug}`}>
+									{meta.label} 전체 보기 →
+								</a>
+							)}
+						</section>
+					))}
+				</section>
+
+				<aside class="tag-cloud">
+					<h2>자주 찾는 태그</h2>
+					<div class="cloud">
+						{Array.from(new Set(posts.flatMap((p) => p.data.tags || [])))
+							.sort()
+							.map((tag) => (
+								<a class="tag-pill" href={`/blog?tag=${encodeURIComponent(tag as string)}`}>#{tag}</a>
+							))}
+					</div>
+					<p class="cloud-meta">총 {totalTags}개의 태그</p>
+				</aside>
+			</div>
+		</main>
+		<Footer />
+
+		<style>
+			.hub-head {
+				text-align: center;
+				padding: var(--s-6) 0 var(--s-4);
+				border-bottom: 1px solid var(--rule);
+				margin-bottom: var(--s-5);
+			}
+			.eyebrow {
+				font-size: 0.7rem;
+				font-weight: 700;
+				letter-spacing: 0.18em;
+				color: var(--brick);
+				text-transform: uppercase;
+				margin: 0 0 var(--s-2);
+			}
+			.hub-head h1 {
+				font-family: var(--font-display);
+				font-size: clamp(2.5rem, 6vw, 4.25rem);
+				line-height: 1.05;
+				margin: 0 0 var(--s-3);
+				letter-spacing: -0.03em;
+			}
+			.brick { color: var(--brick); }
+			.hub-sub {
+				font-size: var(--text-base);
+				color: var(--ink-medium);
+				max-width: 38em;
+				margin: 0 auto;
+				line-height: 1.7;
+			}
+			.hub-sub a { color: var(--brick); border-bottom: 1px solid currentColor; text-decoration: none; }
+
+			.topic-grid {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+				gap: var(--s-4);
+				margin-bottom: var(--s-6);
+			}
+			.topic-block {
+				background: var(--paper);
+				border: 1px solid var(--rule);
+				border-top: 4px solid var(--cat, var(--ink));
+				padding: var(--s-3);
+				display: flex;
+				flex-direction: column;
+			}
+			.topic-block-head {
+				display: flex;
+				justify-content: space-between;
+				align-items: baseline;
+				margin-bottom: var(--s-2);
+				padding-bottom: var(--s-2);
+				border-bottom: 1px solid var(--rule);
+			}
+			.topic-label {
+				display: inline-flex;
+				align-items: center;
+				gap: 0.5em;
+				font-family: var(--font-display);
+				font-size: 1.35rem;
+				font-weight: 700;
+				color: var(--ink);
+				text-decoration: none;
+				letter-spacing: -0.01em;
+			}
+			.topic-label:hover { color: var(--cat, var(--brick)); }
+			.dot {
+				width: 10px; height: 10px; border-radius: 50%;
+				background: var(--cat, var(--brick));
+				display: inline-block;
+			}
+			.topic-count {
+				font-size: 0.78rem;
+				color: var(--ink-light);
+				font-feature-settings: "tnum";
+				font-weight: 500;
+			}
+			.topic-list {
+				list-style: none;
+				padding: 0;
+				margin: 0 0 var(--s-2);
+				flex: 1;
+			}
+			.topic-list li { margin: 0; }
+			.topic-list a {
+				display: grid;
+				grid-template-columns: 86px 1fr;
+				gap: var(--s-2);
+				padding: 0.55em 0;
+				border-bottom: 1px dotted var(--rule);
+				text-decoration: none;
+				color: inherit;
+				transition: background var(--duration) var(--ease-out);
+			}
+			.topic-list a:hover { background: var(--paper-soft); }
+			.topic-list a:last-child { border-bottom: none; }
+			.t-date {
+				font-size: 0.72rem;
+				color: var(--ink-light);
+				font-feature-settings: "tnum";
+				font-variant-numeric: tabular-nums;
+				white-space: nowrap;
+				padding-top: 0.15em;
+			}
+			.t-title {
+				font-size: 0.92rem;
+				line-height: 1.45;
+				color: var(--ink);
+				display: -webkit-box;
+				-webkit-line-clamp: 2;
+				-webkit-box-orient: vertical;
+				overflow: hidden;
+			}
+			.topic-list a:hover .t-title { color: var(--cat, var(--brick)); }
+			.cat-more {
+				font-size: 0.82rem;
+				font-weight: 600;
+				color: var(--cat, var(--brick));
+				text-decoration: none;
+				margin-top: auto;
+				padding-top: var(--s-2);
+				border-top: 1px solid var(--rule);
+			}
+			.cat-more:hover { text-decoration: underline; }
+			.empty { color: var(--ink-light); font-size: 0.85rem; margin: var(--s-2) 0; }
+
+			.tag-cloud {
+				padding: var(--s-4) 0 var(--s-6);
+				border-top: 1px solid var(--rule);
+				text-align: center;
+			}
+			.tag-cloud h2 {
+				font-family: var(--font-display);
+				font-size: 1.5rem;
+				margin: 0 0 var(--s-3);
+				color: var(--ink);
+				letter-spacing: -0.01em;
+			}
+			.cloud {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 0.45em;
+				justify-content: center;
+				max-width: 760px;
+				margin: 0 auto var(--s-2);
+			}
+			.tag-pill {
+				font-size: 0.82rem;
+				color: var(--ink-medium);
+				background: var(--paper-soft);
+				border: 1px solid var(--rule);
+				border-radius: 999px;
+				padding: 0.3em 0.85em;
+				text-decoration: none;
+				transition: all var(--duration) var(--ease-out);
+			}
+			.tag-pill:hover {
+				border-color: var(--brick);
+				color: var(--brick);
+				background: var(--paper);
+			}
+			.cloud-meta { font-size: 0.78rem; color: var(--ink-light); margin: var(--s-2) 0 0; }
+
+			@media (max-width: 720px) {
+				.topic-grid { grid-template-columns: 1fr; gap: var(--s-3); }
+				.hub-head { padding: var(--s-4) 0 var(--s-3); }
+			}
+		</style>
+	</body>
+</html>

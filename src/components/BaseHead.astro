@@ -14,10 +14,11 @@ interface Props {
 		updatedDate?: Date;
 		tags?: string[];
 	};
+	breadcrumbs?: { name: string; url: string }[];
 }
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
-const { title, description, image = FallbackImage, article } = Astro.props;
+const { title, description, image = FallbackImage, article, breadcrumbs } = Astro.props;
 
 // JSON-LD schema for rich results
 const orgSchema = {
@@ -28,6 +29,16 @@ const orgSchema = {
 	"url": SITE_URL,
 	"description": "한국계 미국인을 위한 검증된 정보 가이드",
 };
+const breadcrumbSchema = breadcrumbs && breadcrumbs.length > 0 ? {
+	"@context": "https://schema.org",
+	"@type": "BreadcrumbList",
+	"itemListElement": breadcrumbs.map((b, i) => ({
+		"@type": "ListItem",
+		"position": i + 1,
+		"name": b.name,
+		"item": new URL(b.url, SITE_URL).toString(),
+	})),
+} : null;
 const articleSchema = article ? {
 	"@context": "https://schema.org",
 	"@type": "Article",
@@ -138,8 +149,11 @@ const articleSchema = article ? {
 <meta property="twitter:description" content={description} />
 <meta property="twitter:image" content={new URL(image.src, Astro.url)} />
 
-<!-- JSON-LD structured data — Organization + Article -->
+<!-- JSON-LD structured data — Organization + Breadcrumbs + Article -->
 <script type="application/ld+json" set:html={JSON.stringify(orgSchema)} />
+{breadcrumbSchema && (
+	<script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+)}
 {articleSchema && (
 	<script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
 )}

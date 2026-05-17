@@ -1,0 +1,406 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import { SITE_TITLE } from '../consts';
+
+// Partner data — populate as deals close.
+// Each entry: { vertical, name, firm, city, blurb, phone, url, image }
+const verticals: Array<{
+	key: string;
+	label: string;
+	icon: string;
+	tagline: string;
+	partners: Array<{ name: string; firm: string; city: string; blurb: string; cta?: string; href?: string }>;
+}> = [
+	{
+		key: 'immigration',
+		label: '이민·비자 변호사',
+		icon: '⚖',
+		tagline: '영주권·시민권·H1B·EB-5·가족초청 — 한국어로 상담 가능한 변호사',
+		partners: [],
+	},
+	{
+		key: 'cpa',
+		label: '세무사·CPA',
+		icon: '🧾',
+		tagline: '한미 양국 신고·FBAR·FATCA·자영업 세금 — 한국어 가능 CPA',
+		partners: [],
+	},
+	{
+		key: 'realtor',
+		label: '부동산·리얼터',
+		icon: '🏡',
+		tagline: '첫 주택 구매·렌트·투자 — 한인 밀집 지역 리얼터',
+		partners: [],
+	},
+	{
+		key: 'mortgage',
+		label: '모기지 브로커',
+		icon: '🏦',
+		tagline: 'FHA·재융자·외국인 모기지 — 한국어 가능 융자 전문가',
+		partners: [],
+	},
+	{
+		key: 'insurance',
+		label: '보험 (건강·생명·자동차)',
+		icon: '🛡',
+		tagline: '오바마케어·메디케어·생명·자동차 — 한인 보험 에이전트',
+		partners: [],
+	},
+	{
+		key: 'finance',
+		label: '재무 설계사·자산 관리',
+		icon: '📈',
+		tagline: '401k·IRA·은퇴 설계·한미 자산 — 한인 재무 전문가',
+		partners: [],
+	},
+];
+
+const totalPartners = verticals.reduce((n, v) => n + v.partners.length, 0);
+---
+
+<!doctype html>
+<html lang="ko">
+	<head>
+		<BaseHead
+			title={`추천 전문가 디렉토리 — ${SITE_TITLE}`}
+			description="이민 변호사·세무사·리얼터·모기지·보험·재무설계 — 한국어로 상담 가능한 한인 전문가 검증 디렉토리. 광고 표기 정직 운영."
+			breadcrumbs={[
+				{ name: '홈', url: '/' },
+				{ name: '추천 전문가', url: '/pros' },
+			]}
+		/>
+	</head>
+	<body>
+		<Header />
+		<main>
+			<div class="container">
+				<header class="dir-head">
+					<p class="eyebrow">DIRECTORY · 추천 전문가</p>
+					<h1>한국어로<br /><span class="brick">상담 가능한 전문가</span></h1>
+					<p class="dir-sub">
+						이민·세무·부동산·모기지·보험·재무 —
+						한국어로 상담이 가능하고 한인 사회 경험이 풍부한 전문가를 분야별로 정리합니다.
+						<strong>모든 게재는 유료 광고(Sponsored)</strong>이며,
+						미국 스토리는 어떤 거래·계약의 당사자가 아닙니다.
+					</p>
+					<div class="meta-row">
+						<span class="badge sponsored">광고 표기 · Sponsored Listings</span>
+						<span class="badge count">현재 등록 {totalPartners}명</span>
+					</div>
+				</header>
+
+				<!-- Compliance disclosure -->
+				<aside class="disclosure">
+					<h2>중요 안내 — 미국 스토리는 알선·중개를 하지 않습니다</h2>
+					<ul>
+						<li>본 페이지는 <strong>광고 디렉토리</strong>입니다. 미국 스토리는 변호사·세무사·중개인의 상담 결과나 계약에 대해 책임지지 않습니다.</li>
+						<li>법률·세무·금융·의료 자문은 반드시 면허를 가진 전문가와 <strong>직접</strong> 진행하시기 바랍니다.</li>
+						<li>변호사·세무사 광고는 해당 주(State Bar / Board of Accountancy) 광고 규정 및 ABA Model Rule 7.2에 따른 표기를 따릅니다.</li>
+						<li>이용자는 게재된 전문가의 자격(주 면허, 보험, 자격 정지 여부)을 본인 책임 하에 확인해야 합니다.</li>
+						<li>모든 전화·문의는 미국 스토리의 콜 트래킹(Call Tracking) 시스템을 통해 광고주에게 직접 연결됩니다.</li>
+					</ul>
+				</aside>
+
+				<!-- Verticals -->
+				<section class="verticals">
+					{verticals.map((v) => (
+						<section class="vbox" id={v.key}>
+							<header class="vhead">
+								<span class="vicon" aria-hidden="true">{v.icon}</span>
+								<div>
+									<h2>{v.label}</h2>
+									<p class="vtagline">{v.tagline}</p>
+								</div>
+							</header>
+
+							{v.partners.length === 0 ? (
+								<div class="empty">
+									<p class="empty-title">현재 모집 중인 분야입니다.</p>
+									<p class="empty-body">
+										이 분야의 한인 전문가이시며 한국어로 상담 가능한 사업체를 운영하신다면
+										아래 입점 안내를 확인해 주세요.
+									</p>
+									<a class="cta" href="/contact?subject=%EC%B6%94%EC%B2%9C-%EC%A0%84%EB%AC%B8%EA%B0%80-%EC%9E%85%EC%A0%90-%EB%AC%B8%EC%9D%98">
+										입점 문의하기 →
+									</a>
+								</div>
+							) : (
+								<ul class="plist">
+									{v.partners.map((p) => (
+										<li class="pcard">
+											<header>
+												<h3>{p.name}</h3>
+												<p class="firm">{p.firm} · {p.city}</p>
+											</header>
+											<p class="blurb">{p.blurb}</p>
+											{p.href && p.cta && <a class="cta" href={p.href}>{p.cta}</a>}
+											<p class="legal">광고 (Sponsored)</p>
+										</li>
+									))}
+								</ul>
+							)}
+						</section>
+					))}
+				</section>
+
+				<!-- Partner pitch -->
+				<aside class="pitch">
+					<h2>전문가 입점 — 한인 검색 트래픽을 캡처하세요</h2>
+					<p class="pitch-lead">
+						미국 스토리는 한국어로 미국 정착·세금·부동산·은퇴 정보를 다루는 편집형 매체입니다.
+						광고가 아닌 정보 콘텐츠가 검색을 통해 한인 독자를 모으고,
+						각 기사 하단의 <strong>"추천 전문가"</strong> 모듈에서 광고주께 직접 연결됩니다.
+					</p>
+					<div class="pitch-grid">
+						<div class="pitch-cell">
+							<p class="pcell-eyebrow">표준 패키지</p>
+							<p class="pcell-headline">월 $500–$750</p>
+							<ul>
+								<li>분야 + 지역 카테고리 독점 (예: NJ 이민 변호사 1명)</li>
+								<li>CallRail 전용 트래킹 전화 · 폼 리드 보고서</li>
+								<li>관련 기사 본문 하단 "추천 전문가" 모듈 노출</li>
+								<li>90일 파일럿 · 언제든 7일 해지</li>
+								<li>플랫 요금 — 성과 수수료 없음 (변호사 윤리 규정 준수)</li>
+							</ul>
+						</div>
+						<div class="pitch-cell">
+							<p class="pcell-eyebrow">스폰서드 콘텐츠</p>
+							<p class="pcell-headline">건당 $250–$500</p>
+							<ul>
+								<li>한국어 네이티브 카피라이팅 (편집부 검수)</li>
+								<li>본문 상단 "Sponsored · 광고" 표기 (FTC 16 CFR Part 255)</li>
+								<li>최소 800–1,200자, 출처·근거 포함</li>
+								<li>관련 카테고리 페이지에 30일 고정 노출</li>
+							</ul>
+						</div>
+					</div>
+					<div class="pitch-cta">
+						<a class="cta-big" href="/contact?subject=%EA%B4%91%EA%B3%A0%EC%A3%BC-%EB%AC%B8%EC%9D%98">
+							광고주 문의하기 →
+						</a>
+						<p class="cta-note">
+							자료 요청 시 미디어킷(독자층·트래픽·카테고리별 검색 키워드)을 보내드립니다.
+						</p>
+					</div>
+				</aside>
+			</div>
+		</main>
+		<Footer />
+
+		<style>
+			.dir-head {
+				text-align: center;
+				padding: var(--s-6) 0 var(--s-4);
+				border-bottom: 1px solid var(--rule);
+				margin-bottom: var(--s-5);
+			}
+			.eyebrow {
+				font-size: 0.7rem;
+				font-weight: 700;
+				letter-spacing: 0.18em;
+				color: var(--brick);
+				text-transform: uppercase;
+				margin: 0 0 var(--s-2);
+			}
+			.dir-head h1 {
+				font-family: var(--font-display);
+				font-size: clamp(2.5rem, 6vw, 4.25rem);
+				line-height: 1.05;
+				margin: 0 0 var(--s-3);
+				letter-spacing: -0.03em;
+			}
+			.brick { color: var(--brick); }
+			.dir-sub {
+				font-size: var(--text-base);
+				color: var(--ink-medium);
+				max-width: 42em;
+				margin: 0 auto var(--s-3);
+				line-height: 1.7;
+			}
+			.meta-row {
+				display: inline-flex;
+				gap: 0.6em;
+				flex-wrap: wrap;
+				justify-content: center;
+			}
+			.badge {
+				font-size: 0.72rem;
+				padding: 0.3em 0.8em;
+				border: 1px solid var(--rule);
+				border-radius: 999px;
+				color: var(--ink-medium);
+				background: var(--paper-soft);
+				font-weight: 600;
+				letter-spacing: 0.04em;
+			}
+			.badge.sponsored { color: var(--brick); border-color: var(--brick); background: transparent; }
+
+			.disclosure {
+				background: var(--paper-soft);
+				border-left: 3px solid var(--brick);
+				padding: var(--s-3);
+				margin-bottom: var(--s-5);
+				font-size: 0.9rem;
+				line-height: 1.7;
+			}
+			.disclosure h2 {
+				font-family: var(--font-display);
+				font-size: 1.05rem;
+				color: var(--brick);
+				margin: 0 0 var(--s-2);
+			}
+			.disclosure ul { margin: 0; padding-left: 1.2em; }
+			.disclosure li { margin-bottom: 0.4em; color: var(--ink-medium); }
+
+			.verticals {
+				display: grid;
+				gap: var(--s-4);
+				margin-bottom: var(--s-6);
+			}
+			.vbox {
+				border: 1px solid var(--rule);
+				padding: var(--s-3);
+				background: var(--paper);
+			}
+			.vhead {
+				display: flex;
+				gap: var(--s-2);
+				align-items: flex-start;
+				padding-bottom: var(--s-2);
+				border-bottom: 1px solid var(--rule);
+				margin-bottom: var(--s-2);
+			}
+			.vicon { font-size: 1.8rem; line-height: 1; }
+			.vhead h2 {
+				font-family: var(--font-display);
+				font-size: 1.55rem;
+				margin: 0 0 0.2em;
+				letter-spacing: -0.01em;
+				color: var(--ink);
+			}
+			.vtagline { font-size: 0.88rem; color: var(--ink-light); margin: 0; line-height: 1.5; }
+
+			.empty {
+				background: var(--paper-soft);
+				padding: var(--s-3);
+				text-align: center;
+				border-radius: 2px;
+			}
+			.empty-title { font-weight: 600; color: var(--ink); margin: 0 0 0.4em; }
+			.empty-body {
+				font-size: 0.88rem;
+				color: var(--ink-medium);
+				max-width: 32em;
+				margin: 0 auto var(--s-2);
+				line-height: 1.6;
+			}
+			.cta {
+				display: inline-block;
+				font-size: 0.85rem;
+				font-weight: 700;
+				color: var(--paper);
+				background: var(--brick);
+				padding: 0.55em 1em;
+				border-radius: 3px;
+				text-decoration: none;
+				letter-spacing: 0.04em;
+				transition: background var(--duration) var(--ease-out);
+			}
+			.cta:hover { background: var(--brick-deep); }
+
+			.plist { list-style: none; padding: 0; margin: 0; display: grid; gap: var(--s-2); grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+			.pcard {
+				border: 1px solid var(--rule);
+				padding: var(--s-2);
+				background: var(--paper);
+			}
+			.pcard h3 { font-family: var(--font-display); font-size: 1.15rem; margin: 0 0 0.2em; color: var(--ink); }
+			.firm { font-size: 0.82rem; color: var(--ink-light); margin: 0 0 0.5em; }
+			.blurb { font-size: 0.9rem; line-height: 1.6; color: var(--ink-medium); margin: 0 0 0.7em; }
+			.legal {
+				font-size: 0.7rem;
+				color: var(--ink-light);
+				margin: 0.7em 0 0;
+				border-top: 1px dotted var(--rule);
+				padding-top: 0.4em;
+				letter-spacing: 0.05em;
+			}
+
+			.pitch {
+				background: linear-gradient(180deg, var(--paper) 0%, var(--paper-soft) 100%);
+				border: 1px solid var(--rule);
+				border-top: 3px solid var(--brick);
+				padding: var(--s-4) var(--s-3);
+				margin-bottom: var(--s-6);
+			}
+			.pitch h2 {
+				font-family: var(--font-display);
+				font-size: 1.85rem;
+				color: var(--ink);
+				margin: 0 0 var(--s-2);
+				letter-spacing: -0.02em;
+				text-align: center;
+			}
+			.pitch-lead {
+				text-align: center;
+				font-size: 0.95rem;
+				color: var(--ink-medium);
+				max-width: 38em;
+				margin: 0 auto var(--s-4);
+				line-height: 1.7;
+			}
+			.pitch-grid {
+				display: grid;
+				gap: var(--s-3);
+				grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+				margin-bottom: var(--s-4);
+			}
+			.pitch-cell {
+				background: var(--paper);
+				border: 1px solid var(--rule);
+				padding: var(--s-3);
+			}
+			.pcell-eyebrow {
+				font-size: 0.7rem;
+				font-weight: 700;
+				letter-spacing: 0.18em;
+				color: var(--brick);
+				text-transform: uppercase;
+				margin: 0 0 0.4em;
+			}
+			.pcell-headline {
+				font-family: var(--font-display);
+				font-size: 1.65rem;
+				color: var(--ink);
+				margin: 0 0 var(--s-2);
+				letter-spacing: -0.02em;
+			}
+			.pitch-cell ul { margin: 0; padding-left: 1.1em; font-size: 0.88rem; color: var(--ink-medium); line-height: 1.7; }
+			.pitch-cell li { margin-bottom: 0.4em; }
+			.pitch-cta { text-align: center; }
+			.cta-big {
+				display: inline-block;
+				font-size: 1rem;
+				font-weight: 700;
+				color: var(--paper);
+				background: var(--brick);
+				padding: 0.85em 1.6em;
+				border-radius: 3px;
+				text-decoration: none;
+				letter-spacing: 0.04em;
+				transition: background var(--duration) var(--ease-out);
+			}
+			.cta-big:hover { background: var(--brick-deep); }
+			.cta-note { font-size: 0.78rem; color: var(--ink-light); margin: 0.8em 0 0; }
+
+			@media (max-width: 720px) {
+				.dir-head { padding: var(--s-4) 0 var(--s-3); }
+				.plist { grid-template-columns: 1fr; }
+				.pitch { padding: var(--s-3) var(--s-2); }
+				.pitch h2 { font-size: 1.5rem; }
+			}
+		</style>
+	</body>
+</html>
