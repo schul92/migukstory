@@ -27,11 +27,10 @@ const today = new Date();
 		<div class="col">
 			<h4 class="col-title">문의</h4>
 			<ul>
-				<li><a href="/contact">문의하기 (전체)</a></li>
-				<li><a href="mailto:editor@migukstory.com">편집 · editor@</a></li>
-				<li><a href="mailto:tips@migukstory.com">제보 · tips@</a></li>
-				<li><a href="mailto:ads@migukstory.com">광고 · ads@</a></li>
+				<li><a href="/contact">문의하기</a></li>
+				<li><a href="mailto:editor@migukstory.com" class="email-link">editor@migukstory.com</a></li>
 			</ul>
+			<p class="hint">제보·편집·광고·정정 — 모두 한 곳으로 받습니다.</p>
 		</div>
 
 		<div class="col">
@@ -49,7 +48,7 @@ const today = new Date();
 			<h4 class="col-title">발행 정보</h4>
 			<p class="publisher-mini">
 				운영: <strong>ZOE STUDIO LLC</strong><br/>
-				이메일: <a href="mailto:hello@migukstory.com">hello@migukstory.com</a><br/>
+				이메일: <a href="mailto:editor@migukstory.com">editor@migukstory.com</a><br/>
 				전화: +1 (201) 962-1702<br/>
 				운영시간: 평일 9–18시 ET
 			</p>
@@ -85,6 +84,8 @@ const today = new Date();
 	.publisher-mini strong { color: var(--ink); }
 	.publisher-mini a { color: var(--brick); text-decoration: none; border-bottom: 1px solid var(--brick-soft); }
 	.disclaimer-mini { font-size: 0.72rem; color: var(--ink-light); line-height: 1.55; margin: 0; }
+	.email-link { font-family: var(--font-mono); font-size: 0.78rem !important; color: var(--brick) !important; }
+	.hint { font-size: 0.72rem; color: var(--ink-light); margin: 0.5em 0 0; line-height: 1.5; }
 	.col-title {
 		font-family: var(--font-body);
 		font-size: var(--text-xs);

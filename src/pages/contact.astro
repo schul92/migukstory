@@ -26,35 +26,21 @@ import { SITE_TITLE } from '../consts';
 					</p>
 				</header>
 
-				<!-- 3-inbox model (editor / tips / ads) -->
-				<section class="inbox-grid">
-					<article class="inbox-card editor">
-						<div class="card-icon">✉</div>
-						<h2>편집 문의</h2>
-						<p class="card-desc">기사 오류, 수정 요청, 콘텐츠 피드백, 일반 문의</p>
-						<a class="card-email" href="mailto:editor@migukstory.com">editor@migukstory.com</a>
-					</article>
-
-					<article class="inbox-card tips">
-						<div class="card-icon">📰</div>
-						<h2>제보하기</h2>
-						<p class="card-desc">뉴스 제보, 취재 요청, 본인 경험담. 사진·영상·문서 환영. 제보자 신원은 철저히 보호됩니다.</p>
-						<a class="card-email" href="mailto:tips@migukstory.com">tips@migukstory.com</a>
-					</article>
-
-					<article class="inbox-card ads">
-						<div class="card-icon">📣</div>
-						<h2>광고 · 제휴</h2>
-						<p class="card-desc">배너 광고, 스폰서 콘텐츠, 뉴스레터 광고. 광고 소개서(Media Kit)를 요청해 주세요.</p>
-						<a class="card-email" href="mailto:ads@migukstory.com">ads@migukstory.com</a>
-					</article>
+				<!-- Single inbox — direct to editor@ -->
+				<section class="inbox-single">
+					<a class="inbox-hero" href="mailto:editor@migukstory.com">
+						<div class="hero-icon">✉</div>
+						<p class="hero-label">이메일로 직접 문의</p>
+						<p class="hero-email">editor@migukstory.com</p>
+						<p class="hero-sub">기사 문의 · 제보 · 광고·제휴 · 정정 요청 — 한 곳에서 받습니다</p>
+					</a>
 				</section>
 
 				<!-- General contact form (uses mailto for now — replace with Formspree/Workers later) -->
 				<section class="form-section">
 					<h2 class="section-h">메시지 보내기</h2>
 					<p class="section-sub">이메일이 불편하시면 아래 양식으로 문의해 주세요. 입력하신 이메일로 답변드립니다.</p>
-					<form class="contact-form" action="mailto:hello@migukstory.com" method="post" enctype="text/plain">
+					<form class="contact-form" action="mailto:editor@migukstory.com" method="post" enctype="text/plain">
 						<div class="row">
 							<div class="field">
 								<label for="name">이름 *</label>
@@ -102,7 +88,7 @@ import { SITE_TITLE } from '../consts';
 							<dt>매체명</dt><dd>미국 스토리 (Miguk Story)</dd>
 							<dt>운영</dt><dd>ZOE STUDIO LLC</dd>
 							<dt>대표</dt><dd>Steve Song</dd>
-							<dt>대표 이메일</dt><dd><a href="mailto:hello@migukstory.com">hello@migukstory.com</a></dd>
+							<dt>이메일</dt><dd><a href="mailto:editor@migukstory.com">editor@migukstory.com</a></dd>
 							<dt>전화</dt><dd>+1 (201) 962-1702</dd>
 						</dl>
 						<dl>
@@ -148,55 +134,55 @@ import { SITE_TITLE } from '../consts';
 				line-height: 1.7;
 			}
 
-			/* 3-inbox grid */
-			.inbox-grid {
-				display: grid;
-				grid-template-columns: repeat(3, 1fr);
-				gap: var(--s-3);
-				margin-bottom: var(--s-6);
+			/* Single inbox hero */
+			.inbox-single {
+				max-width: 640px;
+				margin: 0 auto var(--s-6);
 			}
-			.inbox-card {
-				padding: var(--s-3);
-				background: var(--paper);
+			.inbox-hero {
+				display: block;
+				padding: var(--s-5) var(--s-3);
+				background: var(--paper-soft);
 				border: 1px solid var(--rule);
+				border-top: 4px solid var(--brick);
 				border-radius: 8px;
+				text-align: center;
+				text-decoration: none;
+				color: inherit;
 				transition: all var(--duration) var(--ease-out);
-				display: flex;
-				flex-direction: column;
 			}
-			.inbox-card:hover {
+			.inbox-hero:hover {
 				border-color: var(--brick);
 				transform: translateY(-2px);
-				box-shadow: 0 10px 28px rgba(0, 0, 0, 0.06);
+				box-shadow: 0 12px 32px rgba(0, 0, 0, 0.07);
+				background: var(--paper);
 			}
-			.inbox-card.editor { border-top: 4px solid var(--brick); }
-			.inbox-card.tips   { border-top: 4px solid var(--trust); }
-			.inbox-card.ads    { border-top: 4px solid var(--gold); }
-			.card-icon { font-size: 1.5rem; margin-bottom: var(--s-1); }
-			.inbox-card h2 {
-				font-family: var(--font-display);
-				font-size: 1.4rem;
-				margin: 0 0 var(--s-1);
-				color: var(--ink);
+			.hero-icon {
+				font-size: 2rem;
+				margin-bottom: var(--s-1);
 			}
-			.card-desc {
-				font-size: 0.92rem;
-				line-height: 1.6;
-				color: var(--ink-medium);
-				margin: 0 0 var(--s-2);
-				flex: 1;
+			.hero-label {
+				font-size: 0.78rem;
+				font-weight: 700;
+				text-transform: uppercase;
+				letter-spacing: 0.18em;
+				color: var(--ink-light);
+				margin: 0 0 0.5em;
 			}
-			.card-email {
+			.hero-email {
 				font-family: var(--font-mono);
-				font-size: 0.9rem;
+				font-size: 1.5rem;
+				font-weight: 700;
 				color: var(--brick);
-				text-decoration: none;
-				font-weight: 500;
-				border-bottom: 1px dashed var(--brick);
-				padding-bottom: 1px;
+				margin: 0 0 var(--s-1);
 				word-break: break-all;
 			}
-			.card-email:hover { color: var(--brick-deep); border-bottom-style: solid; }
+			.hero-sub {
+				font-size: 0.92rem;
+				color: var(--ink-medium);
+				margin: 0;
+				line-height: 1.6;
+			}
 
 			/* Section headers */
 			.section-h {
@@ -306,9 +292,9 @@ import { SITE_TITLE } from '../consts';
 			.privacy-note p { margin: 0; }
 
 			@media (max-width: 900px) {
-				.inbox-grid { grid-template-columns: 1fr; }
 				.publisher-grid { grid-template-columns: 1fr; gap: var(--s-3); }
 				.contact-form .row { grid-template-columns: 1fr; }
+				.hero-email { font-size: 1.2rem; }
 			}
 		</style>
 	</body>
