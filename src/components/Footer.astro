@@ -25,17 +25,37 @@ const today = new Date();
 		</div>
 
 		<div class="col">
+			<h4 class="col-title">문의</h4>
+			<ul>
+				<li><a href="/contact">문의하기 (전체)</a></li>
+				<li><a href="mailto:editor@migukstory.com">편집 · editor@</a></li>
+				<li><a href="mailto:tips@migukstory.com">제보 · tips@</a></li>
+				<li><a href="mailto:ads@migukstory.com">광고 · ads@</a></li>
+			</ul>
+		</div>
+
+		<div class="col">
 			<h4 class="col-title">정보</h4>
 			<ul>
-				<li><a href="/about">편집실 소개</a></li>
+				<li><a href="/about">미국 스토리 소개</a></li>
+				<li><a href="/privacy">개인정보처리방침</a></li>
+				<li><a href="/disclosure">광고·제휴 고지</a></li>
 				<li><a href="/rss.xml">RSS 피드</a></li>
 				<li><a href="/sitemap-index.xml">사이트맵</a></li>
 			</ul>
 		</div>
 
 		<div class="col col-disclaimer">
-			<h4 class="col-title">알림</h4>
-			<p>본 사이트의 정보는 일반 정보 제공 목적이며, 법률·세무·의료 자문이 아닙니다. 구체적 상황은 전문가와 상담하시기 바랍니다.</p>
+			<h4 class="col-title">발행 정보</h4>
+			<p class="publisher-mini">
+				운영: <strong>ZOE STUDIO LLC</strong><br/>
+				이메일: <a href="mailto:hello@migukstory.com">hello@migukstory.com</a><br/>
+				전화: +1 (201) 962-1702<br/>
+				운영시간: 평일 9–18시 ET
+			</p>
+			<p class="disclaimer-mini">
+				본 사이트의 정보는 일반 정보 제공 목적이며, 법률·세무·의료 자문이 아닙니다.
+			</p>
 		</div>
 	</div>
 
@@ -56,11 +76,15 @@ const today = new Date();
 	}
 	.footer-grid {
 		display: grid;
-		grid-template-columns: 1.4fr 1fr 1fr 1.6fr;
+		grid-template-columns: 1.3fr 1fr 1fr 1fr 1.4fr;
 		gap: var(--s-4);
 		padding-bottom: var(--s-4);
 		border-bottom: 1px solid var(--rule);
 	}
+	.publisher-mini { font-size: 0.78rem; line-height: 1.7; color: var(--ink-medium); margin: 0 0 var(--s-1); }
+	.publisher-mini strong { color: var(--ink); }
+	.publisher-mini a { color: var(--brick); text-decoration: none; border-bottom: 1px solid var(--brick-soft); }
+	.disclaimer-mini { font-size: 0.72rem; color: var(--ink-light); line-height: 1.55; margin: 0; }
 	.col-title {
 		font-family: var(--font-body);
 		font-size: var(--text-xs);
@@ -127,7 +151,10 @@ const today = new Date();
 	}
 	.published { color: var(--brick); }
 
-	@media (max-width: 900px) {
+	@media (max-width: 1100px) {
+		.footer-grid { grid-template-columns: 1fr 1fr 1fr; }
+	}
+	@media (max-width: 720px) {
 		.footer-grid { grid-template-columns: 1fr 1fr; }
 	}
 	@media (max-width: 540px) {

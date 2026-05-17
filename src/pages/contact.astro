@@ -1,0 +1,315 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import { SITE_TITLE } from '../consts';
+---
+
+<!doctype html>
+<html lang="ko">
+	<head>
+		<BaseHead
+			title={`문의하기 — ${SITE_TITLE}`}
+			description="미국 스토리에 기사 문의, 제보, 광고·제휴 문의를 보내실 수 있습니다. 보통 1-2 영업일 내 답변드립니다."
+		/>
+	</head>
+	<body>
+		<Header />
+		<main>
+			<div class="container">
+				<header class="page-head">
+					<p class="eyebrow">CONTACT · 문의하기</p>
+					<h1>안녕하세요. 미국 스토리입니다.</h1>
+					<p class="lead">
+						미국에서 살아가는 모든 한인을 위한 정직한 정보, <strong>미국 스토리</strong>입니다.<br/>
+						궁금한 점, 기사 제보, 광고 문의 모두 환영합니다. 보통 <strong>1-2 영업일 내</strong>에 답변드립니다.
+					</p>
+				</header>
+
+				<!-- 3-inbox model (editor / tips / ads) -->
+				<section class="inbox-grid">
+					<article class="inbox-card editor">
+						<div class="card-icon">✉</div>
+						<h2>편집 문의</h2>
+						<p class="card-desc">기사 오류, 수정 요청, 콘텐츠 피드백, 일반 문의</p>
+						<a class="card-email" href="mailto:editor@migukstory.com">editor@migukstory.com</a>
+					</article>
+
+					<article class="inbox-card tips">
+						<div class="card-icon">📰</div>
+						<h2>제보하기</h2>
+						<p class="card-desc">뉴스 제보, 취재 요청, 본인 경험담. 사진·영상·문서 환영. 제보자 신원은 철저히 보호됩니다.</p>
+						<a class="card-email" href="mailto:tips@migukstory.com">tips@migukstory.com</a>
+					</article>
+
+					<article class="inbox-card ads">
+						<div class="card-icon">📣</div>
+						<h2>광고 · 제휴</h2>
+						<p class="card-desc">배너 광고, 스폰서 콘텐츠, 뉴스레터 광고. 광고 소개서(Media Kit)를 요청해 주세요.</p>
+						<a class="card-email" href="mailto:ads@migukstory.com">ads@migukstory.com</a>
+					</article>
+				</section>
+
+				<!-- General contact form (uses mailto for now — replace with Formspree/Workers later) -->
+				<section class="form-section">
+					<h2 class="section-h">메시지 보내기</h2>
+					<p class="section-sub">이메일이 불편하시면 아래 양식으로 문의해 주세요. 입력하신 이메일로 답변드립니다.</p>
+					<form class="contact-form" action="mailto:hello@migukstory.com" method="post" enctype="text/plain">
+						<div class="row">
+							<div class="field">
+								<label for="name">이름 *</label>
+								<input id="name" name="이름" type="text" required />
+							</div>
+							<div class="field">
+								<label for="email">이메일 *</label>
+								<input id="email" name="이메일" type="email" required />
+							</div>
+						</div>
+						<div class="field">
+							<label for="type">문의 유형 *</label>
+							<select id="type" name="문의유형" required>
+								<option value="">선택해 주세요</option>
+								<option value="일반 문의">일반 문의</option>
+								<option value="편집/기사 문의">편집/기사 문의</option>
+								<option value="정정 요청">정정 요청</option>
+								<option value="뉴스 제보">뉴스 제보</option>
+								<option value="광고/제휴">광고/제휴</option>
+								<option value="개인정보 문의">개인정보 문의</option>
+								<option value="기타">기타</option>
+							</select>
+						</div>
+						<div class="field">
+							<label for="subject">제목 *</label>
+							<input id="subject" name="제목" type="text" required />
+						</div>
+						<div class="field">
+							<label for="message">내용 *</label>
+							<textarea id="message" name="내용" rows="7" required></textarea>
+						</div>
+						<button type="submit" class="btn-primary">메시지 보내기</button>
+						<p class="form-note">
+							* 표시는 필수 항목입니다. 양식 제출 시 이메일 앱이 열립니다.<br/>
+							이메일 앱이 열리지 않으면 위 카드의 이메일 주소로 직접 보내주세요.
+						</p>
+					</form>
+				</section>
+
+				<!-- Publisher info — required for AdSense + FTC transparency -->
+				<section class="publisher-info">
+					<h2 class="section-h">발행 정보</h2>
+					<div class="publisher-grid">
+						<dl>
+							<dt>매체명</dt><dd>미국 스토리 (Miguk Story)</dd>
+							<dt>운영</dt><dd>ZOE STUDIO LLC</dd>
+							<dt>대표</dt><dd>Steve Song</dd>
+							<dt>대표 이메일</dt><dd><a href="mailto:hello@migukstory.com">hello@migukstory.com</a></dd>
+							<dt>전화</dt><dd>+1 (201) 962-1702</dd>
+						</dl>
+						<dl>
+							<dt>운영 시간</dt><dd>월–금 오전 9시 – 오후 6시 (미 동부시간)</dd>
+							<dt>휴무</dt><dd>토·일 및 미국 공휴일</dd>
+							<dt>답변 시간</dt><dd>일반적으로 1–2 영업일 이내</dd>
+							<dt>웹사이트</dt><dd>migukstory.com</dd>
+						</dl>
+					</div>
+				</section>
+
+				<!-- Submission privacy note -->
+				<aside class="privacy-note">
+					<p>
+						<strong>제보자 보호:</strong> 미국 스토리는 제보자의 신원을 철저히 보호합니다.
+						본인의 동의 없이 제보자 정보가 외부에 공개되거나 기사에 명시되지 않습니다.
+					</p>
+				</aside>
+			</div>
+		</main>
+		<Footer />
+
+		<style>
+			main { padding-bottom: var(--s-6); }
+			.page-head {
+				text-align: center;
+				padding: var(--s-6) 0 var(--s-4);
+				border-bottom: 1px solid var(--ink);
+				margin-bottom: var(--s-5);
+			}
+			.eyebrow { margin: 0 0 var(--s-2); }
+			.page-head h1 {
+				font-family: var(--font-display);
+				font-size: clamp(2.25rem, 5vw, 3.5rem);
+				margin: 0 0 var(--s-2);
+				letter-spacing: -0.03em;
+			}
+			.page-head .lead {
+				font-size: var(--text-lg);
+				color: var(--ink-medium);
+				max-width: 40em;
+				margin: 0 auto;
+				line-height: 1.7;
+			}
+
+			/* 3-inbox grid */
+			.inbox-grid {
+				display: grid;
+				grid-template-columns: repeat(3, 1fr);
+				gap: var(--s-3);
+				margin-bottom: var(--s-6);
+			}
+			.inbox-card {
+				padding: var(--s-3);
+				background: var(--paper);
+				border: 1px solid var(--rule);
+				border-radius: 8px;
+				transition: all var(--duration) var(--ease-out);
+				display: flex;
+				flex-direction: column;
+			}
+			.inbox-card:hover {
+				border-color: var(--brick);
+				transform: translateY(-2px);
+				box-shadow: 0 10px 28px rgba(0, 0, 0, 0.06);
+			}
+			.inbox-card.editor { border-top: 4px solid var(--brick); }
+			.inbox-card.tips   { border-top: 4px solid var(--trust); }
+			.inbox-card.ads    { border-top: 4px solid var(--gold); }
+			.card-icon { font-size: 1.5rem; margin-bottom: var(--s-1); }
+			.inbox-card h2 {
+				font-family: var(--font-display);
+				font-size: 1.4rem;
+				margin: 0 0 var(--s-1);
+				color: var(--ink);
+			}
+			.card-desc {
+				font-size: 0.92rem;
+				line-height: 1.6;
+				color: var(--ink-medium);
+				margin: 0 0 var(--s-2);
+				flex: 1;
+			}
+			.card-email {
+				font-family: var(--font-mono);
+				font-size: 0.9rem;
+				color: var(--brick);
+				text-decoration: none;
+				font-weight: 500;
+				border-bottom: 1px dashed var(--brick);
+				padding-bottom: 1px;
+				word-break: break-all;
+			}
+			.card-email:hover { color: var(--brick-deep); border-bottom-style: solid; }
+
+			/* Section headers */
+			.section-h {
+				font-family: var(--font-display);
+				font-size: 1.75rem;
+				margin: 0 0 var(--s-1);
+				text-align: center;
+				letter-spacing: -0.02em;
+			}
+			.section-sub {
+				text-align: center;
+				color: var(--ink-medium);
+				font-size: 0.95rem;
+				margin: 0 auto var(--s-3);
+				max-width: 32em;
+			}
+
+			/* Form */
+			.form-section {
+				max-width: 640px;
+				margin: 0 auto var(--s-6);
+				padding: var(--s-4);
+				background: var(--paper-soft);
+				border-radius: 8px;
+			}
+			.contact-form { display: flex; flex-direction: column; gap: var(--s-2); }
+			.contact-form .row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-2); }
+			.field { display: flex; flex-direction: column; gap: 0.3rem; }
+			.field label {
+				font-size: 0.85rem;
+				font-weight: 600;
+				color: var(--ink-soft);
+			}
+			.field input, .field select, .field textarea {
+				font: inherit;
+				font-size: 0.95rem;
+				padding: 0.6em 0.8em;
+				background: var(--paper);
+				border: 1px solid var(--rule);
+				border-radius: 4px;
+				color: var(--ink);
+				transition: border-color var(--duration) var(--ease-out);
+			}
+			.field textarea { resize: vertical; min-height: 140px; }
+			.field input:focus, .field select:focus, .field textarea:focus {
+				outline: none;
+				border-color: var(--brick);
+			}
+			.btn-primary {
+				margin-top: var(--s-1);
+				padding: 0.8em 1.5em;
+				background: var(--brick);
+				color: white;
+				border: none;
+				border-radius: 4px;
+				font: inherit;
+				font-weight: 600;
+				font-size: 1rem;
+				cursor: pointer;
+				transition: background var(--duration) var(--ease-out);
+			}
+			.btn-primary:hover { background: var(--brick-deep); }
+			.form-note {
+				font-size: 0.78rem;
+				color: var(--ink-light);
+				margin: var(--s-1) 0 0;
+				line-height: 1.5;
+			}
+
+			/* Publisher info */
+			.publisher-info {
+				max-width: 760px;
+				margin: 0 auto var(--s-5);
+				padding: var(--s-4);
+				border-top: 3px double var(--ink);
+				border-bottom: 3px double var(--ink);
+			}
+			.publisher-grid {
+				display: grid;
+				grid-template-columns: 1fr 1fr;
+				gap: var(--s-4);
+				margin-top: var(--s-2);
+			}
+			.publisher-grid dl { margin: 0; display: grid; grid-template-columns: 100px 1fr; gap: 0.5em 0.8em; }
+			.publisher-grid dt {
+				font-size: 0.8rem;
+				font-weight: 700;
+				color: var(--ink-light);
+				text-transform: uppercase;
+				letter-spacing: 0.05em;
+				padding-top: 0.1em;
+			}
+			.publisher-grid dd { margin: 0; font-size: 0.95rem; color: var(--ink); }
+			.publisher-grid a { color: var(--brick); text-decoration: none; border-bottom: 1px solid var(--brick-soft); }
+			.publisher-grid a:hover { color: var(--brick-deep); }
+
+			.privacy-note {
+				max-width: 720px;
+				margin: 0 auto;
+				padding: var(--s-2);
+				background: var(--cream);
+				border-left: 3px solid var(--brick);
+				font-size: 0.9rem;
+				line-height: 1.7;
+				color: var(--ink-soft);
+			}
+			.privacy-note p { margin: 0; }
+
+			@media (max-width: 900px) {
+				.inbox-grid { grid-template-columns: 1fr; }
+				.publisher-grid { grid-template-columns: 1fr; gap: var(--s-3); }
+				.contact-form .row { grid-template-columns: 1fr; }
+			}
+		</style>
+	</body>
+</html>

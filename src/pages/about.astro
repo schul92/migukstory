@@ -8,68 +8,159 @@ import { SITE_TITLE } from '../consts';
 <!doctype html>
 <html lang="ko">
 	<head>
-		<BaseHead title={`소개 — ${SITE_TITLE}`} description="미국 스토리는 한국계 미국인을 위한 검증된 정보 가이드입니다." />
+		<BaseHead
+			title={`소개 — ${SITE_TITLE}`}
+			description="미국 스토리는 한국계 미국인을 위한 검증된 정보 매체입니다. 이민·세금·건강·교육 등 미국 생활에 꼭 필요한 정보를 1차 출처와 함께 정리합니다."
+		/>
 	</head>
 	<body>
 		<Header />
 		<main>
-			<article class="about">
-				<h1>미국 스토리 소개</h1>
+			<div class="container narrow">
+				<header class="page-head">
+					<p class="eyebrow">ABOUT · 소개</p>
+					<h1>미국 스토리는 누구를 위한 매체인가</h1>
+				</header>
 
-				<h2>저희가 만드는 것</h2>
-				<p>
-					미국 스토리는 한국계 미국인을 위한 <strong>이민·세금·건강·교육 가이드</strong>입니다.
-					매주 최신 뉴스와 실용 정보를 검증된 출처(USCIS, IRS, NPR, Korea Times, JoongAng 등)와 함께 정리합니다.
-				</p>
+				<section class="prose">
+					<p class="lead">
+						<strong>미국 스토리(Miguk Story)</strong>는 미국에서 살아가는 한인 1세대, 1.5세대, 2세대를 위한 실용 정보 매체입니다.
+						비자·세금·주거·자녀교육·은퇴 등 <strong>이민 생활에 꼭 필요한 정보</strong>를 한국어로 정확하게 전달합니다.
+					</p>
 
-				<h2>누구를 위한 사이트인가</h2>
-				<ul>
-					<li><strong>20-35세 유학생·신규 이민자</strong>: H-1B, OPT, 비자 변경, 신용점수, 미국 정착 가이드</li>
-					<li><strong>35-55세 부모·자녀교육·자산</strong>: 학군 비교, 대학 입학, 부모 초청, 세금, 부동산</li>
-					<li><strong>55세 이상 은퇴 준비·시니어</strong>: Medicare, 사회보장협정, 한국 귀국, 상속 계획</li>
-					<li><strong>전 세대 공감 스토리</strong>: 한인 커뮤니티 뉴스, 한류, 인종 차별 이슈</li>
-				</ul>
+					<h2>왜 이 매체가 필요한가</h2>
+					<p>
+						미국에 거주하는 한인은 약 200만 명입니다. 그러나 이들을 위한 한국어 정보 매체는 대부분 30년 전 신문 시대에 머물러 있습니다.
+						뉴스는 풍부하지만, <strong>"우리 가족에게 무엇이 어떻게 영향을 미치는가"</strong>를 정리해 주는 가이드는 거의 없습니다.
+						트럼프 행정부의 비자 정책 변화, 메디케어 자격 변경, OBBBA 세법 개편, 한미 사회보장협정 — 모두 한인 가정의 통장에 직접적으로 영향을 미치지만,
+						한국어로 깊이 있게 다루는 매체는 손에 꼽습니다.
+					</p>
+					<p>
+						미국 스토리는 이 공백을 메우기 위해 출발했습니다. <strong>매주 가장 중요한 뉴스 한 가지를 골라, 정부 1차 출처와 주요 언론을 교차 확인하고, 한인 가정의 시각에서 의미를 풀어서 전달합니다.</strong>
+					</p>
 
-				<h2>편집 원칙</h2>
-				<ul>
-					<li>모든 글은 <strong>1차 출처를 명시</strong>합니다 (정부 기관, 주요 언론사 우선)</li>
-					<li>법률·세무·의료 정보는 <strong>일반 정보 제공 목적</strong>이며, 구체적 상황은 전문가 상담을 권합니다</li>
-					<li>AI 보조 도구를 활용하지만, 모든 사실은 <strong>사람이 검증</strong>합니다</li>
-					<li>광고나 협찬은 명확히 표시합니다</li>
-				</ul>
+					<h2>독자별 큐레이션</h2>
+					<p>
+						미국 스토리는 4가지 독자 그룹을 명시적으로 의식하며 글을 씁니다.
+					</p>
+					<ul>
+						<li><strong>20–35세 · 유학·취업·이민:</strong> H-1B, OPT, STEM OPT, 신용점수, 미국 정착 가이드</li>
+						<li><strong>35–55세 · 부모·자녀교육·자산:</strong> 학군 비교, 대학 입학, 부모 초청, SALT 세금, 부동산 상속</li>
+						<li><strong>55세 이상 · 은퇴·건강·연금:</strong> Medicare, 한미 사회보장협정, 한국 귀국, 상속 계획</li>
+						<li><strong>전 세대 공감 스토리:</strong> 한인 커뮤니티 뉴스, 한류, 인종 차별 이슈, 가족 안전</li>
+					</ul>
 
-				<h2>제보·문의</h2>
-				<p>
-					미국 한인 커뮤니티에 도움이 될 만한 뉴스, 정보, 본인 경험담을 댓글이나 이메일로 공유해주세요.
-				</p>
-			</article>
+					<h2>편집 원칙</h2>
+					<ol>
+						<li>
+							<strong>1차 출처를 명시한다.</strong> 모든 사실 주장에는 정부 기관(USCIS, IRS, SSA, HHS) 또는 주요 언론(NYT, NPR, CNN, Korea Times, JoongAng) 링크를 첨부합니다.
+						</li>
+						<li>
+							<strong>법률·세무·의료 자문이 아니다.</strong> 정보 제공 목적이며, 구체적 상황은 항상 전문가 상담을 권합니다.
+						</li>
+						<li>
+							<strong>AI 보조, 사람 검증.</strong> 초안 작성에 AI 도구를 활용할 수 있지만, 발행 전 모든 사실은 편집실에서 직접 확인합니다.
+						</li>
+						<li>
+							<strong>광고·제휴는 명확히 고지한다.</strong> 스폰서 콘텐츠와 제휴 링크는 본문 안에서 명시적으로 표시합니다.
+						</li>
+						<li>
+							<strong>정정은 신속하게.</strong> 사실 오류가 발견되면 즉시 정정하고, 정정 내역을 글 하단에 기록합니다.
+						</li>
+					</ol>
+
+					<h2>창업 배경</h2>
+					<p>
+						미국 스토리는 <strong>ZOE STUDIO LLC</strong>(미국 뉴저지)가 2026년 발행하는 디지털 매체입니다.
+						대표 Steve Song은 한인 1.5세대로, 본인과 가족이 미국 정착 과정에서 마주한 "정보 부족"의 문제를 직접 해결하기 위해 이 매체를 시작했습니다.
+					</p>
+
+					<h2>독자가 참여하는 법</h2>
+					<ul>
+						<li><strong>제보:</strong> 한인 사회에 알릴 만한 소식, 본인 경험담을 <a href="mailto:tips@migukstory.com">tips@migukstory.com</a>으로 보내주세요.</li>
+						<li><strong>구독:</strong> 주 1회 이메일 뉴스레터로 핵심 기사를 받아보실 수 있습니다.</li>
+						<li><strong>피드백:</strong> 기사 오류, 수정 요청은 <a href="mailto:editor@migukstory.com">editor@migukstory.com</a>으로 보내주세요.</li>
+						<li><strong>광고·제휴:</strong> <a href="mailto:ads@migukstory.com">ads@migukstory.com</a></li>
+					</ul>
+
+					<p class="closing">
+						미국 스토리는 <strong>한인 사회를 위한 신뢰할 수 있는 정보 인프라</strong>가 되는 것을 목표로 합니다.
+						여러분의 제보와 피드백이 이 매체를 더 정확하게 만듭니다.
+					</p>
+				</section>
+
+				<aside class="cta-row">
+					<a href="/contact" class="btn-primary">문의하기 →</a>
+					<a href="/blog" class="btn-outline">전체 글 보기</a>
+				</aside>
+			</div>
 		</main>
 		<Footer />
+
 		<style>
-			main {
-				max-width: 720px;
-				margin: 0 auto;
-				padding: 2em 1em;
+			.narrow { max-width: 760px; margin: 0 auto; }
+			.page-head {
+				text-align: center;
+				padding: var(--s-6) 0 var(--s-3);
+				border-bottom: 1px solid var(--ink);
+				margin-bottom: var(--s-4);
 			}
-			.about h1 {
-				font-size: 2em;
-				margin-bottom: 1em;
+			.eyebrow { margin: 0 0 var(--s-2); }
+			.page-head h1 {
+				font-family: var(--font-display);
+				font-size: clamp(2.25rem, 5vw, 3.25rem);
+				letter-spacing: -0.03em;
+				margin: 0;
 			}
-			.about h2 {
-				font-size: 1.25em;
-				margin: 1.5em 0 0.5em;
-				color: var(--accent-dark);
+			.prose { padding: var(--s-3) 0 var(--s-5); }
+			.prose .lead { font-size: var(--text-lg); line-height: 1.75; color: var(--ink); margin-bottom: var(--s-3); }
+			.prose h2 {
+				font-family: var(--font-display);
+				font-size: 1.6rem;
+				margin: var(--s-4) 0 var(--s-2);
+				color: var(--ink);
+				border-bottom: 1px solid var(--rule);
+				padding-bottom: 0.3em;
 			}
-			.about p,
-			.about li {
-				line-height: 1.7;
+			.prose ul, .prose ol { padding-left: 1.5em; line-height: 1.8; }
+			.prose li { margin-bottom: 0.5em; }
+			.prose .closing {
+				margin-top: var(--s-4);
+				padding-top: var(--s-3);
+				border-top: 1px solid var(--rule);
+				font-size: 1.05rem;
+				color: var(--ink-soft);
+				font-style: italic;
 			}
-			.about ul {
-				padding-left: 1.2em;
+
+			.cta-row {
+				display: flex;
+				gap: var(--s-2);
+				justify-content: center;
+				padding: var(--s-4) 0 var(--s-3);
+				border-top: 3px double var(--ink);
 			}
-			.about li {
-				margin-bottom: 0.5em;
+			.btn-primary, .btn-outline {
+				display: inline-block;
+				padding: 0.7em 1.3em;
+				border-radius: 4px;
+				font-weight: 600;
+				font-size: 0.95rem;
+				text-decoration: none;
+				transition: all var(--duration) var(--ease-out);
 			}
+			.btn-primary {
+				background: var(--brick);
+				color: white;
+				border: 1px solid var(--brick);
+			}
+			.btn-primary:hover { background: var(--brick-deep); }
+			.btn-outline {
+				background: var(--paper);
+				color: var(--ink);
+				border: 1px solid var(--ink);
+			}
+			.btn-outline:hover { background: var(--ink); color: var(--paper); }
 		</style>
 	</body>
 </html>

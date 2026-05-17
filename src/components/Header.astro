@@ -25,6 +25,7 @@ const dateStamp = `${today.getFullYear()}.${String(today.getMonth() + 1).padStar
 			<a href="/blog?age=35-55">35–55세</a>
 			<a href="/blog?age=55+">55세 이상</a>
 			<a href="/about">소개</a>
+			<a href="/contact" class="contact-link">문의 · 제보</a>
 		</div>
 	</nav>
 </header>
@@ -111,6 +112,14 @@ const dateStamp = `${today.getFullYear()}.${String(today.getMonth() + 1).padStar
 		color: var(--brick);
 	}
 	.nav-inner a:hover::after { width: 80%; }
+	.contact-link {
+		color: var(--brick) !important;
+		font-weight: 700;
+	}
+	.contact-link::before {
+		content: "→ ";
+		font-weight: 700;
+	}
 
 	@media (max-width: 720px) {
 		.masthead-inner {
