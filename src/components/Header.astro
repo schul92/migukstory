@@ -5,16 +5,24 @@ const dateStamp = `${today.getFullYear()}.${String(today.getMonth() + 1).padStar
 ---
 
 <header class="masthead">
+	<div class="utility-strip">
+		<div class="container utility-inner">
+			<span class="utility-meta">VOL. 01 · NO. {ISSUE_NUMBER} · {dateStamp}</span>
+			<span class="utility-spacer">·</span>
+			<a href="mailto:tips@migukstory.com" class="utility-cta">📰 제보: tips@migukstory.com</a>
+		</div>
+	</div>
+
 	<div class="container masthead-inner">
 		<div class="meta-left">
-			<span class="issue">VOL. 01 · NO. {ISSUE_NUMBER}</span>
+			<span class="issue">SINCE 2026 · 한국계 미국인을 위한 검증된 가이드</span>
 		</div>
 		<a href="/" class="brand">
 			<span class="brand-ko">{SITE_TITLE}</span>
 			<span class="brand-en">MIGUK&nbsp;STORY</span>
 		</a>
 		<div class="meta-right">
-			<time class="date" datetime={today.toISOString()}>{dateStamp}</time>
+			<a href="/contact" class="contact-pill">문의 →</a>
 		</div>
 	</div>
 
@@ -44,16 +52,53 @@ const dateStamp = `${today.getFullYear()}.${String(today.getMonth() + 1).padStar
 		padding: var(--s-2) var(--s-3);
 		gap: var(--s-3);
 	}
+	.utility-strip {
+		background: var(--ink);
+		color: var(--paper);
+		padding: 0.45em 0;
+		font-size: 0.72rem;
+		letter-spacing: 0.04em;
+	}
+	.utility-inner {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		gap: 0.7em;
+		flex-wrap: wrap;
+	}
+	.utility-meta { color: var(--ink-faint); }
+	.utility-spacer { color: var(--ink-medium); }
+	.utility-cta {
+		color: var(--paper);
+		text-decoration: none;
+		font-weight: 600;
+		font-family: var(--font-mono);
+	}
+	.utility-cta:hover { color: var(--brick-soft); }
+
 	.meta-left, .meta-right {
 		font-family: var(--font-body);
 		font-size: var(--text-xs);
 		font-weight: 500;
-		letter-spacing: 0.18em;
+		letter-spacing: 0.08em;
 		text-transform: uppercase;
 		color: var(--ink-light);
 		font-feature-settings: "tnum";
 	}
 	.meta-right { text-align: right; }
+	.contact-pill {
+		display: inline-block;
+		padding: 0.35em 0.8em;
+		background: var(--brick);
+		color: white !important;
+		font-size: 0.72rem;
+		font-weight: 700;
+		letter-spacing: 0.05em;
+		border-radius: 3px;
+		text-decoration: none;
+		transition: background var(--duration) var(--ease-out);
+	}
+	.contact-pill:hover { background: var(--brick-deep); }
 	.brand {
 		display: flex;
 		flex-direction: column;
@@ -128,7 +173,10 @@ const dateStamp = `${today.getFullYear()}.${String(today.getMonth() + 1).padStar
 			gap: var(--s-1);
 		}
 		.meta-left, .meta-right { text-align: center; font-size: 0.65rem; }
+		.meta-right { display: flex; justify-content: center; }
 		.brand-ko { font-size: 1.75rem; }
 		.nav-inner { gap: var(--s-2); font-size: 0.8rem; }
+		.utility-inner { gap: 0.4em; font-size: 0.65rem; }
+		.utility-spacer { display: none; }
 	}
 </style>
