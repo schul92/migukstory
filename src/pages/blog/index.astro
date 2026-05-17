@@ -5,15 +5,23 @@ import Footer from '../../components/Footer.astro';
 import Header from '../../components/Header.astro';
 import FormattedDate from '../../components/FormattedDate.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../../consts';
+import { CATEGORIES } from '../../content.config';
 
 const posts = (await getCollection('blog')).sort(
 	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
 
-const ageLabel = (a: string) =>
-	a === '20-35' ? '20–35세' :
-	a === '35-55' ? '35–55세' :
-	a === '55+'   ? '55세 이상' : '전 세대';
+// Collect all unique tags across posts for tag pill bar
+const tagCount = new Map<string, number>();
+posts.forEach(p => (p.data.tags || []).forEach(t => tagCount.set(t, (tagCount.get(t) || 0) + 1)));
+const topTags = [...tagCount.entries()]
+	.sort((a, b) => b[1] - a[1])
+	.slice(0, 12)
+	.map(([t, c]) => ({ tag: t, count: c }));
+
+// Per-category counts for the filter bar
+const catCounts: Record<string, number> = {};
+posts.forEach(p => { catCounts[p.data.category] = (catCounts[p.data.category] || 0) + 1; });
 ---
 
 <!doctype html>
@@ -28,41 +36,195 @@ const ageLabel = (a: string) =>
 				<header class="page-head">
 					<p class="eyebrow">아카이브 · ARCHIVE</p>
 					<h1 class="page-title">전체 글</h1>
-					<p class="page-sub">미국 스토리에 실린 모든 기사 — 가장 최근 글부터.</p>
+					<p class="page-sub"><span id="visible-count">{posts.length}</span>편의 기사 · 최신순</p>
 				</header>
 
-				<ol class="archive">
-					{posts.map((post, i) => (
-						<li class="archive-item">
-							<div class="num-col">
-								<span class="num">{String(posts.length - i).padStart(3, '0')}</span>
+				<!-- Filter bar -->
+				<div class="filters" id="filters">
+					<!-- Category pills -->
+					<div class="filter-row">
+						<span class="filter-label">카테고리</span>
+						<div class="pills" role="tablist">
+							<button class="pill active" data-filter-cat="all" type="button">
+								전체 <span class="count">{posts.length}</span>
+							</button>
+							{Object.entries(CATEGORIES).filter(([k]) => (catCounts[k] || 0) > 0).map(([k, m]) => (
+								<button class="pill" data-filter-cat={k} type="button" style={`--cat: ${m.color}`}>
+									{m.label} <span class="count">{catCounts[k]}</span>
+								</button>
+							))}
+						</div>
+					</div>
+
+					<!-- Tag pills (top 12 most-used) -->
+					{topTags.length > 0 && (
+						<div class="filter-row">
+							<span class="filter-label">태그</span>
+							<div class="pills small">
+								<button class="pill tag-pill active" data-filter-tag="all" type="button">전체</button>
+								{topTags.map(({ tag, count }) => (
+									<button class="pill tag-pill" data-filter-tag={tag} type="button">
+										#{tag} <span class="count">{count}</span>
+									</button>
+								))}
 							</div>
-							<a href={`/blog/${post.id}/`} class="entry">
-								<div class="entry-head">
-									<span class="age-pill">{ageLabel(post.data.ageGroup)}</span>
-									<FormattedDate date={post.data.pubDate} />
+						</div>
+					)}
+
+					<!-- Sort + search -->
+					<div class="filter-row sort-row">
+						<div class="sort-group">
+							<span class="filter-label">정렬</span>
+							<select id="sort-select">
+								<option value="newest">최신순</option>
+								<option value="oldest">오래된순</option>
+								<option value="title">제목순</option>
+							</select>
+						</div>
+						<div class="search-group">
+							<label for="search-input" class="sr-only">검색</label>
+							<input
+								id="search-input"
+								type="search"
+								placeholder="제목·설명·태그 검색..."
+								autocomplete="off"
+							/>
+						</div>
+					</div>
+				</div>
+
+				<!-- Posts list (renders all; JS filters in-place) -->
+				<ol class="archive" id="archive">
+					{posts.map((post, i) => {
+						const cm = (CATEGORIES as any)[post.data.category];
+						return (
+							<li
+								class="archive-item"
+								data-cat={post.data.category}
+								data-tags={(post.data.tags || []).join('|')}
+								data-title={post.data.title.toLowerCase()}
+								data-desc={post.data.description.toLowerCase()}
+								data-date={post.data.pubDate.toISOString()}
+							>
+								<div class="num-col">
+									<span class="num">{String(posts.length - i).padStart(3, '0')}</span>
 								</div>
-								<h2>{post.data.title}</h2>
-								<p class="excerpt">{post.data.description}</p>
-								{post.data.tags.length > 0 && (
-									<div class="tags">
-										{post.data.tags.slice(0, 5).map(t => <span class="tag">#{t}</span>)}
+								<a href={`/blog/${post.id}/`} class="entry">
+									<div class="entry-head">
+										{cm && (
+											<span class="cat-pill" style={`background: ${cm.color}`}>{cm.label}</span>
+										)}
+										<FormattedDate date={post.data.pubDate} />
 									</div>
-								)}
-							</a>
-						</li>
-					))}
+									<h2>{post.data.title}</h2>
+									<p class="excerpt">{post.data.description}</p>
+									{post.data.tags.length > 0 && (
+										<div class="tags">
+											{post.data.tags.slice(0, 5).map((t: string) => <span class="tag">#{t}</span>)}
+										</div>
+									)}
+								</a>
+							</li>
+						);
+					})}
 				</ol>
+
+				<p class="empty" id="empty-msg" hidden>일치하는 글이 없습니다. 다른 필터를 시도해 보세요.</p>
 			</div>
 		</main>
 		<Footer />
 
+		<script is:inline>
+			(function () {
+				const archive = document.getElementById('archive');
+				const items = Array.from(archive.querySelectorAll('.archive-item'));
+				const visibleCount = document.getElementById('visible-count');
+				const emptyMsg = document.getElementById('empty-msg');
+				const sortSelect = document.getElementById('sort-select');
+				const searchInput = document.getElementById('search-input');
+
+				let activeCat = 'all';
+				let activeTag = 'all';
+
+				function applyFilters() {
+					const q = searchInput.value.trim().toLowerCase();
+					let visible = 0;
+					items.forEach((it) => {
+						const cat = it.dataset.cat;
+						const tags = it.dataset.tags.split('|');
+						const title = it.dataset.title;
+						const desc = it.dataset.desc;
+						let show = true;
+						if (activeCat !== 'all' && cat !== activeCat) show = false;
+						if (activeTag !== 'all' && !tags.includes(activeTag)) show = false;
+						if (q && !title.includes(q) && !desc.includes(q) && !tags.some(t => t.toLowerCase().includes(q))) show = false;
+						it.style.display = show ? '' : 'none';
+						if (show) visible++;
+					});
+					visibleCount.textContent = visible;
+					emptyMsg.hidden = visible !== 0;
+				}
+
+				function applySort() {
+					const mode = sortSelect.value;
+					const sorted = [...items].sort((a, b) => {
+						if (mode === 'newest') return b.dataset.date.localeCompare(a.dataset.date);
+						if (mode === 'oldest') return a.dataset.date.localeCompare(b.dataset.date);
+						if (mode === 'title')  return a.dataset.title.localeCompare(b.dataset.title, 'ko');
+						return 0;
+					});
+					sorted.forEach(it => archive.appendChild(it));
+				}
+
+				// Category pill clicks
+				document.querySelectorAll('[data-filter-cat]').forEach(btn => {
+					btn.addEventListener('click', () => {
+						document.querySelectorAll('[data-filter-cat]').forEach(b => b.classList.remove('active'));
+						btn.classList.add('active');
+						activeCat = btn.dataset.filterCat;
+						applyFilters();
+					});
+				});
+
+				// Tag pill clicks
+				document.querySelectorAll('[data-filter-tag]').forEach(btn => {
+					btn.addEventListener('click', () => {
+						document.querySelectorAll('[data-filter-tag]').forEach(b => b.classList.remove('active'));
+						btn.classList.add('active');
+						activeTag = btn.dataset.filterTag;
+						applyFilters();
+					});
+				});
+
+				sortSelect.addEventListener('change', applySort);
+				searchInput.addEventListener('input', applyFilters);
+
+				// Read ?category= and ?tag= and ?q= from URL on first load
+				const url = new URL(window.location.href);
+				const initCat = url.searchParams.get('category');
+				const initTag = url.searchParams.get('tag');
+				const initQ   = url.searchParams.get('q');
+				if (initCat) {
+					const btn = document.querySelector(`[data-filter-cat="${initCat}"]`);
+					if (btn) btn.click();
+				}
+				if (initTag) {
+					const btn = document.querySelector(`[data-filter-tag="${initTag}"]`);
+					if (btn) btn.click();
+				}
+				if (initQ) {
+					searchInput.value = initQ;
+					applyFilters();
+				}
+			})();
+		</script>
+
 		<style>
 			.page-head {
 				text-align: center;
-				padding: var(--s-6) 0 var(--s-4);
+				padding: var(--s-6) 0 var(--s-3);
 				border-bottom: 1px solid var(--ink);
-				margin-bottom: var(--s-4);
+				margin-bottom: var(--s-3);
 			}
 			.page-head .eyebrow { margin: 0 0 var(--s-2); }
 			.page-title {
@@ -74,22 +236,118 @@ const ageLabel = (a: string) =>
 			.page-sub {
 				color: var(--ink-light);
 				font-size: var(--text-base);
-				max-width: 32em;
-				margin: 0 auto;
+				margin: 0;
 			}
+
+			/* ── Filter bar ─────────────────────────────────────── */
+			.filters {
+				padding: var(--s-3) 0;
+				border-bottom: 1px solid var(--rule);
+				margin-bottom: var(--s-2);
+				display: flex;
+				flex-direction: column;
+				gap: var(--s-2);
+			}
+			.filter-row {
+				display: flex;
+				align-items: center;
+				gap: var(--s-2);
+				flex-wrap: wrap;
+			}
+			.filter-label {
+				font-size: 0.7rem;
+				font-weight: 700;
+				text-transform: uppercase;
+				letter-spacing: 0.14em;
+				color: var(--ink-light);
+				white-space: nowrap;
+				min-width: 50px;
+			}
+			.pills {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 0.4em;
+				flex: 1;
+			}
+			.pill {
+				display: inline-flex;
+				align-items: center;
+				gap: 0.4em;
+				padding: 0.35em 0.85em;
+				font: inherit;
+				font-size: 0.82rem;
+				font-weight: 600;
+				color: var(--ink-soft);
+				background: var(--paper);
+				border: 1px solid var(--rule);
+				border-radius: 999px;
+				cursor: pointer;
+				transition: all var(--duration) var(--ease-out);
+			}
+			.pill:hover {
+				border-color: var(--cat, var(--brick));
+				color: var(--cat, var(--brick));
+			}
+			.pill.active {
+				background: var(--cat, var(--ink));
+				color: var(--paper);
+				border-color: var(--cat, var(--ink));
+			}
+			.pill .count {
+				font-size: 0.72rem;
+				font-weight: 500;
+				opacity: 0.7;
+				font-feature-settings: "tnum";
+			}
+			.pills.small .pill { font-size: 0.74rem; padding: 0.25em 0.7em; }
+			.tag-pill { color: var(--ink-medium); }
+			.tag-pill.active { background: var(--brick); color: var(--paper); border-color: var(--brick); }
+
+			.sort-row {
+				border-top: 1px solid var(--rule-soft);
+				padding-top: var(--s-2);
+				margin-top: var(--s-1);
+				justify-content: space-between;
+			}
+			.sort-group, .search-group { display: flex; align-items: center; gap: var(--s-1); flex: 1; min-width: 0; }
+			.sort-group { max-width: 200px; }
+			.search-group { max-width: 280px; }
+			#sort-select, #search-input {
+				font: inherit;
+				font-size: 0.85rem;
+				padding: 0.4em 0.7em;
+				background: var(--paper);
+				border: 1px solid var(--rule);
+				border-radius: 4px;
+				color: var(--ink);
+				flex: 1;
+				min-width: 0;
+			}
+			#sort-select:focus, #search-input:focus {
+				outline: none;
+				border-color: var(--brick);
+			}
+
+			.empty {
+				text-align: center;
+				color: var(--ink-medium);
+				padding: var(--s-6) 0;
+				font-size: 0.95rem;
+			}
+
+			/* ── Archive list ───────────────────────────────────── */
 			.archive { list-style: none; padding: 0; margin: 0; }
 			.archive-item {
 				display: grid;
-				grid-template-columns: 90px 1fr;
-				gap: var(--s-4);
-				padding: var(--s-4) 0;
+				grid-template-columns: 60px 1fr;
+				gap: var(--s-3);
+				padding: var(--s-3) 0;
 				border-bottom: 1px solid var(--rule);
 			}
-			.archive-item:first-child { border-top: 1px solid var(--rule); }
-			.num-col { padding-top: 0.4em; }
+			.num-col { padding-top: 0.3em; }
 			.num {
 				font-family: var(--font-display);
-				font-size: 1.5rem;
+				font-size: 1.25rem;
 				color: var(--brick);
 				font-weight: 700;
 				letter-spacing: -0.02em;
@@ -98,27 +356,27 @@ const ageLabel = (a: string) =>
 			.entry { text-decoration: none; color: inherit; display: block; }
 			.entry-head {
 				display: flex;
-				gap: var(--s-1);
+				gap: 0.6em;
 				align-items: center;
 				font-size: var(--text-sm);
 				color: var(--ink-light);
 				margin-bottom: var(--s-1);
+				flex-wrap: wrap;
 			}
-			.age-pill {
+			.cat-pill {
 				display: inline-block;
 				font-size: 0.68rem;
-				font-weight: 600;
+				font-weight: 700;
 				padding: 0.15em 0.55em;
-				background: var(--ink);
 				color: var(--paper);
 				letter-spacing: 0.04em;
 				border-radius: 2px;
 			}
 			.entry h2 {
 				font-family: var(--font-display);
-				font-size: clamp(1.4rem, 2.6vw, 2rem);
+				font-size: clamp(1.25rem, 2.4vw, 1.75rem);
 				font-weight: 700;
-				line-height: 1.2;
+				line-height: 1.25;
 				margin: 0 0 var(--s-1);
 				color: var(--ink);
 				letter-spacing: -0.02em;
@@ -126,22 +384,25 @@ const ageLabel = (a: string) =>
 			}
 			.entry:hover h2 { color: var(--brick); }
 			.excerpt {
-				font-size: 0.95rem;
+				font-size: 0.92rem;
 				color: var(--ink-medium);
-				line-height: 1.7;
-				margin: 0 0 var(--s-2);
+				line-height: 1.65;
+				margin: 0 0 var(--s-1);
 				max-width: 50em;
 				display: -webkit-box;
 				-webkit-line-clamp: 2;
 				-webkit-box-orient: vertical;
 				overflow: hidden;
 			}
-			.tags { display: flex; gap: 0.6em; flex-wrap: wrap; }
-			.tag { font-size: 0.78rem; color: var(--ink-light); }
+			.tags { display: flex; gap: 0.5em; flex-wrap: wrap; }
+			.tag { font-size: 0.74rem; color: var(--ink-light); }
 
 			@media (max-width: 720px) {
-				.archive-item { grid-template-columns: 50px 1fr; gap: var(--s-2); }
-				.num { font-size: 1.1rem; }
+				.archive-item { grid-template-columns: 40px 1fr; gap: var(--s-2); }
+				.num { font-size: 1rem; }
+				.sort-row { flex-direction: column; align-items: stretch; }
+				.sort-group, .search-group { max-width: none; }
+				.filter-label { min-width: auto; }
 			}
 		</style>
 	</body>
