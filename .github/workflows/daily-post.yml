@@ -1,13 +1,13 @@
-name: Daily Korean post
+name: Daily post from queue
 
 on:
   schedule:
-    # 14:00 UTC = 10am ET (EDT) / 9am ET (EST). Pick whatever local time you want.
+    # 14:00 UTC = 10am ET (EDT) / 9am ET (EST). Adjust to your timezone.
     - cron: '0 14 * * *'
   workflow_dispatch:
     inputs:
       count:
-        description: 'How many posts to generate this run'
+        description: 'How many queued posts to publish this run'
         required: false
         default: '1'
 
@@ -15,36 +15,33 @@ permissions:
   contents: write
 
 jobs:
-  generate:
+  publish:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
 
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
 
-      - name: Install dependencies
-        run: pip install --quiet 'anthropic>=0.40.0'
-
-      - name: Generate daily post
+      - name: Publish from queue
         env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          MAX_POSTS_PER_RUN: ${{ github.event.inputs.count || '1' }}
-          MODEL: claude-sonnet-4-6
-        run: python scripts/generate_daily_post.py
+          POSTS_PER_RUN: ${{ github.event.inputs.count || '1' }}
+        run: python scripts/publish_from_queue.py
 
       - name: Commit and push
         run: |
           git config user.email "bot@migukstory.com"
           git config user.name "Miguk Story Bot"
-          git add src/content/blog/ scripts/topic_queue.txt
+          git add src/content/blog/ queue/
           if git diff --staged --quiet; then
-            echo "No changes to commit (queue may be empty)."
+            echo "Nothing to commit (queue may be empty)."
             exit 0
           fi
           today=$(date -u +"%Y-%m-%d")
-          git commit -m "post: daily auto-generated post (${today})"
+          git commit -m "post: scheduled publish (${today})"
           git push
