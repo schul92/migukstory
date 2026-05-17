@@ -1,0 +1,228 @@
+---
+import { getCollection } from 'astro:content';
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import FormattedDate from '../components/FormattedDate.astro';
+import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+
+const posts = (await getCollection('blog')).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+
+const featured = posts.slice(0, 3);
+const byAge = {
+	'all': posts.filter(p => p.data.ageGroup === 'all'),
+	'20-35': posts.filter(p => p.data.ageGroup === '20-35'),
+	'35-55': posts.filter(p => p.data.ageGroup === '35-55'),
+	'55+': posts.filter(p => p.data.ageGroup === '55+'),
+};
+---
+
+<!doctype html>
+<html lang="ko">
+	<head>
+		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<section class="hero">
+				<h1>미국 스토리</h1>
+				<p class="lead">한국계 미국인을 위한 이민·세금·건강·교육 가이드</p>
+				<p class="sub">매주 최신 뉴스와 실용 정보를 검증된 출처와 함께 정리합니다.</p>
+			</section>
+
+			<section class="featured">
+				<h2>🔥 지금 가장 많이 읽히는 글</h2>
+				<div class="grid">
+					{featured.map(post => (
+						<a href={`/blog/${post.id}/`} class="card">
+							<div class="card-meta">
+								<FormattedDate date={post.data.pubDate} />
+								<span class="age">{post.data.ageGroup}</span>
+							</div>
+							<h3>{post.data.title}</h3>
+							<p>{post.data.description}</p>
+						</a>
+					))}
+				</div>
+			</section>
+
+			<section class="by-age">
+				<h2>🎯 연령대별 인기 글</h2>
+
+				{byAge['20-35'].length > 0 && (
+					<div class="age-group">
+						<h3>20-35세 — 유학생·취업·이민</h3>
+						<ul>
+							{byAge['20-35'].slice(0, 5).map(post => (
+								<li><a href={`/blog/${post.id}/`}>{post.data.title}</a></li>
+							))}
+						</ul>
+					</div>
+				)}
+
+				{byAge['35-55'].length > 0 && (
+					<div class="age-group">
+						<h3>35-55세 — 부모·자녀교육·자산</h3>
+						<ul>
+							{byAge['35-55'].slice(0, 5).map(post => (
+								<li><a href={`/blog/${post.id}/`}>{post.data.title}</a></li>
+							))}
+						</ul>
+					</div>
+				)}
+
+				{byAge['55+'].length > 0 && (
+					<div class="age-group">
+						<h3>55세 이상 — 은퇴·건강·연금</h3>
+						<ul>
+							{byAge['55+'].slice(0, 5).map(post => (
+								<li><a href={`/blog/${post.id}/`}>{post.data.title}</a></li>
+							))}
+						</ul>
+					</div>
+				)}
+
+				{byAge['all'].length > 0 && (
+					<div class="age-group">
+						<h3>전 세대 공감 스토리</h3>
+						<ul>
+							{byAge['all'].slice(0, 5).map(post => (
+								<li><a href={`/blog/${post.id}/`}>{post.data.title}</a></li>
+							))}
+						</ul>
+					</div>
+				)}
+			</section>
+
+			<section class="cta">
+				<a href="/blog" class="cta-link">전체 글 모아보기 →</a>
+			</section>
+		</main>
+		<Footer />
+		<style>
+			main {
+				max-width: 920px;
+				margin: 0 auto;
+				padding: 1.5em 1em;
+			}
+			.hero {
+				text-align: center;
+				padding: 2em 0 1.5em;
+				border-bottom: 1px solid rgba(var(--gray-light), 1);
+				margin-bottom: 2em;
+			}
+			.hero h1 {
+				font-size: clamp(2em, 5vw, 3em);
+				margin: 0;
+				font-weight: 700;
+				letter-spacing: -0.02em;
+			}
+			.hero .lead {
+				font-size: 1.15em;
+				margin: 0.5em 0;
+				color: rgb(var(--gray-dark));
+			}
+			.hero .sub {
+				font-size: 0.95em;
+				color: rgb(var(--gray));
+				margin: 0;
+			}
+			.featured h2,
+			.by-age h2 {
+				font-size: 1.25em;
+				margin: 1.5em 0 1em;
+			}
+			.grid {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+				gap: 1em;
+			}
+			.card {
+				display: block;
+				padding: 1.25em;
+				border: 1px solid rgba(var(--gray-light), 1);
+				border-radius: 10px;
+				text-decoration: none;
+				color: inherit;
+				transition: all 0.15s ease;
+				background: white;
+			}
+			.card:hover {
+				border-color: var(--accent);
+				transform: translateY(-2px);
+				box-shadow: 0 4px 12px rgba(var(--black), 0.06);
+			}
+			.card-meta {
+				display: flex;
+				justify-content: space-between;
+				font-size: 0.8em;
+				color: rgb(var(--gray));
+				margin-bottom: 0.5em;
+			}
+			.age {
+				background: rgba(var(--gray-light), 1);
+				padding: 0.1em 0.5em;
+				border-radius: 6px;
+			}
+			.card h3 {
+				font-size: 1.05em;
+				line-height: 1.35;
+				margin: 0.25em 0 0.5em;
+				color: var(--accent-dark);
+			}
+			.card p {
+				font-size: 0.88em;
+				line-height: 1.5;
+				color: rgb(var(--gray-dark));
+				margin: 0;
+				display: -webkit-box;
+				-webkit-line-clamp: 3;
+				-webkit-box-orient: vertical;
+				overflow: hidden;
+			}
+			.age-group {
+				margin-bottom: 1.5em;
+			}
+			.age-group h3 {
+				font-size: 1em;
+				margin: 0 0 0.5em;
+				color: var(--accent-dark);
+			}
+			.age-group ul {
+				list-style: none;
+				padding: 0;
+				margin: 0;
+			}
+			.age-group li {
+				padding: 0.4em 0;
+				border-bottom: 1px solid rgba(var(--gray-light), 1);
+			}
+			.age-group a {
+				text-decoration: none;
+				color: inherit;
+			}
+			.age-group a:hover {
+				color: var(--accent);
+			}
+			.cta {
+				text-align: center;
+				margin: 2.5em 0 1em;
+			}
+			.cta-link {
+				display: inline-block;
+				padding: 0.7em 1.5em;
+				background: var(--accent);
+				color: white;
+				text-decoration: none;
+				border-radius: 8px;
+				font-weight: 500;
+			}
+			.cta-link:hover {
+				background: var(--accent-dark);
+			}
+		</style>
+	</body>
+</html>

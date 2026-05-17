@@ -1,0 +1,48 @@
+---
+import { SITE_TITLE } from '../consts';
+const today = new Date();
+---
+
+<footer>
+	<div class="footer-content">
+		<p class="brand">{SITE_TITLE}</p>
+		<p class="tagline">한국계 미국인을 위한 검증된 정보 가이드</p>
+		<p class="copyright">&copy; {today.getFullYear()} 미국 스토리. All rights reserved.</p>
+		<p class="disclaimer">
+			본 사이트의 정보는 일반 정보 제공 목적이며, 법률·세무·의료 자문이 아닙니다.
+			구체적 상황은 전문가와 상담하시기 바랍니다.
+		</p>
+	</div>
+</footer>
+<style>
+	footer {
+		padding: 2em 1em 3em 1em;
+		background: linear-gradient(var(--gray-gradient)) no-repeat;
+		color: rgb(var(--gray));
+		text-align: center;
+	}
+	.footer-content {
+		max-width: 720px;
+		margin: 0 auto;
+	}
+	.brand {
+		font-size: 1.2em;
+		font-weight: 700;
+		margin: 0 0 0.25em;
+	}
+	.tagline {
+		font-size: 0.95em;
+		margin: 0 0 1em;
+	}
+	.copyright {
+		font-size: 0.85em;
+		margin: 0 0 0.5em;
+	}
+	.disclaimer {
+		font-size: 0.78em;
+		opacity: 0.75;
+		max-width: 580px;
+		margin: 0.5em auto 0;
+		line-height: 1.5;
+	}
+</style>

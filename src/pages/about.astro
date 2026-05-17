@@ -1,0 +1,75 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import { SITE_TITLE } from '../consts';
+---
+
+<!doctype html>
+<html lang="ko">
+	<head>
+		<BaseHead title={`소개 — ${SITE_TITLE}`} description="미국 스토리는 한국계 미국인을 위한 검증된 정보 가이드입니다." />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<article class="about">
+				<h1>미국 스토리 소개</h1>
+
+				<h2>저희가 만드는 것</h2>
+				<p>
+					미국 스토리는 한국계 미국인을 위한 <strong>이민·세금·건강·교육 가이드</strong>입니다.
+					매주 최신 뉴스와 실용 정보를 검증된 출처(USCIS, IRS, NPR, Korea Times, JoongAng 등)와 함께 정리합니다.
+				</p>
+
+				<h2>누구를 위한 사이트인가</h2>
+				<ul>
+					<li><strong>20-35세 유학생·신규 이민자</strong>: H-1B, OPT, 비자 변경, 신용점수, 미국 정착 가이드</li>
+					<li><strong>35-55세 부모·자녀교육·자산</strong>: 학군 비교, 대학 입학, 부모 초청, 세금, 부동산</li>
+					<li><strong>55세 이상 은퇴 준비·시니어</strong>: Medicare, 사회보장협정, 한국 귀국, 상속 계획</li>
+					<li><strong>전 세대 공감 스토리</strong>: 한인 커뮤니티 뉴스, 한류, 인종 차별 이슈</li>
+				</ul>
+
+				<h2>편집 원칙</h2>
+				<ul>
+					<li>모든 글은 <strong>1차 출처를 명시</strong>합니다 (정부 기관, 주요 언론사 우선)</li>
+					<li>법률·세무·의료 정보는 <strong>일반 정보 제공 목적</strong>이며, 구체적 상황은 전문가 상담을 권합니다</li>
+					<li>AI 보조 도구를 활용하지만, 모든 사실은 <strong>사람이 검증</strong>합니다</li>
+					<li>광고나 협찬은 명확히 표시합니다</li>
+				</ul>
+
+				<h2>제보·문의</h2>
+				<p>
+					미국 한인 커뮤니티에 도움이 될 만한 뉴스, 정보, 본인 경험담을 댓글이나 이메일로 공유해주세요.
+				</p>
+			</article>
+		</main>
+		<Footer />
+		<style>
+			main {
+				max-width: 720px;
+				margin: 0 auto;
+				padding: 2em 1em;
+			}
+			.about h1 {
+				font-size: 2em;
+				margin-bottom: 1em;
+			}
+			.about h2 {
+				font-size: 1.25em;
+				margin: 1.5em 0 0.5em;
+				color: var(--accent-dark);
+			}
+			.about p,
+			.about li {
+				line-height: 1.7;
+			}
+			.about ul {
+				padding-left: 1.2em;
+			}
+			.about li {
+				margin-bottom: 0.5em;
+			}
+		</style>
+	</body>
+</html>
