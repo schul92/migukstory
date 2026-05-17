@@ -37,17 +37,23 @@ const { title, description, image = FallbackImage } = Astro.props;
 
 <!-- Mermaid diagram loader (lazy, only when post has diagrams) -->
 <script type="module" is:inline>
-  if (document.querySelector('pre.mermaid, code.language-mermaid')) {
-    const mermaid = (await import('https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs')).default;
-    // Convert ```mermaid``` code blocks to <pre class="mermaid">
-    document.querySelectorAll('pre > code.language-mermaid').forEach((el) => {
-      const pre = el.parentElement;
-      const div = document.createElement('div');
-      div.className = 'mermaid-wrapper';
-      div.innerHTML = `<pre class="mermaid">${el.textContent}</pre>`;
-      pre.replaceWith(div);
+  // Astro uses Shiki which wraps mermaid in <pre data-language="mermaid"> with span tokens
+  const shikiBlocks = document.querySelectorAll('pre[data-language="mermaid"]');
+  if (shikiBlocks.length > 0) {
+    // Strip Shiki span markup and rebuild as Mermaid containers
+    shikiBlocks.forEach((pre) => {
+      const code = pre.textContent || '';
+      const wrapper = document.createElement('div');
+      wrapper.className = 'mermaid-wrapper';
+      const mermaidPre = document.createElement('pre');
+      mermaidPre.className = 'mermaid';
+      mermaidPre.textContent = code;
+      wrapper.appendChild(mermaidPre);
+      pre.replaceWith(wrapper);
     });
-    mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
+    const { default: mermaid } = await import('https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs');
+    mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose', fontFamily: 'Noto Sans KR, sans-serif' });
+    await mermaid.run({ querySelector: 'pre.mermaid' });
   }
 </script>
 
