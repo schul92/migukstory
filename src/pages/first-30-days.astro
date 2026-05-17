@@ -1,0 +1,471 @@
+---
+import { getCollection } from 'astro:content';
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import { SITE_TITLE } from '../consts';
+
+const all = await getCollection('blog');
+
+// Find related posts for each pillar section by tag/title match
+const findPost = (predicate: (p: any) => boolean) => all.find(predicate);
+
+const ssn = findPost((p) => /SSN|소셜시큐리티/i.test(p.data.title));
+const credit = findPost((p) => /credit/i.test(p.id) || /신용/i.test(p.data.title));
+const i130 = findPost((p) => /i130|초청/i.test(p.id));
+const medicare = findPost((p) => /medicare/i.test(p.id) && !/cutoff/i.test(p.id));
+const tax = findPost((p) => /salt|tax|세금/i.test(p.id));
+const totalization = findPost((p) => /totalization|연금/i.test(p.id));
+const citizenship = findPost((p) => /citizenship/i.test(p.id));
+const f1 = findPost((p) => /f1|opt/i.test(p.id));
+
+const stages = [
+	{
+		week: '도착 첫 주 (Day 1–7)',
+		eyebrow: 'STAGE 01',
+		color: '#B91C1C',
+		tasks: [
+			{ t: 'SSN (Social Security Number) 신청', body: '공항 도착 후 가까운 SSA 사무소를 예약 방문. 영주권자는 입국 후 약 2~3주 내 자동 발급되지만, H-1B/E-2는 직접 신청 필요.', link: null },
+			{ t: '미국 핸드폰 개통 + 한국 번호 유지', body: 'T-Mobile, AT&T, Mint Mobile 비교. 미국 번호가 있어야 모든 행정 처리가 가능합니다.', link: null },
+			{ t: '임시 주거지 확보 (Airbnb · 한인 단기 렌트)', body: '카카오톡 오픈채팅이나 한인 부동산 카페에서 단기 룸셰어를 구할 수 있습니다.', link: null },
+			{ t: '응급 의료보험 가입 (단기 Visitor Insurance)', body: 'IMG Global, Atlas America 등. 정식 ACA/직장보험 가입 전까지 2~3개월간 사용.', link: null },
+		],
+	},
+	{
+		week: '둘째 주 (Day 8–14)',
+		eyebrow: 'STAGE 02',
+		color: '#1E40AF',
+		tasks: [
+			{ t: '미국 은행 계좌 개설 (Checking + Savings)', body: 'Chase, Bank of America, 한인은행(Hanmi, Bank of Hope) 중 선택. SSN 없이도 ITIN으로 일부 한인은행 개설 가능.', link: null },
+			{ t: '신용카드 첫 발급 (Secured 또는 H-1B 친화)', body: '미국 신용 이력이 없는 경우 Discover Secured, Capital One Platinum Secured부터 시작.', link: credit?.id ? `/blog/${credit.id}/` : null, linkLabel: '관련 글 — 18개월 안에 신용 점수 0에서 720까지' },
+			{ t: '운전면허(Driver\'s License) 또는 ID 신청', body: '주마다 다름. CA·NJ·NY는 SSN 또는 SSN 불발급 증명서 + 비자 + 거주증명 필요.', link: null },
+			{ t: '한국 영사관 재외국민등록', body: '미국 내 한국 영사관(LA/NY/Atlanta 등)에서 온라인 또는 방문 등록. 한국 행정 서류 발급에 필요.', link: null },
+		],
+	},
+	{
+		week: '둘째~넷째 주 (Day 15–30)',
+		eyebrow: 'STAGE 03',
+		color: '#047857',
+		tasks: [
+			{ t: '장기 거주지 계약 (Apartment Lease)', body: '신용 점수가 없는 경우 추가 디포짓(2~3개월치 렌트) 요구되는 경우 많음. 한인 부동산을 통하면 협상 가능.', link: null },
+			{ t: '직장 의료보험 등록 또는 ACA 가입', body: '입사 후 30일 내 등록 의무. 미가입 시 다음 Open Enrollment(11월)까지 대기.', link: null },
+			{ t: '한국 가족관계증명서·여권 한 폴더에 정리', body: '향후 모든 한국 행정 처리(사망신고, 부동산, 국적이탈, 상속)에 필요. 디지털 + 종이 둘 다 보관 권장.', link: null },
+			{ t: '세금 보고 준비 (W-4 작성, ITIN/SSN 확정)', body: '입사 시 W-4 작성. 첫 해 미국 거주 일수에 따라 Resident Alien vs Non-Resident Alien 신분 결정.', link: tax?.id ? `/blog/${tax.id}/` : null, linkLabel: '관련 글 — 한인 세금 가이드' },
+		],
+	},
+	{
+		week: '첫 90일 안에 챙길 것',
+		eyebrow: 'STAGE 04',
+		color: '#7C3AED',
+		tasks: [
+			{ t: '비자 상태별 다음 단계 점검', body: 'F-1 학생: OPT 신청 시점 / H-1B: I-140 시점 / E-2: 갱신 시점 / 영주권: 시민권 신청 적격 시점 계산.', link: f1?.id ? `/blog/${f1.id}/` : null, linkLabel: '관련 글 — F-1 OPT/STEM OPT 가이드' },
+			{ t: '한국 부모님 초청 검토 (시민권자만)', body: 'I-130 부모 초청은 시민권자만 가능. 영주권자 → 시민권 → I-130 순으로 계획.', link: i130?.id ? `/blog/${i130.id}/` : null, linkLabel: '관련 글 — I-130 부모 초청' },
+			{ t: '은퇴/연금 한미 합산 검토', body: '한국 국민연금 가입 기간이 있는 경우 한미 사회보장협정(Totalization)으로 합산 가능.', link: totalization?.id ? `/blog/${totalization.id}/` : null, linkLabel: '관련 글 — 한미 연금 합산' },
+			{ t: '시민권 취득 타임라인 계산', body: '영주권 5년 후(또는 시민권자 배우자 3년) 시민권 신청 가능. 영어·미국사 시험 준비 시작.', link: citizenship?.id ? `/blog/${citizenship.id}/` : null, linkLabel: '관련 글 — 시민권 시험 전략' },
+		],
+	},
+];
+---
+
+<!doctype html>
+<html lang="ko">
+	<head>
+		<BaseHead
+			title={`미국 도착 첫 30일 — 한인 신규 이민자 완벽 체크리스트 | ${SITE_TITLE}`}
+			description="미국에 막 도착한 한인 신규 이민자를 위한 4주 체크리스트. SSN·은행·신용카드·운전면허·의료보험·영사관 등록까지 단계별로 정리. 한국에서 챙겨와야 할 서류 포함."
+			breadcrumbs={[
+				{ name: '홈', url: '/' },
+				{ name: '도착 첫 30일', url: '/first-30-days' },
+			]}
+		/>
+	</head>
+	<body>
+		<Header />
+		<main>
+			<article>
+				<div class="container">
+					<header class="pillar-head">
+						<p class="eyebrow">PILLAR · 신규 이민자 가이드</p>
+						<h1>
+							도착 첫 <span class="brick">30일</span>에 끝내야 할
+							<span class="block">미국 정착 체크리스트</span>
+						</h1>
+						<p class="lead">
+							미국행 비행기에서 내린 순간부터 첫 90일까지 —
+							SSN, 은행, 신용카드, 운전면허, 의료보험, 영사관 등록을
+							순서대로 정리한 <strong>한인 신규 이민자 단일 페이지 가이드</strong>입니다.
+							각 단계의 깊이 있는 설명은 관련 기사 링크에서 이어집니다.
+						</p>
+						<div class="head-meta">
+							<span class="meta-chip">⏱ 6분 소요</span>
+							<span class="meta-chip">📌 책갈피 추천</span>
+							<span class="meta-chip">🔄 매 분기 업데이트</span>
+						</div>
+					</header>
+
+					<!-- Pre-arrival packing list -->
+					<section class="prearr">
+						<h2><span class="dot" style="--c:#B7791F"></span>출국 전에 한국에서 챙겨와야 할 것</h2>
+						<p class="prearr-sub">미국에서 발급받기 어렵고 한국에서 미리 받아오면 시간을 한 달 이상 절약합니다.</p>
+						<ul class="prearr-list">
+							<li><strong>가족관계증명서 (영문 포함)</strong> — 부모 초청·국적이탈·사망신고 등 모든 한국 행정에 사용</li>
+							<li><strong>기본증명서 + 혼인관계증명서 (영문)</strong> — 영주권·시민권 인터뷰에서 요구</li>
+							<li><strong>최근 5년 한국 세금 자료</strong> — FBAR, Form 8938, 한미 조세조약 적용에 필요</li>
+							<li><strong>국제운전면허증</strong> — 미국 면허 발급 전 1년 사용</li>
+							<li><strong>한국 신용카드 사용 내역서 (영문 번역)</strong> — 일부 한인은행 신용 평가에 참조</li>
+							<li><strong>한국 의료기록 (예방접종 기록 포함, 영문)</strong> — 학교 등록, 어린이집, 직장 의료 검진</li>
+							<li><strong>아포스티유 받은 학력증명서·자격증</strong> — 직장 취업·이직 시 학력 검증</li>
+						</ul>
+					</section>
+
+					<!-- 4-stage timeline -->
+					<section class="timeline">
+						{stages.map((s) => (
+							<section class="stage" style={`--c: ${s.color}`}>
+								<header class="stage-head">
+									<p class="stage-eyebrow">{s.eyebrow}</p>
+									<h2>{s.week}</h2>
+								</header>
+								<ol class="task-list">
+									{s.tasks.map((task) => (
+										<li>
+											<h3>{task.t}</h3>
+											<p>{task.body}</p>
+											{task.link && (
+												<a class="task-link" href={task.link}>
+													{task.linkLabel || '관련 글 →'}
+												</a>
+											)}
+										</li>
+									))}
+								</ol>
+							</section>
+						))}
+					</section>
+
+					<!-- Pro consult CTA -->
+					<aside class="pro-cta">
+						<div class="pro-inner">
+							<p class="pro-eyebrow">한국어로 도움 받을 수 있는 전문가</p>
+							<h2>혼자 처리하기 어려운 부분은 한인 전문가 도움을</h2>
+							<p>
+								이민·세무·부동산·보험 — 한국어로 상담 가능한 한인 전문가를 분야별로 정리한
+								<a href="/pros"><strong>추천 전문가 디렉토리</strong></a>를 확인하세요.
+								각 분야의 비용·소요 시간·주의 사항을 함께 안내합니다.
+							</p>
+							<a class="cta-big" href="/pros">추천 전문가 보러 가기 →</a>
+						</div>
+					</aside>
+
+					<!-- Related categories -->
+					<section class="related-cats">
+						<h2>다음 단계 — 토픽별로 더 깊이 알아보기</h2>
+						<div class="cat-grid">
+							<a href="/category/immigration" class="cat-card" style="--c:#B91C1C">
+								<span class="cat-num">01</span>
+								<h3>이민·비자</h3>
+								<p>영주권·시민권·H-1B·가족초청 절차 가이드</p>
+							</a>
+							<a href="/category/tax" class="cat-card" style="--c:#1E40AF">
+								<span class="cat-num">02</span>
+								<h3>세금·재테크</h3>
+								<p>한미 양국 신고·FBAR·FATCA·신용카드</p>
+							</a>
+							<a href="/category/real-estate" class="cat-card" style="--c:#9A3412">
+								<span class="cat-num">03</span>
+								<h3>부동산·주거</h3>
+								<p>첫 주택 구매·모기지·렌트·한국 부동산 처리</p>
+							</a>
+							<a href="/category/health" class="cat-card" style="--c:#047857">
+								<span class="cat-num">04</span>
+								<h3>건강·보험</h3>
+								<p>오바마케어·메디케어·치과·정신건강</p>
+							</a>
+							<a href="/category/education" class="cat-card" style="--c:#7C3AED">
+								<span class="cat-num">05</span>
+								<h3>교육·자녀</h3>
+								<p>학교 등록·FAFSA·대학 입학·한국 학력 인정</p>
+							</a>
+							<a href="/category/retirement" class="cat-card" style="--c:#B7791F">
+								<span class="cat-num">06</span>
+								<h3>은퇴·연금</h3>
+								<p>소셜시큐리티·401k·한미 연금 합산</p>
+							</a>
+						</div>
+					</section>
+
+					<!-- Final note -->
+					<aside class="end-note">
+						<p>
+							이 페이지는 새로 도착하시는 한인 분들이 가장 먼저 찾는 단일 가이드를 목표로
+							분기마다 최신 규정에 맞춰 업데이트됩니다.
+							추가했으면 하는 항목이 있으면 <a href="/contact">제보·요청</a>으로 알려주세요.
+						</p>
+					</aside>
+				</div>
+			</article>
+		</main>
+		<Footer />
+
+		<style>
+			.pillar-head {
+				text-align: center;
+				padding: var(--s-6) 0 var(--s-4);
+				border-bottom: 1px solid var(--rule);
+				margin-bottom: var(--s-5);
+			}
+			.eyebrow {
+				font-size: 0.7rem;
+				font-weight: 700;
+				letter-spacing: 0.18em;
+				color: var(--brick);
+				text-transform: uppercase;
+				margin: 0 0 var(--s-2);
+			}
+			.pillar-head h1 {
+				font-family: var(--font-display);
+				font-size: clamp(2.5rem, 6vw, 4.5rem);
+				line-height: 1.04;
+				margin: 0 0 var(--s-3);
+				letter-spacing: -0.03em;
+			}
+			.block { display: block; }
+			.brick { color: var(--brick); }
+			.lead {
+				font-size: var(--text-lg);
+				color: var(--ink-medium);
+				max-width: 38em;
+				margin: 0 auto var(--s-3);
+				line-height: 1.7;
+			}
+			.head-meta {
+				display: inline-flex;
+				gap: 0.4em;
+				flex-wrap: wrap;
+				justify-content: center;
+			}
+			.meta-chip {
+				font-size: 0.78rem;
+				padding: 0.3em 0.8em;
+				border-radius: 999px;
+				border: 1px solid var(--rule);
+				background: var(--paper-soft);
+				color: var(--ink-medium);
+				font-weight: 500;
+			}
+
+			.prearr {
+				max-width: 760px;
+				margin: 0 auto var(--s-6);
+				padding: var(--s-3);
+				background: var(--paper-soft);
+				border-left: 4px solid #B7791F;
+			}
+			.prearr h2 {
+				font-family: var(--font-display);
+				font-size: 1.55rem;
+				margin: 0 0 var(--s-2);
+				color: var(--ink);
+				display: flex;
+				align-items: center;
+				gap: 0.6em;
+				letter-spacing: -0.01em;
+			}
+			.dot {
+				width: 12px; height: 12px; border-radius: 50%;
+				background: var(--c, var(--brick));
+				flex-shrink: 0;
+			}
+			.prearr-sub { color: var(--ink-medium); font-size: 0.92rem; margin: 0 0 var(--s-2); }
+			.prearr-list { padding-left: 1.2em; margin: 0; }
+			.prearr-list li { margin-bottom: 0.5em; line-height: 1.6; font-size: 0.95rem; color: var(--ink); }
+			.prearr-list strong { color: var(--ink); }
+
+			.timeline {
+				display: grid;
+				gap: var(--s-4);
+				max-width: 860px;
+				margin: 0 auto var(--s-6);
+			}
+			.stage {
+				border-top: 4px solid var(--c, var(--ink));
+				background: var(--paper);
+				padding: var(--s-3);
+				border-left: 1px solid var(--rule);
+				border-right: 1px solid var(--rule);
+				border-bottom: 1px solid var(--rule);
+			}
+			.stage-head { margin-bottom: var(--s-3); padding-bottom: var(--s-2); border-bottom: 1px dotted var(--rule); }
+			.stage-eyebrow {
+				font-size: 0.7rem;
+				font-weight: 700;
+				letter-spacing: 0.18em;
+				color: var(--c, var(--brick));
+				text-transform: uppercase;
+				margin: 0 0 0.3em;
+			}
+			.stage-head h2 {
+				font-family: var(--font-display);
+				font-size: 1.75rem;
+				margin: 0;
+				color: var(--ink);
+				letter-spacing: -0.02em;
+			}
+			.task-list {
+				list-style: none;
+				padding: 0;
+				margin: 0;
+				counter-reset: task;
+				display: grid;
+				gap: var(--s-2);
+			}
+			.task-list li {
+				counter-increment: task;
+				display: grid;
+				grid-template-columns: 36px 1fr;
+				gap: var(--s-2);
+				padding: var(--s-2);
+				border-radius: 3px;
+				transition: background var(--duration) var(--ease-out);
+			}
+			.task-list li:hover { background: var(--paper-soft); }
+			.task-list li::before {
+				content: counter(task, decimal-leading-zero);
+				font-family: var(--font-display);
+				font-size: 1.4rem;
+				color: var(--c, var(--brick));
+				font-weight: 700;
+				font-feature-settings: "tnum";
+				line-height: 1.1;
+			}
+			.task-list h3 {
+				font-family: var(--font-display);
+				font-size: 1.1rem;
+				margin: 0 0 0.3em;
+				color: var(--ink);
+				letter-spacing: -0.01em;
+			}
+			.task-list p {
+				margin: 0 0 0.4em;
+				font-size: 0.92rem;
+				line-height: 1.6;
+				color: var(--ink-medium);
+			}
+			.task-link {
+				font-size: 0.82rem;
+				font-weight: 600;
+				color: var(--c, var(--brick));
+				text-decoration: none;
+				border-bottom: 1px solid currentColor;
+			}
+			.task-link:hover { color: var(--brick-deep); }
+
+			.pro-cta {
+				max-width: 760px;
+				margin: 0 auto var(--s-6);
+				background: linear-gradient(180deg, var(--paper) 0%, var(--paper-soft) 100%);
+				border: 1px solid var(--rule);
+				border-top: 3px solid var(--brick);
+				padding: var(--s-4) var(--s-3);
+				text-align: center;
+			}
+			.pro-eyebrow {
+				font-size: 0.7rem;
+				font-weight: 700;
+				letter-spacing: 0.18em;
+				color: var(--brick);
+				text-transform: uppercase;
+				margin: 0 0 var(--s-2);
+			}
+			.pro-cta h2 {
+				font-family: var(--font-display);
+				font-size: 1.55rem;
+				margin: 0 0 var(--s-2);
+				color: var(--ink);
+				letter-spacing: -0.01em;
+			}
+			.pro-cta p { color: var(--ink-medium); font-size: 0.95rem; line-height: 1.7; margin: 0 0 var(--s-3); }
+			.pro-cta a { color: var(--brick); text-decoration: none; border-bottom: 1px solid currentColor; }
+			.cta-big {
+				display: inline-block !important;
+				font-size: 1rem;
+				font-weight: 700;
+				color: var(--paper) !important;
+				background: var(--brick);
+				padding: 0.85em 1.6em;
+				border-radius: 3px;
+				border-bottom: none !important;
+				letter-spacing: 0.04em;
+				transition: background var(--duration) var(--ease-out);
+			}
+			.cta-big:hover { background: var(--brick-deep); }
+
+			.related-cats {
+				max-width: 1000px;
+				margin: 0 auto var(--s-6);
+			}
+			.related-cats > h2 {
+				font-family: var(--font-display);
+				font-size: 1.85rem;
+				text-align: center;
+				margin: 0 0 var(--s-3);
+				letter-spacing: -0.02em;
+				color: var(--ink);
+			}
+			.cat-grid {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+				gap: var(--s-3);
+			}
+			.cat-card {
+				display: block;
+				padding: var(--s-3);
+				border: 1px solid var(--rule);
+				border-top: 4px solid var(--c, var(--ink));
+				background: var(--paper);
+				text-decoration: none;
+				color: inherit;
+				transition: transform var(--duration) var(--ease-out), box-shadow var(--duration) var(--ease-out);
+			}
+			.cat-card:hover {
+				transform: translateY(-2px);
+				box-shadow: 0 4px 16px rgba(27, 24, 21, 0.06);
+			}
+			.cat-num {
+				font-family: var(--font-display);
+				font-size: 0.85rem;
+				color: var(--c, var(--brick));
+				font-weight: 700;
+				font-feature-settings: "tnum";
+				letter-spacing: 0.05em;
+			}
+			.cat-card h3 {
+				font-family: var(--font-display);
+				font-size: 1.4rem;
+				margin: 0.2em 0 0.4em;
+				color: var(--ink);
+				letter-spacing: -0.01em;
+			}
+			.cat-card p { font-size: 0.88rem; color: var(--ink-medium); margin: 0; line-height: 1.55; }
+
+			.end-note {
+				max-width: 760px;
+				margin: var(--s-5) auto var(--s-6);
+				padding: var(--s-3);
+				text-align: center;
+				border-top: 1px solid var(--rule);
+				border-bottom: 1px solid var(--rule);
+			}
+			.end-note p { color: var(--ink-medium); margin: 0; font-size: 0.92rem; line-height: 1.7; }
+			.end-note a { color: var(--brick); text-decoration: none; border-bottom: 1px solid currentColor; }
+
+			@media (max-width: 720px) {
+				.pillar-head { padding: var(--s-4) 0 var(--s-3); }
+				.timeline, .related-cats { padding: 0; }
+				.task-list li { grid-template-columns: 28px 1fr; padding: var(--s-1); }
+				.task-list li::before { font-size: 1.1rem; }
+				.pro-cta { padding: var(--s-3) var(--s-2); }
+			}
+		</style>
+	</body>
+</html>

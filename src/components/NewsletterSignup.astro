@@ -1,9 +1,23 @@
 ---
-// Inline newsletter signup — placeholder for Beehiiv/Substack/ConvertKit integration.
-// Currently sends to mailto link. Replace `action` with provider endpoint when ready.
+/**
+ * Newsletter signup — Beehiiv embed.
+ *
+ * Setup (one-time):
+ *   1. Create publication at https://beehiiv.com → free tier
+ *   2. Settings → Subscribe Forms → Create embed
+ *   3. Replace BEEHIIV_PUB_ID below with your publication ID (looks like "pub_abc123...")
+ *
+ * Until BEEHIIV_PUB_ID is filled in, form gracefully degrades to mailto.
+ */
+
+const BEEHIIV_PUB_ID = ''; // TODO: paste publication ID after Beehiiv signup
+const action = BEEHIIV_PUB_ID
+	? `https://embeds.beehiiv.com/${BEEHIIV_PUB_ID}/subscribe`
+	: 'mailto:editor@migukstory.com';
+const method = BEEHIIV_PUB_ID ? 'post' : 'get';
 ---
 
-<form class="newsletter" action="mailto:editor@migukstory.com" method="get">
+<form class="newsletter" action={action} method={method} target={BEEHIIV_PUB_ID ? '_blank' : undefined}>
 	<div class="newsletter-inner">
 		<div class="copy">
 			<p class="kicker">이번 주 미국 스토리</p>
@@ -17,6 +31,7 @@
 				type="email"
 				name="email"
 				placeholder="email@example.com"
+				autocomplete="email"
 				required
 			/>
 			<button type="submit">구독하기</button>

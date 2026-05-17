@@ -1,0 +1,125 @@
+---
+/**
+ * AffiliateCard — single-product recommendation block with FTC disclosure.
+ *
+ * Usage in MDX/markdown:
+ *   <AffiliateCard
+ *     vendor="SoFi"
+ *     product="Personal Loan"
+ *     blurb="신용 점수 680+, 자영업자도 가능. APR 8.99~25.81%."
+ *     cta="SoFi에서 금리 확인"
+ *     href="https://www.sofi.com/personal-loans/?ref=YOUR_ID"
+ *     network="Impact.com"
+ *   />
+ *
+ * Required: FTC 16 CFR Part 255 — every affiliate link must show a
+ * conspicuous disclosure that the publisher receives compensation.
+ */
+
+interface Props {
+	vendor: string;
+	product: string;
+	blurb: string;
+	cta: string;
+	href: string;
+	network?: string; // e.g., "Impact.com", "Bankrate", direct
+	rating?: string;  // e.g., "4.6 / 5 (Trustpilot)"
+}
+
+const { vendor, product, blurb, cta, href, network, rating } = Astro.props;
+---
+
+<aside class="aff-card">
+	<header class="aff-head">
+		<span class="aff-badge">광고 · Sponsored</span>
+		{rating && <span class="aff-rating">{rating}</span>}
+	</header>
+	<div class="aff-body">
+		<p class="aff-vendor">{vendor}</p>
+		<h4 class="aff-product">{product}</h4>
+		<p class="aff-blurb">{blurb}</p>
+	</div>
+	<a class="aff-cta" href={href} target="_blank" rel="sponsored nofollow noopener">
+		{cta} →
+	</a>
+	<p class="aff-disc">
+		본 링크는 제휴 링크(affiliate link)입니다. 가입·구매 시
+		미국 스토리가 광고주로부터 수수료를 받을 수 있으며,
+		가격에는 영향이 없습니다. {network && `중개: ${network}.`}
+	</p>
+</aside>
+
+<style>
+	.aff-card {
+		max-width: var(--reading-width);
+		margin: var(--s-4) auto;
+		padding: var(--s-3);
+		background: var(--paper-soft);
+		border: 1px solid var(--rule);
+		border-left: 4px solid var(--brick);
+		border-radius: 0 4px 4px 0;
+	}
+	.aff-head {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-bottom: var(--s-2);
+	}
+	.aff-badge {
+		font-size: 0.7rem;
+		font-weight: 700;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		color: var(--brick);
+		background: var(--paper);
+		border: 1px solid var(--brick);
+		padding: 0.2em 0.7em;
+		border-radius: 999px;
+	}
+	.aff-rating {
+		font-size: 0.78rem;
+		color: var(--ink-light);
+		font-feature-settings: "tnum";
+	}
+	.aff-vendor {
+		font-size: 0.78rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
+		color: var(--ink-light);
+		margin: 0 0 0.3em;
+	}
+	.aff-product {
+		font-family: var(--font-display);
+		font-size: 1.35rem;
+		margin: 0 0 0.5em;
+		color: var(--ink);
+		letter-spacing: -0.01em;
+	}
+	.aff-blurb {
+		font-size: 0.92rem;
+		color: var(--ink-medium);
+		line-height: 1.6;
+		margin: 0 0 var(--s-2);
+	}
+	.aff-cta {
+		display: inline-block;
+		font-size: 0.92rem;
+		font-weight: 700;
+		color: var(--paper);
+		background: var(--brick);
+		padding: 0.6em 1.2em;
+		border-radius: 3px;
+		text-decoration: none;
+		transition: background var(--duration) var(--ease-out);
+	}
+	.aff-cta:hover { background: var(--brick-deep); }
+	.aff-disc {
+		margin: var(--s-2) 0 0;
+		font-size: 0.72rem;
+		color: var(--ink-light);
+		line-height: 1.5;
+		border-top: 1px dotted var(--rule);
+		padding-top: 0.5em;
+	}
+</style>
