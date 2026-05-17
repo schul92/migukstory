@@ -1,0 +1,107 @@
+---
+interface Props {
+	url: string;
+	title: string;
+}
+const { url, title } = Astro.props;
+const encodedUrl = encodeURIComponent(url);
+const encodedTitle = encodeURIComponent(title);
+---
+
+<div class="share">
+	<span class="share-label">공유</span>
+	<div class="share-buttons">
+		<a
+			class="btn kakao"
+			href={`https://story.kakao.com/share?url=${encodedUrl}&text=${encodedTitle}`}
+			target="_blank" rel="noopener nofollow"
+			aria-label="카카오스토리에 공유"
+		>카카오</a>
+		<a
+			class="btn x"
+			href={`https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}`}
+			target="_blank" rel="noopener nofollow"
+			aria-label="X(트위터)에 공유"
+		>X</a>
+		<a
+			class="btn threads"
+			href={`https://www.threads.net/intent/post?text=${encodedTitle}%20${encodedUrl}`}
+			target="_blank" rel="noopener nofollow"
+			aria-label="Threads에 공유"
+		>Threads</a>
+		<a
+			class="btn fb"
+			href={`https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`}
+			target="_blank" rel="noopener nofollow"
+			aria-label="페이스북에 공유"
+		>Facebook</a>
+		<button
+			class="btn copy"
+			data-url={url}
+			aria-label="링크 복사"
+			type="button"
+		>링크복사</button>
+	</div>
+</div>
+
+<script is:inline>
+	document.querySelectorAll('.btn.copy').forEach((btn) => {
+		btn.addEventListener('click', async () => {
+			const url = btn.getAttribute('data-url');
+			try {
+				await navigator.clipboard.writeText(url);
+				const orig = btn.textContent;
+				btn.textContent = '복사됨 ✓';
+				setTimeout(() => { btn.textContent = orig; }, 1500);
+			} catch (e) { /* noop */ }
+		});
+	});
+</script>
+
+<style>
+	.share {
+		max-width: var(--reading-width);
+		margin: var(--s-4) auto var(--s-3);
+		padding: var(--s-2);
+		display: flex;
+		align-items: center;
+		gap: var(--s-2);
+		flex-wrap: wrap;
+		border-top: 1px solid var(--rule);
+		border-bottom: 1px solid var(--rule);
+	}
+	.share-label {
+		font-size: 0.75rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.15em;
+		color: var(--ink-light);
+	}
+	.share-buttons {
+		display: flex;
+		gap: 0.4rem;
+		flex-wrap: wrap;
+	}
+	.btn {
+		display: inline-flex;
+		align-items: center;
+		padding: 0.45em 0.9em;
+		font-size: 0.78rem;
+		font-weight: 600;
+		font-family: inherit;
+		text-decoration: none;
+		color: var(--ink);
+		background: var(--paper);
+		border: 1px solid var(--rule);
+		border-radius: 4px;
+		cursor: pointer;
+		transition: all var(--duration) var(--ease-out);
+	}
+	.btn:hover {
+		background: var(--ink);
+		color: var(--paper);
+		border-color: var(--ink);
+	}
+	.btn.kakao:hover { background: #FEE500; color: #3C1E1E; border-color: #FEE500; }
+	.btn.x:hover { background: #000; color: #fff; }
+</style>

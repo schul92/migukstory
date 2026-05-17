@@ -1,0 +1,144 @@
+---
+import { getCollection } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import FormattedDate from './FormattedDate.astro';
+
+interface Props {
+	current: CollectionEntry<'blog'>;
+	limit?: number;
+}
+const { current, limit = 3 } = Astro.props;
+
+const all = await getCollection('blog');
+
+// Score: same age group +3, shared tag +2, recent +1
+const scored = all
+	.filter(p => p.id !== current.id)
+	.map(p => {
+		let score = 0;
+		if (p.data.ageGroup === current.data.ageGroup) score += 3;
+		const shared = (p.data.tags || []).filter(t => (current.data.tags || []).includes(t)).length;
+		score += shared * 2;
+		const daysAgo = (Date.now() - p.data.pubDate.valueOf()) / 86400000;
+		if (daysAgo < 7) score += 1;
+		return { post: p, score };
+	})
+	.sort((a, b) => b.score - a.score)
+	.slice(0, limit)
+	.map(s => s.post);
+
+const ageLabel = (a: string) =>
+	a === '20-35' ? '20–35세' :
+	a === '35-55' ? '35–55세' :
+	a === '55+'   ? '55세 이상' : '전 세대';
+---
+
+{scored.length > 0 && (
+	<aside class="related">
+		<header class="related-head">
+			<span class="kicker">함께 읽으면 좋은 글</span>
+			<h2>이 글을 본 분들이 함께 읽었습니다</h2>
+		</header>
+		<div class="grid">
+			{scored.map(p => (
+				<a href={`/blog/${p.id}/`} class="card">
+					<div class="meta">
+						<span class="pill">{ageLabel(p.data.ageGroup)}</span>
+						<FormattedDate date={p.data.pubDate} />
+					</div>
+					<h3>{p.data.title}</h3>
+					<p>{p.data.description}</p>
+				</a>
+			))}
+		</div>
+	</aside>
+)}
+
+<style>
+	.related {
+		max-width: 1100px;
+		margin: var(--s-6) auto var(--s-5);
+		padding: var(--s-3);
+	}
+	.related-head {
+		text-align: center;
+		border-top: 3px double var(--ink);
+		padding-top: var(--s-3);
+		margin-bottom: var(--s-4);
+	}
+	.kicker {
+		display: block;
+		font-size: 0.7rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.18em;
+		color: var(--brick);
+		margin-bottom: 0.5em;
+	}
+	.related h2 {
+		font-family: var(--font-display);
+		font-size: 1.6rem;
+		margin: 0;
+		color: var(--ink);
+	}
+	.grid {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: var(--s-3);
+	}
+	.card {
+		display: block;
+		padding: var(--s-3);
+		background: var(--paper);
+		border: 1px solid var(--rule);
+		border-radius: 6px;
+		text-decoration: none;
+		color: inherit;
+		transition: all var(--duration) var(--ease-out);
+	}
+	.card:hover {
+		border-color: var(--brick);
+		transform: translateY(-2px);
+		box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+	}
+	.meta {
+		display: flex;
+		gap: 0.5em;
+		align-items: center;
+		font-size: 0.75rem;
+		color: var(--ink-light);
+		margin-bottom: 0.7em;
+	}
+	.pill {
+		display: inline-block;
+		font-size: 0.65rem;
+		font-weight: 600;
+		padding: 0.15em 0.5em;
+		background: var(--ink);
+		color: var(--paper);
+		border-radius: 2px;
+		letter-spacing: 0.04em;
+	}
+	.card h3 {
+		font-family: var(--font-display);
+		font-size: 1.1rem;
+		line-height: 1.3;
+		margin: 0 0 0.5em;
+		color: var(--ink);
+		letter-spacing: -0.01em;
+	}
+	.card:hover h3 { color: var(--brick); }
+	.card p {
+		font-size: 0.85rem;
+		line-height: 1.55;
+		color: var(--ink-medium);
+		margin: 0;
+		display: -webkit-box;
+		-webkit-line-clamp: 3;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+	}
+	@media (max-width: 900px) {
+		.grid { grid-template-columns: 1fr; }
+	}
+</style>

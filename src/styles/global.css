@@ -12,27 +12,30 @@
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css");
 
 :root {
-	/* ── Palette: "Newsprint Cream" ──────────────────────────────── */
-	--paper:           #FAF8F3;
-	--paper-soft:      #F5F1E8;
-	--cream:           #F2E9D5;
-	--cream-deep:      #E8DCC0;
+	/* ── Palette: "Pure Editorial" — high contrast for readability ─ */
+	--paper:           #FFFFFF;          /* pure white, max contrast */
+	--paper-soft:      #F8F9FA;          /* cool light gray for cards */
+	--cream:           #FEF6F2;          /* warm callout (subtle) */
+	--cream-deep:      #FBE4DC;          /* hover state */
 
-	--ink:             #1B1815;
-	--ink-soft:        #3D3935;
-	--ink-medium:      #5C544B;
-	--ink-light:       #847B71;
-	--ink-faint:       #A8A095;
+	--ink:             #18181B;          /* deep slate, slightly warm */
+	--ink-soft:        #27272A;
+	--ink-medium:      #52525B;
+	--ink-light:       #71717A;
+	--ink-faint:       #A1A1AA;
 
-	--rule:            #D8D1C2;
-	--rule-soft:       #E8E2D3;
+	--rule:            #E4E4E7;          /* clean borders */
+	--rule-soft:       #F4F4F5;
 
-	--brick:           #7E2B2B;   /* primary accent — newspaper masthead red */
-	--brick-soft:      #A85050;
-	--brick-deep:      #5E1E1E;
+	--brick:           #B91C1C;          /* punchy newspaper red */
+	--brick-soft:      #DC2626;
+	--brick-deep:      #7F1D1D;
 
-	--gold:            #A88454;   /* rare luxury accent */
-	--ivory-highlight: #FFFBED;   /* subtle hover */
+	--trust:           #1E40AF;          /* deep blue for finance/trust signals */
+	--trust-soft:      #3B82F6;
+
+	--gold:            #B7791F;          /* rare luxury accent */
+	--ivory-highlight: #FFFBEB;
 
 	/* ── Type scale ──────────────────────────────────────────────── */
 	--font-body:    "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
@@ -90,19 +93,19 @@ body {
 	letter-spacing: -0.005em;
 }
 
-/* Subtle paper grain — nearly invisible but adds tactile warmth */
-body::before {
-	content: "";
+/* Reading progress bar — added by inline script in BaseHead */
+.reading-progress {
 	position: fixed;
-	inset: 0;
-	pointer-events: none;
-	z-index: 1;
-	opacity: 0.4;
-	background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' seed='5'/><feColorMatrix values='0 0 0 0 0.18 0 0 0 0 0.16 0 0 0 0 0.13 0 0 0 0.025 0'/></filter><rect width='180' height='180' filter='url(%23n)'/></svg>");
-	mix-blend-mode: multiply;
+	top: 0;
+	left: 0;
+	height: 3px;
+	width: 0;
+	background: var(--brick);
+	z-index: 100;
+	transition: width 100ms linear;
 }
 
-::selection { background: var(--cream-deep); color: var(--ink); }
+::selection { background: var(--cream-deep); color: var(--brick-deep); }
 
 /* ── Typography ──────────────────────────────────────────────── */
 h1, h2, h3, h4, h5, h6 {

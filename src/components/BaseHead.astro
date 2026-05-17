@@ -1,21 +1,47 @@
 ---
-// Import the global.css file here so that it is included on
-// all pages through the use of the <BaseHead /> component.
 import '../styles/global.css';
 import type { ImageMetadata } from 'astro';
 import FallbackImage from '../assets/blog-placeholder-1.jpg';
-import { SITE_TITLE } from '../consts';
+import { SITE_TITLE, SITE_AUTHOR, SITE_URL } from '../consts';
 import { Font } from 'astro:assets';
 
 interface Props {
 	title: string;
 	description: string;
 	image?: ImageMetadata;
+	article?: {
+		pubDate: Date;
+		updatedDate?: Date;
+		tags?: string[];
+	};
 }
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const { title, description, image = FallbackImage, article } = Astro.props;
 
-const { title, description, image = FallbackImage } = Astro.props;
+// JSON-LD schema for rich results
+const orgSchema = {
+	"@context": "https://schema.org",
+	"@type": "Organization",
+	"name": SITE_TITLE,
+	"alternateName": "Miguk Story",
+	"url": SITE_URL,
+	"description": "한국계 미국인을 위한 검증된 정보 가이드",
+};
+const articleSchema = article ? {
+	"@context": "https://schema.org",
+	"@type": "Article",
+	"headline": title,
+	"description": description,
+	"datePublished": article.pubDate.toISOString(),
+	"dateModified": (article.updatedDate || article.pubDate).toISOString(),
+	"author": { "@type": "Organization", "name": SITE_AUTHOR },
+	"publisher": orgSchema,
+	"mainEntityOfPage": { "@type": "WebPage", "@id": canonicalURL.toString() },
+	"image": new URL(image.src, Astro.url).toString(),
+	"keywords": article.tags?.join(", "),
+	"inLanguage": "ko",
+} : null;
 ---
 
 <!-- Global Metadata -->
@@ -94,3 +120,34 @@ const { title, description, image = FallbackImage } = Astro.props;
 <meta property="twitter:title" content={title} />
 <meta property="twitter:description" content={description} />
 <meta property="twitter:image" content={new URL(image.src, Astro.url)} />
+
+<!-- JSON-LD structured data — Organization + Article -->
+<script type="application/ld+json" set:html={JSON.stringify(orgSchema)} />
+{articleSchema && (
+	<script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
+)}
+
+<!-- AdSense (uncomment after approval — replace with your publisher ID) -->
+<!--
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXX" crossorigin="anonymous"></script>
+-->
+
+<!-- Reading progress bar -->
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', () => {
+    const article = document.querySelector('article');
+    if (!article) return;
+    const bar = document.createElement('div');
+    bar.className = 'reading-progress';
+    document.body.appendChild(bar);
+    const onScroll = () => {
+      const rect = article.getBoundingClientRect();
+      const total = rect.height - window.innerHeight;
+      const scrolled = Math.max(0, -rect.top);
+      const pct = Math.min(100, Math.max(0, (scrolled / total) * 100));
+      bar.style.width = pct + '%';
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  });
+</script>
