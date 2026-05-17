@@ -5,6 +5,7 @@ import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import { SITE_DESCRIPTION, SITE_TAGLINE, SITE_TITLE, ISSUE_NUMBER } from '../consts';
+import { CATEGORIES, type CategoryKey } from '../content.config';
 
 const posts = (await getCollection('blog')).sort(
 	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
@@ -13,12 +14,15 @@ const posts = (await getCollection('blog')).sort(
 const [lead, ...rest] = posts;
 const aboveFold = rest.slice(0, 2);    // sub-leads
 const cont = rest.slice(2, 6);          // continued page
-const byAge = {
-	'20-35': posts.filter(p => p.data.ageGroup === '20-35'),
-	'35-55': posts.filter(p => p.data.ageGroup === '35-55'),
-	'55+':   posts.filter(p => p.data.ageGroup === '55+'),
-	'all':   posts.filter(p => p.data.ageGroup === 'all'),
-};
+
+// Group posts by category (in CATEGORIES order, skip empty)
+const byCategory = (Object.keys(CATEGORIES) as CategoryKey[])
+	.map(key => ({
+		key,
+		meta: CATEGORIES[key],
+		posts: posts.filter(p => p.data.category === key),
+	}))
+	.filter(g => g.posts.length > 0);
 
 const koDate = (d: Date) =>
 	`${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}.`;
@@ -143,32 +147,26 @@ const koDate = (d: Date) =>
 
 			<div class="container divider-mark"></div>
 
-			<!-- AGE GROUPS — masonry-style 4 columns -->
-			<section class="by-age">
+			<!-- CATEGORY SECTIONS — like Korea Daily / Korea Times -->
+			<section class="by-cat">
 				<div class="container">
-					<h3 class="section-title"><span>독자별 큐레이션</span></h3>
-					<div class="age-grid">
-						{Object.entries(byAge).filter(([_,p]) => p.length > 0).map(([age, list]) => (
-							<div class="age-col">
-								<header class="age-head">
-									<p class="age-label">
-										{age === '20-35' ? '20–35세' :
-										 age === '35-55' ? '35–55세' :
-										 age === '55+'   ? '55세 이상' :
-										                   '전 세대'}
-									</p>
-									<p class="age-sub">
-										{age === '20-35' ? '유학·취업·이민' :
-										 age === '35-55' ? '자산·자녀교육·세금' :
-										 age === '55+'   ? '은퇴·건강·연금' :
-										                   '한인 커뮤니티'}
-									</p>
+					<h3 class="section-title"><span>섹션별 보기</span></h3>
+					<div class="cat-grid">
+						{byCategory.map(({ key, meta, posts: catPosts }) => (
+							<div class="cat-col" style={`--cat: ${meta.color}`}>
+								<header class="cat-head">
+									<a href={`/category/${meta.slug}`} class="cat-label">
+										{meta.label} <span class="cat-count">({catPosts.length})</span>
+									</a>
 								</header>
-								<ul class="age-list">
-									{list.slice(0, 4).map(p => (
+								<ul class="cat-list">
+									{catPosts.slice(0, 4).map(p => (
 										<li><a href={`/blog/${p.id}/`}>{p.data.title}</a></li>
 									))}
 								</ul>
+								{catPosts.length > 4 && (
+									<a href={`/category/${meta.slug}`} class="cat-more">+{catPosts.length - 4}편 더 보기 →</a>
+								)}
 							</div>
 						))}
 					</div>
@@ -428,45 +426,51 @@ const koDate = (d: Date) =>
 				align-items: center;
 			}
 
-			/* ── Age curation grid ───────────────────────────────── */
-			.by-age { padding: var(--s-4) 0; }
-			.age-grid {
+			/* ── Category grid ──────────────────────────────────── */
+			.by-cat { padding: var(--s-4) 0; }
+			.cat-grid {
 				display: grid;
-				grid-template-columns: repeat(4, 1fr);
-				gap: var(--s-4);
+				grid-template-columns: repeat(3, 1fr);
+				gap: var(--s-3);
 			}
-			.age-col {
+			.cat-col {
 				padding: var(--s-3);
-				background: var(--paper-soft);
-				border-top: 3px solid var(--brick);
-				border-radius: 0;
-				transition: background var(--duration) var(--ease-out);
+				background: var(--paper);
+				border: 1px solid var(--rule);
+				border-top: 4px solid var(--cat, var(--brick));
+				border-radius: 4px;
+				transition: all var(--duration) var(--ease-out);
+				display: flex;
+				flex-direction: column;
 			}
-			.age-col:hover { background: var(--cream); }
-			.age-head { margin-bottom: var(--s-2); padding-bottom: var(--s-1); border-bottom: 1px solid var(--rule); }
-			.age-label {
+			.cat-col:hover { box-shadow: 0 8px 22px rgba(0, 0, 0, 0.05); }
+			.cat-head { margin-bottom: var(--s-2); padding-bottom: var(--s-1); border-bottom: 1px solid var(--rule); }
+			.cat-label {
+				display: block;
 				font-family: var(--font-display);
-				font-size: 1.25rem;
+				font-size: 1.2rem;
 				font-weight: 700;
 				color: var(--ink);
-				margin: 0;
+				text-decoration: none;
+				transition: color var(--duration) var(--ease-out);
 			}
-			.age-sub {
-				margin: 0.2em 0 0;
-				font-size: 0.78rem;
-				color: var(--ink-medium);
-				font-weight: 500;
-				letter-spacing: 0.02em;
+			.cat-label:hover { color: var(--cat, var(--brick)); }
+			.cat-count {
+				font-family: var(--font-mono);
+				font-size: 0.8rem;
+				color: var(--ink-light);
+				font-weight: 400;
+				margin-left: 0.25em;
 			}
-			.age-list { list-style: none; padding: 0; margin: 0; }
-			.age-list li {
-				font-size: 0.92rem;
-				line-height: 1.45;
-				padding: 0.6em 0;
+			.cat-list { list-style: none; padding: 0; margin: 0; flex: 1; }
+			.cat-list li {
+				font-size: 0.9rem;
+				line-height: 1.5;
+				padding: 0.55em 0;
 				border-bottom: 1px solid var(--rule-soft);
 			}
-			.age-list li:last-child { border-bottom: none; }
-			.age-list a {
+			.cat-list li:last-child { border-bottom: none; }
+			.cat-list a {
 				color: var(--ink-soft);
 				text-decoration: none;
 				font-weight: 500;
@@ -475,7 +479,17 @@ const koDate = (d: Date) =>
 				-webkit-box-orient: vertical;
 				overflow: hidden;
 			}
-			.age-list a:hover { color: var(--brick); }
+			.cat-list a:hover { color: var(--cat, var(--brick)); }
+			.cat-more {
+				margin-top: var(--s-1);
+				font-size: 0.78rem;
+				font-weight: 600;
+				color: var(--cat, var(--brick));
+				text-decoration: none;
+				padding-top: var(--s-1);
+				border-top: 1px solid var(--rule-soft);
+			}
+			.cat-more:hover { text-decoration: underline; }
 
 			/* ── Contact CTA ─────────────────────────────────────── */
 			.contact-cta {
@@ -558,12 +572,12 @@ const koDate = (d: Date) =>
 				.folio { transform: rotate(-2deg); }
 				.two-col { grid-template-columns: 1fr; gap: var(--s-4); }
 				.two-col::after { display: none; }
-				.age-grid { grid-template-columns: repeat(2, 1fr); }
+				.cat-grid { grid-template-columns: repeat(2, 1fr); }
 				.section-title::before, .section-title::after { display: none; }
 			}
 			@media (max-width: 540px) {
 				.lead { padding: var(--s-4) 0 var(--s-3); }
-				.age-grid { grid-template-columns: 1fr; }
+				.cat-grid { grid-template-columns: 1fr; }
 				.cont-list li { grid-template-columns: 40px 1fr; gap: var(--s-2); }
 				.cont-num { font-size: 1.5rem; }
 				.cta-mega { padding: var(--s-2) var(--s-3); }

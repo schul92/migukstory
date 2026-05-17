@@ -11,12 +11,14 @@ const { current, limit = 3 } = Astro.props;
 
 const all = await getCollection('blog');
 
-// Score: same age group +3, shared tag +2, recent +1
+import { CATEGORIES } from '../content.config';
+
+// Score: same category +5, shared tag +2, recent +1
 const scored = all
 	.filter(p => p.id !== current.id)
 	.map(p => {
 		let score = 0;
-		if (p.data.ageGroup === current.data.ageGroup) score += 3;
+		if (p.data.category === current.data.category) score += 5;
 		const shared = (p.data.tags || []).filter(t => (current.data.tags || []).includes(t)).length;
 		score += shared * 2;
 		const daysAgo = (Date.now() - p.data.pubDate.valueOf()) / 86400000;
@@ -27,10 +29,7 @@ const scored = all
 	.slice(0, limit)
 	.map(s => s.post);
 
-const ageLabel = (a: string) =>
-	a === '20-35' ? '20–35세' :
-	a === '35-55' ? '35–55세' :
-	a === '55+'   ? '55세 이상' : '전 세대';
+const getCatMeta = (cat: string) => (CATEGORIES as any)[cat];
 ---
 
 {scored.length > 0 && (
@@ -40,16 +39,19 @@ const ageLabel = (a: string) =>
 			<h2>이 글을 본 분들이 함께 읽었습니다</h2>
 		</header>
 		<div class="grid">
-			{scored.map(p => (
-				<a href={`/blog/${p.id}/`} class="card">
-					<div class="meta">
-						<span class="pill">{ageLabel(p.data.ageGroup)}</span>
-						<FormattedDate date={p.data.pubDate} />
-					</div>
-					<h3>{p.data.title}</h3>
-					<p>{p.data.description}</p>
-				</a>
-			))}
+			{scored.map(p => {
+				const cm = getCatMeta(p.data.category);
+				return (
+					<a href={`/blog/${p.id}/`} class="card" style={cm ? `--cat: ${cm.color}` : ''}>
+						<div class="meta">
+							{cm && <span class="pill" style={`background: ${cm.color}`}>{cm.label}</span>}
+							<FormattedDate date={p.data.pubDate} />
+						</div>
+						<h3>{p.data.title}</h3>
+						<p>{p.data.description}</p>
+					</a>
+				);
+			})}
 		</div>
 	</aside>
 )}

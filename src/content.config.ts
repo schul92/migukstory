@@ -2,6 +2,19 @@ import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 
+// Topic categories — matches conventions of koreadaily / koreatimes / atlantajoongang
+export const CATEGORIES = {
+	'immigration': { label: '이민·비자', slug: 'immigration', color: '#B91C1C' },
+	'tax':         { label: '세금·재테크', slug: 'tax',         color: '#1E40AF' },
+	'health':      { label: '건강·보험', slug: 'health',      color: '#047857' },
+	'education':   { label: '교육·자녀', slug: 'education',   color: '#7C3AED' },
+	'retirement':  { label: '은퇴·연금', slug: 'retirement',  color: '#B7791F' },
+	'community':   { label: '한인 커뮤니티', slug: 'community',   color: '#0E7490' },
+	'real-estate': { label: '부동산·주거', slug: 'real-estate', color: '#9A3412' },
+} as const;
+
+export type CategoryKey = keyof typeof CATEGORIES;
+
 const blog = defineCollection({
 	loader: glob({ base: './src/content/blog', pattern: '**/*.{md,mdx}' }),
 	schema: ({ image }) =>
@@ -12,6 +25,10 @@ const blog = defineCollection({
 			updatedDate: z.coerce.date().optional(),
 			heroImage: z.optional(image()),
 			tags: z.array(z.string()).default([]),
+			category: z.enum([
+				'immigration', 'tax', 'health', 'education',
+				'retirement', 'community', 'real-estate',
+			]),
 			ageGroup: z.enum(['20-35', '35-55', '55+', 'all']).default('all'),
 		}),
 });

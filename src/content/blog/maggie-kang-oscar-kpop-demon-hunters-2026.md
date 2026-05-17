@@ -4,6 +4,7 @@ description: '한국 태생 매기 강 감독이 KPop Demon Hunters로 한국계
 pubDate: '2026-05-17'
 tags: ['매기강', '오스카', 'KPopDemonHunters', '한국계감독', '한류', 'Parasite', 'SonyPicturesAnimation', '한국계미국인영화']
 ageGroup: 'all'
+category: 'community'
 ---
 
 2026년 3월 15일, 할리우드 돌비 극장. 무대 위에 선 한 한국계 여성 감독이 트로피를 안고 잠시 숨을 골랐습니다. 그리고 객석을 향해 또박또박 말했습니다. "이 상은 한국, 그리고 전 세계 한국인들을 위한 것입니다(This is for Korea and for Koreans everywhere)." 매기 강(Maggie Kang) 감독이 넷플릭스 애니메이션 〈KPop Demon Hunters〉로 제98회 아카데미 시상식 장편 애니메이션상을 수상한 순간이었습니다. 한국에서 태어난 감독이 이 부문 트로피를 든 것은 아카데미 역사상 처음입니다.
