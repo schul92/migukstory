@@ -41,8 +41,13 @@
 	--ivory-highlight: #FFFBEB;
 
 	/* ── Type scale ──────────────────────────────────────────────── */
-	--font-body:    "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
-	--font-display: var(--font-display, "Gowun Batang"), "Nanum Myeongjo", Georgia, serif;
+	/* Korean system fonts render instantly (no download) — Pretendard swaps in when CDN loads. */
+	--font-body:    "Pretendard Variable", Pretendard,
+	                "Apple SD Gothic Neo", "Malgun Gothic", "맑은 고딕",
+	                -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+	--font-display: var(--font-display, "Gowun Batang"),
+	                "Apple SD Gothic Neo", "Nanum Myeongjo", "Malgun Gothic",
+	                Georgia, serif;
 	--font-mono:    "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
 
 	--text-xs:   0.75rem;       /* 12px — labels, eyebrows */

@@ -58,16 +58,21 @@ const articleSchema = article ? {
 />
 <meta name="generator" content={Astro.generator} />
 
-<!-- Display serif via Astro fonts (preloaded, self-hosted) -->
+<!-- Display serif via Astro fonts (self-hosted, preloaded) -->
 <Font cssVariable="--font-display" preload />
 
-<!-- Pretendard Variable — load async via preload + onload swap to avoid render-blocking -->
+<!--
+  Body font strategy:
+  System Korean fonts (Apple SD Gothic Neo / Malgun Gothic) render immediately.
+  Pretendard Variable loads async via media-trick + onload swap.
+  Result: instant LCP on system font, swap-in to Pretendard when ready.
+-->
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
 <link
-  rel="preload"
-  as="style"
+  rel="stylesheet"
   href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
-  onload="this.onload=null;this.rel='stylesheet'"
+  media="print"
+  onload="this.media='all'; this.onload=null"
 />
 <noscript>
   <link
