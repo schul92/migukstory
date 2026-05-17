@@ -8,8 +8,11 @@
  * generous Korean leading · magazine-style metadata · quiet authority.
  */
 
-/* Pretendard Variable — modern Korean web font, dynamic subset for performance */
-@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css");
+/*
+ * NOTE: Pretendard font is loaded via <link rel="preconnect"> + non-blocking
+ * stylesheet in BaseHead.astro (not via @import here) to avoid render-blocking
+ * the first paint. @import in CSS forces sequential download chain — bad LCP.
+ */
 
 :root {
 	/* ── Palette: "Pure Editorial" — high contrast for readability ─ */

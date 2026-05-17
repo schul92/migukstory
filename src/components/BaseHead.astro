@@ -61,8 +61,20 @@ const articleSchema = article ? {
 <!-- Display serif via Astro fonts (preloaded, self-hosted) -->
 <Font cssVariable="--font-display" preload />
 
-<!-- Pretendard Variable preconnect for body font CDN -->
+<!-- Pretendard Variable — load async via preload + onload swap to avoid render-blocking -->
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+<link
+  rel="preload"
+  as="style"
+  href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
+  onload="this.onload=null;this.rel='stylesheet'"
+/>
+<noscript>
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
+  />
+</noscript>
 
 <!-- Mermaid diagram loader (lazy, only when post has diagrams) -->
 <script type="module" is:inline>
