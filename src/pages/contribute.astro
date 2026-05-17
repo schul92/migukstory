@@ -1,0 +1,338 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import { SITE_TITLE } from '../consts';
+
+const columns = [
+	{
+		icon: '⚖',
+		label: '이민 · 비자 칼럼',
+		desc: '영주권·시민권·가족초청·H-1B 등 USCIS 절차의 실전 사례',
+		ideal: '미국 변호사 (이민법 5년 이상 실무) · 한국어 자유',
+	},
+	{
+		icon: '🧾',
+		label: '세금 · 회계 칼럼',
+		desc: 'FBAR, FATCA, 한미 조세조약, 자영업 세금, 부동산 양도',
+		ideal: 'EA / CPA · 한미 양국 신고 경험',
+	},
+	{
+		icon: '🏡',
+		label: '부동산 · 모기지 칼럼',
+		desc: '첫 주택 구매, FHA 변경, 한국 송금 다운페이먼트, 투자 부동산',
+		ideal: 'NMLS 면허 모기지 전문가 / NAR 회원 한인 리얼터',
+	},
+	{
+		icon: '🛡',
+		label: '의료 · 보험 칼럼',
+		desc: 'ACA, 메디케어, 메디케이드, 한인 노인 케어, 정신건강',
+		ideal: '주 면허 보험 에이전트 / 의료 보험 컨설턴트',
+	},
+	{
+		icon: '🎓',
+		label: '교육 · 자녀 칼럼',
+		desc: '대학 입학, FAFSA, 529, 학군 비교, 보딩 스쿨, 한국 학력 인정',
+		ideal: '교육 컨설턴트 / 입학 사정관 경험 / 학부모 코치',
+	},
+	{
+		icon: '📈',
+		label: '은퇴 · 재무 칼럼',
+		desc: '소셜시큐리티, 401(k), IRA, 한미 연금 합산, 한국 자산 정리',
+		ideal: 'CFP / 등록 투자 자문가 · 한미 양국 자산 설계 경험',
+	},
+];
+
+const benefits = [
+	{
+		t: '편집부가 검수한 한국어 칼럼',
+		body: '제목·도입부·소제목·정렬은 미국 스토리 편집부가 직접 다듬어 한국 신문 수준으로 게재합니다. 원고를 보내주시면 게재 가능 여부와 수정 의견을 1주일 안에 회신드립니다.',
+	},
+	{
+		t: '저자 프로필 박스 (전화·이메일·웹사이트)',
+		body: '모든 칼럼 하단에 저자 사진, 약력, 사무실 주소, 전화, 이메일, 웹사이트 링크가 노출됩니다. 한인 독자가 직접 상담 요청을 보낼 수 있는 채널입니다.',
+	},
+	{
+		t: '검색 트래픽이 곧 잠재 고객',
+		body: '미국 스토리는 한국어로 미국 정보를 검색하는 한인을 모읍니다. "FBAR 한국어 신고", "I-130 절차" 같은 키워드에서 칼럼은 검색 상위에 노출되고, 그 독자가 바로 잠재 고객입니다.',
+	},
+	{
+		t: '저작권 · 재게재 자유',
+		body: '저자께서는 원고 저작권을 그대로 보유하시며, 본인 웹사이트·블로그·SNS에 동시 게재하실 수 있습니다. 미국 스토리는 비독점 게재권만 받습니다.',
+	},
+	{
+		t: '독자 질문 큐레이션',
+		body: '독자에게서 들어오는 분야별 질문을 정리해 정기적으로 공유드립니다. 다음 칼럼 주제 발굴에 활용하실 수 있습니다.',
+	},
+	{
+		t: '무료입니다 — 광고 청구 없음',
+		body: '본 칼럼 프로그램은 입점 비용이 없습니다. 광고 게재(/pros 디렉토리)는 별도 상품이며 칼럼 게재와 무관합니다.',
+	},
+];
+---
+
+<!doctype html>
+<html lang="ko">
+	<head>
+		<BaseHead
+			title={`전문가 칼럼 기고 안내 — ${SITE_TITLE}`}
+			description="미국 스토리는 한인 전문가의 한국어 칼럼을 모집합니다. 변호사·CPA·리얼터·보험·교육·재무 — 본인 분야의 한국어 칼럼을 발행하고 검색 트래픽을 잠재 고객으로 연결하세요. 게재 무료, 저작권 저자 보유."
+			breadcrumbs={[
+				{ name: '홈', url: '/' },
+				{ name: '전문가 칼럼 기고', url: '/contribute' },
+			]}
+		/>
+	</head>
+	<body>
+		<Header />
+		<main>
+			<div class="container">
+				<header class="ct-head">
+					<p class="eyebrow">CONTRIBUTOR · 전문가 칼럼 모집</p>
+					<h1>
+						본인 분야를
+						<span class="brick">한국어로</span>
+						쓰실 수 있다면
+					</h1>
+					<p class="ct-sub">
+						미국 스토리는 한인 변호사·CPA·리얼터·보험·교육·재무 전문가의 한국어 칼럼을 모집합니다.
+						편집부 검수 후 게재되며, 모든 칼럼 하단에 저자 프로필 박스가 노출되어
+						<strong>독자가 직접 상담 요청</strong>을 보낼 수 있습니다.
+						<u>게재 비용은 없습니다.</u>
+					</p>
+				</header>
+
+				<!-- Why us -->
+				<section class="why">
+					<h2>왜 미국 스토리에 기고해야 하나</h2>
+					<div class="why-grid">
+						{benefits.map((b) => (
+							<div class="why-cell">
+								<h3>{b.t}</h3>
+								<p>{b.body}</p>
+							</div>
+						))}
+					</div>
+				</section>
+
+				<!-- Open columns -->
+				<section class="columns">
+					<h2>현재 모집 분야</h2>
+					<p class="columns-sub">아래 분야의 한인 전문가를 우선 모집합니다. 본인 전문 분야가 없으시면 별도 제안 환영.</p>
+					<div class="col-grid">
+						{columns.map((c) => (
+							<article class="col-card">
+								<header>
+									<span class="col-icon" aria-hidden="true">{c.icon}</span>
+									<h3>{c.label}</h3>
+								</header>
+								<p class="col-desc">{c.desc}</p>
+								<p class="col-ideal"><span>이상적 기고자:</span> {c.ideal}</p>
+							</article>
+						))}
+					</div>
+				</section>
+
+				<!-- How it works -->
+				<section class="how">
+					<h2>진행 방식</h2>
+					<ol class="steps">
+						<li>
+							<h3>1. 기고 의향서 송부</h3>
+							<p>본인 소개, 자격 (변호사·CPA 면허, 회사명, 주소), 기고 희망 분야와 첫 칼럼 주제 3개를 이메일로 보내주세요. <a href="mailto:editor@migukstory.com?subject=칼럼 기고 의향">editor@migukstory.com</a></p>
+						</li>
+						<li>
+							<h3>2. 편집부 검토 (1주일)</h3>
+							<p>경력·전문성·기존 칼럼 글 샘플을 검토합니다. 한국어 글쓰기 톤이 한인 독자에게 맞는지 확인합니다.</p>
+						</li>
+						<li>
+							<h3>3. 첫 원고 작성 (1,500~2,500자)</h3>
+							<p>편집부와 합의된 주제를 한국어 1,500~2,500자로 작성합니다. 마크다운 또는 워드 파일. 출처(USCIS·IRS·HUD 등 정부 자료)를 본문 끝에 명시합니다.</p>
+						</li>
+						<li>
+							<h3>4. 편집부 검수 + 저자 확인</h3>
+							<p>편집부가 제목·도입부·소제목·문단을 미국 스토리 편집 가이드에 맞춰 다듬습니다. 사실 관계 확인이 필요한 부분은 저자에게 재확인 요청을 드립니다.</p>
+						</li>
+						<li>
+							<h3>5. 게재 + 저자 프로필 박스 표시</h3>
+							<p>본문 하단에 저자 사진, 약력, 사무실 주소, 전화, 이메일, 웹사이트 링크가 노출됩니다. 카카오톡 채널 또는 캘린들리 링크도 가능합니다.</p>
+						</li>
+						<li>
+							<h3>6. 정기 기고 (월 1~2회 권장)</h3>
+							<p>월 1~2회 칼럼을 지속하시는 분께는 카테고리 페이지 상단의 "이 분야 정기 칼럼니스트" 배지가 부여됩니다.</p>
+						</li>
+					</ol>
+				</section>
+
+				<!-- Editorial standards -->
+				<aside class="standards">
+					<h2>편집 기준 — 광고가 아닌 정보</h2>
+					<ul>
+						<li><strong>본인 사무소·상품 홍보는 본문 내 불가.</strong> 저자 프로필 박스에서만 안내됩니다.</li>
+						<li><strong>1차 출처 인용 필수.</strong> USCIS, IRS, HUD, SSA, CMS, 한국 법무부 등 정부 자료 또는 주요 언론 기사 URL을 본문 끝에 게재합니다.</li>
+						<li><strong>법률·세무·의료 자문이 아닌 일반 정보임을 명시</strong>합니다. 칼럼 끝 면책 문구는 편집부가 자동 추가합니다.</li>
+						<li><strong>한국 신문 수준의 톤.</strong> 한겨레21, 시사인, 중앙SUNDAY 같은 정돈된 편집 톤을 지향합니다.</li>
+						<li><strong>경쟁사 비방·근거 없는 단정 불가.</strong></li>
+						<li><strong>2026년 기준 최신 정보로.</strong> 1년 이상 지난 칼럼은 저자께 업데이트 요청드립니다.</li>
+					</ul>
+				</aside>
+
+				<!-- Contact CTA -->
+				<section class="cta-end">
+					<p>지금 한 줄로 시작하세요. 본인 분야 + 칼럼 아이디어 1개만 보내주셔도 됩니다.</p>
+					<a class="cta-big" href="mailto:editor@migukstory.com?subject=칼럼 기고 의향&body=안녕하세요,%0A%0A저는 [이름], [직책 / 회사 / 주소]에서 일하는 [면허·자격]입니다.%0A기고 희망 분야: [예: 이민·비자]%0A첫 칼럼 주제 3개: %0A1.%0A2.%0A3.%0A%0A기존 칼럼 글 샘플 또는 웹사이트:">
+						editor@migukstory.com 로 기고 의향 보내기 →
+					</a>
+				</section>
+			</div>
+		</main>
+		<Footer />
+
+		<style>
+			.ct-head {
+				text-align: center;
+				padding: var(--s-6) 0 var(--s-4);
+				border-bottom: 1px solid var(--rule);
+				margin-bottom: var(--s-5);
+			}
+			.eyebrow {
+				font-size: 0.7rem;
+				font-weight: 700;
+				letter-spacing: 0.18em;
+				color: var(--brick);
+				text-transform: uppercase;
+				margin: 0 0 var(--s-2);
+			}
+			.ct-head h1 {
+				font-family: var(--font-display);
+				font-size: clamp(2.5rem, 6vw, 4.25rem);
+				line-height: 1.05;
+				margin: 0 0 var(--s-3);
+				letter-spacing: -0.03em;
+			}
+			.brick { color: var(--brick); }
+			.ct-sub {
+				font-size: var(--text-lg);
+				color: var(--ink-medium);
+				max-width: 40em;
+				margin: 0 auto;
+				line-height: 1.7;
+			}
+
+			.why, .columns, .how { max-width: 1000px; margin: 0 auto var(--s-6); }
+			.why h2, .columns h2, .how h2 {
+				font-family: var(--font-display);
+				font-size: 1.85rem;
+				margin: 0 0 var(--s-3);
+				color: var(--ink);
+				letter-spacing: -0.02em;
+				text-align: center;
+			}
+
+			.why-grid {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+				gap: var(--s-3);
+			}
+			.why-cell {
+				background: var(--paper);
+				border: 1px solid var(--rule);
+				border-left: 3px solid var(--brick);
+				padding: var(--s-3);
+			}
+			.why-cell h3 {
+				font-family: var(--font-display);
+				font-size: 1.1rem;
+				margin: 0 0 0.4em;
+				color: var(--ink);
+				letter-spacing: -0.01em;
+			}
+			.why-cell p { font-size: 0.9rem; line-height: 1.7; color: var(--ink-medium); margin: 0; }
+
+			.columns-sub { text-align: center; color: var(--ink-medium); margin: 0 auto var(--s-3); max-width: 38em; font-size: 0.95rem; }
+			.col-grid {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+				gap: var(--s-3);
+			}
+			.col-card {
+				background: var(--paper);
+				border: 1px solid var(--rule);
+				padding: var(--s-3);
+			}
+			.col-card header { display: flex; gap: 0.6em; align-items: center; margin-bottom: var(--s-2); padding-bottom: var(--s-2); border-bottom: 1px dotted var(--rule); }
+			.col-icon { font-size: 1.5rem; }
+			.col-card h3 {
+				font-family: var(--font-display);
+				font-size: 1.2rem;
+				margin: 0;
+				color: var(--ink);
+				letter-spacing: -0.01em;
+			}
+			.col-desc { font-size: 0.92rem; line-height: 1.6; color: var(--ink-medium); margin: 0 0 0.7em; }
+			.col-ideal { font-size: 0.82rem; color: var(--ink-light); margin: 0; line-height: 1.5; }
+			.col-ideal span { font-weight: 600; color: var(--ink-medium); }
+
+			.steps { list-style: none; padding: 0; margin: 0; display: grid; gap: var(--s-3); counter-reset: stp; }
+			.steps li {
+				background: var(--paper-soft);
+				border-left: 3px solid var(--brick);
+				padding: var(--s-3);
+			}
+			.steps h3 {
+				font-family: var(--font-display);
+				font-size: 1.15rem;
+				margin: 0 0 0.4em;
+				color: var(--ink);
+				letter-spacing: -0.01em;
+			}
+			.steps p { margin: 0; font-size: 0.92rem; line-height: 1.7; color: var(--ink-medium); }
+			.steps a { color: var(--brick); border-bottom: 1px solid currentColor; text-decoration: none; }
+
+			.standards {
+				max-width: 760px;
+				margin: 0 auto var(--s-6);
+				background: var(--paper-soft);
+				border-left: 4px solid #B7791F;
+				padding: var(--s-3);
+			}
+			.standards h2 {
+				font-family: var(--font-display);
+				font-size: 1.4rem;
+				color: var(--ink);
+				margin: 0 0 var(--s-2);
+				letter-spacing: -0.01em;
+			}
+			.standards ul { margin: 0; padding-left: 1.2em; }
+			.standards li { margin-bottom: 0.5em; font-size: 0.92rem; line-height: 1.7; color: var(--ink-medium); }
+
+			.cta-end {
+				max-width: 700px;
+				margin: 0 auto var(--s-6);
+				text-align: center;
+				padding: var(--s-4) var(--s-3);
+				border-top: 1px solid var(--rule);
+				border-bottom: 1px solid var(--rule);
+			}
+			.cta-end p { color: var(--ink-medium); font-size: 1.05rem; margin: 0 0 var(--s-3); line-height: 1.7; }
+			.cta-big {
+				display: inline-block;
+				font-size: 1rem;
+				font-weight: 700;
+				color: var(--paper);
+				background: var(--brick);
+				padding: 0.9em 1.7em;
+				border-radius: 3px;
+				text-decoration: none;
+				letter-spacing: 0.04em;
+				transition: background var(--duration) var(--ease-out);
+			}
+			.cta-big:hover { background: var(--brick-deep); }
+
+			@media (max-width: 720px) {
+				.ct-head { padding: var(--s-4) 0 var(--s-3); }
+				.why-grid, .col-grid { grid-template-columns: 1fr; }
+			}
+		</style>
+	</body>
+</html>
