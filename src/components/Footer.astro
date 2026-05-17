@@ -1,48 +1,137 @@
 ---
-import { SITE_TITLE } from '../consts';
+import { SITE_TITLE, SITE_TAGLINE } from '../consts';
 const today = new Date();
 ---
 
-<footer>
-	<div class="footer-content">
-		<p class="brand">{SITE_TITLE}</p>
-		<p class="tagline">한국계 미국인을 위한 검증된 정보 가이드</p>
-		<p class="copyright">&copy; {today.getFullYear()} 미국 스토리. All rights reserved.</p>
-		<p class="disclaimer">
-			본 사이트의 정보는 일반 정보 제공 목적이며, 법률·세무·의료 자문이 아닙니다.
-			구체적 상황은 전문가와 상담하시기 바랍니다.
-		</p>
+<footer class="footer">
+	<div class="container footer-grid">
+
+		<div class="col col-brand">
+			<div class="masthead-mark">
+				<span class="brand-ko">{SITE_TITLE}</span>
+				<span class="brand-en">MIGUK&nbsp;STORY</span>
+			</div>
+			<p class="tagline">{SITE_TAGLINE}</p>
+		</div>
+
+		<div class="col">
+			<h4 class="col-title">섹션</h4>
+			<ul>
+				<li><a href="/blog">전체 글</a></li>
+				<li><a href="/blog?age=20-35">20–35세 · 유학·이민</a></li>
+				<li><a href="/blog?age=35-55">35–55세 · 자산·자녀</a></li>
+				<li><a href="/blog?age=55+">55세 이상 · 은퇴·건강</a></li>
+			</ul>
+		</div>
+
+		<div class="col">
+			<h4 class="col-title">정보</h4>
+			<ul>
+				<li><a href="/about">편집실 소개</a></li>
+				<li><a href="/rss.xml">RSS 피드</a></li>
+				<li><a href="/sitemap-index.xml">사이트맵</a></li>
+			</ul>
+		</div>
+
+		<div class="col col-disclaimer">
+			<h4 class="col-title">알림</h4>
+			<p>본 사이트의 정보는 일반 정보 제공 목적이며, 법률·세무·의료 자문이 아닙니다. 구체적 상황은 전문가와 상담하시기 바랍니다.</p>
+		</div>
+	</div>
+
+	<div class="container colophon">
+		<span>© {today.getFullYear()} 미국 스토리. All rights reserved.</span>
+		<span class="published">PUBLISHED IN THE UNITED STATES · 미국에서 발행</span>
 	</div>
 </footer>
+
 <style>
-	footer {
-		padding: 2em 1em 3em 1em;
-		background: linear-gradient(var(--gray-gradient)) no-repeat;
-		color: rgb(var(--gray));
-		text-align: center;
+	.footer {
+		background: var(--paper);
+		border-top: 3px double var(--ink);
+		padding: var(--s-5) 0 var(--s-3);
+		margin-top: var(--s-7);
+		color: var(--ink-soft);
+		position: relative;
 	}
-	.footer-content {
-		max-width: 720px;
-		margin: 0 auto;
+	.footer-grid {
+		display: grid;
+		grid-template-columns: 1.4fr 1fr 1fr 1.6fr;
+		gap: var(--s-4);
+		padding-bottom: var(--s-4);
+		border-bottom: 1px solid var(--rule);
 	}
-	.brand {
-		font-size: 1.2em;
+	.col-title {
+		font-family: var(--font-body);
+		font-size: var(--text-xs);
 		font-weight: 700;
-		margin: 0 0 0.25em;
+		text-transform: uppercase;
+		letter-spacing: 0.18em;
+		color: var(--brick);
+		margin: 0 0 var(--s-2);
+	}
+	.col ul { list-style: none; padding: 0; margin: 0; }
+	.col li { margin-bottom: 0.45em; }
+	.col a {
+		color: var(--ink-soft);
+		text-decoration: none;
+		font-size: var(--text-sm);
+		line-height: 1.5;
+		display: inline-block;
+		border-bottom: 1px solid transparent;
+		transition: all var(--duration) var(--ease-out);
+	}
+	.col a:hover { color: var(--brick); border-bottom-color: var(--brick); }
+
+	.masthead-mark { display: flex; flex-direction: column; gap: 0.15rem; margin-bottom: var(--s-2); }
+	.brand-ko {
+		font-family: var(--font-display);
+		font-size: 1.75rem;
+		font-weight: 700;
+		color: var(--ink);
+		line-height: 1;
+	}
+	.brand-en {
+		font-size: 0.6rem;
+		font-weight: 500;
+		letter-spacing: 0.4em;
+		color: var(--brick);
 	}
 	.tagline {
-		font-size: 0.95em;
-		margin: 0 0 1em;
+		font-size: var(--text-sm);
+		color: var(--ink-medium);
+		margin: 0;
+		line-height: 1.6;
+		max-width: 18em;
 	}
-	.copyright {
-		font-size: 0.85em;
-		margin: 0 0 0.5em;
+
+	.col-disclaimer p {
+		font-size: 0.78rem;
+		line-height: 1.6;
+		color: var(--ink-light);
+		margin: 0;
 	}
-	.disclaimer {
-		font-size: 0.78em;
-		opacity: 0.75;
-		max-width: 580px;
-		margin: 0.5em auto 0;
-		line-height: 1.5;
+
+	.colophon {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding-top: var(--s-3);
+		font-size: 0.72rem;
+		font-weight: 500;
+		text-transform: uppercase;
+		letter-spacing: 0.12em;
+		color: var(--ink-light);
+		gap: var(--s-3);
+		flex-wrap: wrap;
+	}
+	.published { color: var(--brick); }
+
+	@media (max-width: 900px) {
+		.footer-grid { grid-template-columns: 1fr 1fr; }
+	}
+	@media (max-width: 540px) {
+		.footer-grid { grid-template-columns: 1fr; }
+		.colophon { flex-direction: column; gap: var(--s-1); text-align: center; }
 	}
 </style>

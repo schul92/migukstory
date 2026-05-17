@@ -32,15 +32,17 @@ const { title, description, image = FallbackImage } = Astro.props;
 />
 <meta name="generator" content={Astro.generator} />
 
-<Font cssVariable="--font-noto-kr" preload />
-<Font cssVariable="--font-noto-serif-kr" preload />
+<!-- Display serif via Astro fonts (preloaded, self-hosted) -->
+<Font cssVariable="--font-display" preload />
+
+<!-- Pretendard Variable preconnect for body font CDN -->
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
 
 <!-- Mermaid diagram loader (lazy, only when post has diagrams) -->
 <script type="module" is:inline>
   // Astro uses Shiki which wraps mermaid in <pre data-language="mermaid"> with span tokens
   const shikiBlocks = document.querySelectorAll('pre[data-language="mermaid"]');
   if (shikiBlocks.length > 0) {
-    // Strip Shiki span markup and rebuild as Mermaid containers
     shikiBlocks.forEach((pre) => {
       const code = pre.textContent || '';
       const wrapper = document.createElement('div');
@@ -52,7 +54,21 @@ const { title, description, image = FallbackImage } = Astro.props;
       pre.replaceWith(wrapper);
     });
     const { default: mermaid } = await import('https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs');
-    mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose', fontFamily: 'Noto Sans KR, sans-serif' });
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'base',
+      securityLevel: 'loose',
+      fontFamily: 'Pretendard Variable, Pretendard, sans-serif',
+      themeVariables: {
+        primaryColor: '#FAF8F3',
+        primaryTextColor: '#1B1815',
+        primaryBorderColor: '#7E2B2B',
+        lineColor: '#5C544B',
+        secondaryColor: '#F2E9D5',
+        tertiaryColor: '#E8DCC0',
+        background: '#FAF8F3',
+      },
+    });
     await mermaid.run({ querySelector: 'pre.mermaid' });
   }
 </script>

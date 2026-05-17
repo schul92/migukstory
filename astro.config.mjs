@@ -18,17 +18,9 @@ export default defineConfig({
 	fonts: [
 		{
 			provider: fontProviders.google(),
-			name: 'Noto Sans KR',
-			cssVariable: '--font-noto-kr',
-			fallbacks: ['system-ui', 'sans-serif'],
-			weights: [400, 500, 700],
-			styles: ['normal'],
-		},
-		{
-			provider: fontProviders.google(),
-			name: 'Noto Serif KR',
-			cssVariable: '--font-noto-serif-kr',
-			fallbacks: ['serif'],
+			name: 'Gowun Batang',
+			cssVariable: '--font-display',
+			fallbacks: ['Georgia', 'serif'],
 			weights: [400, 700],
 			styles: ['normal'],
 		},

@@ -4,224 +4,473 @@ import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
 import FormattedDate from '../components/FormattedDate.astro';
-import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import { SITE_DESCRIPTION, SITE_TAGLINE, SITE_TITLE, ISSUE_NUMBER } from '../consts';
 
 const posts = (await getCollection('blog')).sort(
 	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
 
-const featured = posts.slice(0, 3);
+const [lead, ...rest] = posts;
+const aboveFold = rest.slice(0, 2);    // sub-leads
+const cont = rest.slice(2, 6);          // continued page
 const byAge = {
-	'all': posts.filter(p => p.data.ageGroup === 'all'),
 	'20-35': posts.filter(p => p.data.ageGroup === '20-35'),
 	'35-55': posts.filter(p => p.data.ageGroup === '35-55'),
-	'55+': posts.filter(p => p.data.ageGroup === '55+'),
+	'55+':   posts.filter(p => p.data.ageGroup === '55+'),
+	'all':   posts.filter(p => p.data.ageGroup === 'all'),
 };
+
+const koDate = (d: Date) =>
+	`${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}.`;
 ---
 
 <!doctype html>
 <html lang="ko">
 	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+		<BaseHead title={`${SITE_TITLE} — ${SITE_TAGLINE}`} description={SITE_DESCRIPTION} />
 	</head>
 	<body>
 		<Header />
-		<main>
-			<section class="hero">
-				<h1>미국 스토리</h1>
-				<p class="lead">한국계 미국인을 위한 이민·세금·건강·교육 가이드</p>
-				<p class="sub">매주 최신 뉴스와 실용 정보를 검증된 출처와 함께 정리합니다.</p>
-			</section>
 
-			<section class="featured">
-				<h2>🔥 지금 가장 많이 읽히는 글</h2>
-				<div class="grid">
-					{featured.map(post => (
-						<a href={`/blog/${post.id}/`} class="card">
-							<div class="card-meta">
-								<FormattedDate date={post.data.pubDate} />
-								<span class="age">{post.data.ageGroup}</span>
-							</div>
-							<h3>{post.data.title}</h3>
-							<p>{post.data.description}</p>
-						</a>
-					))}
+		<main>
+			<!-- Issue intro strip -->
+			<section class="issue-intro">
+				<div class="container">
+					<p class="issue-line">
+						<span class="dot">●</span>
+						이번 호 · 한국계 미국인을 위한 이번 주 가장 중요한 뉴스 — 1차 출처에서 직접 확인합니다.
+					</p>
 				</div>
 			</section>
 
+			<!-- LEAD ARTICLE (oversized magazine cover style) -->
+			{lead && (
+				<section class="lead">
+					<div class="container lead-grid">
+						<div class="lead-text">
+							<p class="eyebrow">오늘의 헤드라인</p>
+							<h1 class="lead-title">
+								<a href={`/blog/${lead.id}/`}>{lead.data.title}</a>
+							</h1>
+							<p class="lead-desc">{lead.data.description}</p>
+							<div class="lead-meta">
+								<FormattedDate date={lead.data.pubDate} />
+								<span class="dot-sep">·</span>
+								<span class="age-pill">{lead.data.ageGroup}</span>
+								{lead.data.tags.slice(0, 3).map(t => (
+									<span class="tag-inline">#{t}</span>
+								))}
+							</div>
+							<a class="read-link" href={`/blog/${lead.id}/`}>전문 읽기 →</a>
+						</div>
+						<div class="lead-side">
+							<div class="folio">
+								<span class="folio-no">No. {String(posts.length).padStart(3, '0')}</span>
+								<span class="folio-label">이번 호의 글</span>
+							</div>
+						</div>
+					</div>
+				</section>
+			)}
+
+			<div class="container divider-mark"></div>
+
+			<!-- ABOVE-FOLD secondary leads (2-column) -->
+			{aboveFold.length > 0 && (
+				<section class="above-fold">
+					<div class="container two-col">
+						{aboveFold.map((post, i) => (
+							<article class="story">
+								<p class="eyebrow">{i === 0 ? '두 번째 기사' : '세 번째 기사'}</p>
+								<h2><a href={`/blog/${post.id}/`}>{post.data.title}</a></h2>
+								<p class="story-desc">{post.data.description}</p>
+								<div class="story-meta">
+									<FormattedDate date={post.data.pubDate} />
+									<span class="dot-sep">·</span>
+									<span class="age-pill">{post.data.ageGroup}</span>
+								</div>
+							</article>
+						))}
+					</div>
+				</section>
+			)}
+
+			<div class="container divider-mark"></div>
+
+			<!-- "CONTINUED" — magazine-style listing -->
+			{cont.length > 0 && (
+				<section class="continued">
+					<div class="container">
+						<h3 class="section-title"><span>계속해서 읽기</span></h3>
+						<ol class="cont-list">
+							{cont.map((post, i) => (
+								<li>
+									<span class="cont-num">{String(i + 4).padStart(2, '0')}</span>
+									<div class="cont-body">
+										<a href={`/blog/${post.id}/`}><h4>{post.data.title}</h4></a>
+										<p class="cont-meta">
+											<span class="age-pill mini">{post.data.ageGroup}</span>
+											{koDate(post.data.pubDate)}
+										</p>
+									</div>
+								</li>
+							))}
+						</ol>
+					</div>
+				</section>
+			)}
+
+			<div class="container divider-mark"></div>
+
+			<!-- AGE GROUPS — masonry-style 4 columns -->
 			<section class="by-age">
-				<h2>🎯 연령대별 인기 글</h2>
-
-				{byAge['20-35'].length > 0 && (
-					<div class="age-group">
-						<h3>20-35세 — 유학생·취업·이민</h3>
-						<ul>
-							{byAge['20-35'].slice(0, 5).map(post => (
-								<li><a href={`/blog/${post.id}/`}>{post.data.title}</a></li>
-							))}
-						</ul>
+				<div class="container">
+					<h3 class="section-title"><span>독자별 큐레이션</span></h3>
+					<div class="age-grid">
+						{Object.entries(byAge).filter(([_,p]) => p.length > 0).map(([age, list]) => (
+							<div class="age-col">
+								<header class="age-head">
+									<p class="age-label">
+										{age === '20-35' ? '20–35세' :
+										 age === '35-55' ? '35–55세' :
+										 age === '55+'   ? '55세 이상' :
+										                   '전 세대'}
+									</p>
+									<p class="age-sub">
+										{age === '20-35' ? '유학·취업·이민' :
+										 age === '35-55' ? '자산·자녀교육·세금' :
+										 age === '55+'   ? '은퇴·건강·연금' :
+										                   '한인 커뮤니티'}
+									</p>
+								</header>
+								<ul class="age-list">
+									{list.slice(0, 4).map(p => (
+										<li><a href={`/blog/${p.id}/`}>{p.data.title}</a></li>
+									))}
+								</ul>
+							</div>
+						))}
 					</div>
-				)}
-
-				{byAge['35-55'].length > 0 && (
-					<div class="age-group">
-						<h3>35-55세 — 부모·자녀교육·자산</h3>
-						<ul>
-							{byAge['35-55'].slice(0, 5).map(post => (
-								<li><a href={`/blog/${post.id}/`}>{post.data.title}</a></li>
-							))}
-						</ul>
-					</div>
-				)}
-
-				{byAge['55+'].length > 0 && (
-					<div class="age-group">
-						<h3>55세 이상 — 은퇴·건강·연금</h3>
-						<ul>
-							{byAge['55+'].slice(0, 5).map(post => (
-								<li><a href={`/blog/${post.id}/`}>{post.data.title}</a></li>
-							))}
-						</ul>
-					</div>
-				)}
-
-				{byAge['all'].length > 0 && (
-					<div class="age-group">
-						<h3>전 세대 공감 스토리</h3>
-						<ul>
-							{byAge['all'].slice(0, 5).map(post => (
-								<li><a href={`/blog/${post.id}/`}>{post.data.title}</a></li>
-							))}
-						</ul>
-					</div>
-				)}
-			</section>
-
-			<section class="cta">
-				<a href="/blog" class="cta-link">전체 글 모아보기 →</a>
-			</section>
+				</section>
+			</div>
 		</main>
+
 		<Footer />
+
 		<style>
-			main {
-				max-width: 920px;
-				margin: 0 auto;
-				padding: 1.5em 1em;
+			main { padding-bottom: var(--s-6); }
+
+			/* ── Issue intro strip ────────────────────────────────── */
+			.issue-intro {
+				background: var(--cream);
+				border-bottom: 1px solid var(--rule);
+				padding: var(--s-1) 0;
 			}
-			.hero {
-				text-align: center;
-				padding: 2em 0 1.5em;
-				border-bottom: 1px solid rgba(var(--gray-light), 1);
-				margin-bottom: 2em;
-			}
-			.hero h1 {
-				font-size: clamp(2em, 5vw, 3em);
+			.issue-line {
 				margin: 0;
+				font-size: var(--text-sm);
+				color: var(--ink-soft);
+				font-weight: 500;
+				letter-spacing: -0.005em;
+			}
+			.issue-line .dot {
+				color: var(--brick);
+				font-size: 0.6em;
+				vertical-align: middle;
+				margin-right: 0.4em;
+			}
+
+			/* ── Lead article ─────────────────────────────────────── */
+			.lead {
+				padding: var(--s-6) 0 var(--s-5);
+				border-bottom: 1px solid var(--rule);
+			}
+			.lead-grid {
+				display: grid;
+				grid-template-columns: 1fr 280px;
+				gap: var(--s-5);
+				align-items: start;
+			}
+			.lead-text .eyebrow { margin: 0 0 var(--s-2); }
+			.lead-title {
+				font-family: var(--font-display);
+				font-size: clamp(2.5rem, 5.5vw, 4.25rem);
 				font-weight: 700;
+				line-height: 1.08;
+				letter-spacing: -0.03em;
+				margin: 0 0 var(--s-3);
+				word-break: keep-all;
+			}
+			.lead-title a {
+				color: var(--ink);
+				text-decoration: none;
+				background-image: linear-gradient(transparent 68%, var(--cream) 68%);
+				transition: background-image var(--duration) var(--ease-out);
+			}
+			.lead-title a:hover {
+				background-image: linear-gradient(transparent 68%, var(--cream-deep) 68%);
+				color: var(--brick-deep);
+			}
+			.lead-desc {
+				font-size: var(--text-lg);
+				color: var(--ink-soft);
+				line-height: 1.7;
+				margin: 0 0 var(--s-3);
+				max-width: 38em;
+			}
+			.lead-meta {
+				font-size: var(--text-sm);
+				color: var(--ink-light);
+				display: flex;
+				gap: var(--s-1);
+				flex-wrap: wrap;
+				align-items: center;
+				margin-bottom: var(--s-3);
+			}
+			.read-link {
+				display: inline-block;
+				font-family: var(--font-body);
+				font-size: 0.95rem;
+				font-weight: 600;
+				color: var(--brick);
+				text-decoration: none;
+				border-bottom: 2px solid var(--brick);
+				padding-bottom: 2px;
+				transition: all var(--duration) var(--ease-out);
+			}
+			.read-link:hover { color: var(--brick-deep); border-bottom-color: var(--brick-deep); }
+
+			/* Side folio (issue number block) */
+			.lead-side {
+				display: flex;
+				justify-content: flex-end;
+			}
+			.folio {
+				padding: var(--s-3);
+				border: 1px solid var(--ink);
+				background: var(--paper-soft);
+				text-align: center;
+				font-family: var(--font-display);
+				transform: rotate(-1deg);
+			}
+			.folio-no {
+				display: block;
+				font-size: 2.75rem;
+				font-weight: 700;
+				color: var(--brick);
+				line-height: 1;
 				letter-spacing: -0.02em;
 			}
-			.hero .lead {
-				font-size: 1.15em;
-				margin: 0.5em 0;
-				color: rgb(var(--gray-dark));
-			}
-			.hero .sub {
-				font-size: 0.95em;
-				color: rgb(var(--gray));
-				margin: 0;
-			}
-			.featured h2,
-			.by-age h2 {
-				font-size: 1.25em;
-				margin: 1.5em 0 1em;
-			}
-			.grid {
-				display: grid;
-				grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-				gap: 1em;
-			}
-			.card {
+			.folio-label {
 				display: block;
-				padding: 1.25em;
-				border: 1px solid rgba(var(--gray-light), 1);
-				border-radius: 10px;
-				text-decoration: none;
-				color: inherit;
-				transition: all 0.15s ease;
-				background: white;
+				margin-top: 0.5rem;
+				font-family: var(--font-body);
+				font-size: 0.75rem;
+				text-transform: uppercase;
+				letter-spacing: 0.15em;
+				color: var(--ink-medium);
 			}
-			.card:hover {
-				border-color: var(--accent);
-				transform: translateY(-2px);
-				box-shadow: 0 4px 12px rgba(var(--black), 0.06);
+
+			/* ── Meta utility pieces ──────────────────────────────── */
+			.age-pill {
+				display: inline-block;
+				font-size: 0.7rem;
+				font-weight: 600;
+				padding: 0.15em 0.55em;
+				background: var(--ink);
+				color: var(--paper);
+				letter-spacing: 0.04em;
+				border-radius: 2px;
 			}
-			.card-meta {
-				display: flex;
-				justify-content: space-between;
-				font-size: 0.8em;
-				color: rgb(var(--gray));
-				margin-bottom: 0.5em;
+			.age-pill.mini { font-size: 0.62rem; padding: 0.1em 0.45em; }
+			.tag-inline {
+				font-size: 0.78rem;
+				color: var(--ink-light);
+				font-weight: 500;
 			}
-			.age {
-				background: rgba(var(--gray-light), 1);
-				padding: 0.1em 0.5em;
-				border-radius: 6px;
+			.dot-sep { color: var(--ink-faint); }
+
+			/* ── Above-fold 2-column ─────────────────────────────── */
+			.above-fold { padding: var(--s-4) 0; }
+			.two-col {
+				display: grid;
+				grid-template-columns: 1fr 1px 1fr;
+				gap: var(--s-5);
+				align-items: start;
 			}
-			.card h3 {
-				font-size: 1.05em;
-				line-height: 1.35;
-				margin: 0.25em 0 0.5em;
-				color: var(--accent-dark);
+			.two-col::after {
+				content: "";
+				grid-row: 1;
+				grid-column: 2;
+				background: var(--rule);
+				height: 100%;
+				min-height: 250px;
 			}
-			.card p {
-				font-size: 0.88em;
-				line-height: 1.5;
-				color: rgb(var(--gray-dark));
-				margin: 0;
+			.story .eyebrow { margin: 0 0 var(--s-2); }
+			.story h2 {
+				font-family: var(--font-display);
+				font-size: clamp(1.5rem, 2.6vw, 2.1rem);
+				line-height: 1.2;
+				margin: 0 0 var(--s-2);
+				letter-spacing: -0.02em;
+			}
+			.story h2 a { color: var(--ink); text-decoration: none; }
+			.story h2 a:hover { color: var(--brick); }
+			.story-desc {
+				font-size: 0.95rem;
+				color: var(--ink-medium);
+				margin: 0 0 var(--s-2);
+				line-height: 1.7;
 				display: -webkit-box;
 				-webkit-line-clamp: 3;
 				-webkit-box-orient: vertical;
 				overflow: hidden;
 			}
-			.age-group {
-				margin-bottom: 1.5em;
+			.story-meta {
+				font-size: var(--text-sm);
+				color: var(--ink-light);
+				display: flex;
+				gap: var(--s-1);
+				align-items: center;
+				flex-wrap: wrap;
 			}
-			.age-group h3 {
-				font-size: 1em;
-				margin: 0 0 0.5em;
-				color: var(--accent-dark);
+
+			/* ── Section titles ──────────────────────────────────── */
+			.section-title {
+				text-align: center;
+				font-family: var(--font-display);
+				font-size: 1.5rem;
+				font-weight: 700;
+				color: var(--ink);
+				position: relative;
+				margin: var(--s-4) 0 var(--s-4);
+				letter-spacing: -0.01em;
 			}
-			.age-group ul {
+			.section-title::before, .section-title::after {
+				content: "";
+				position: absolute;
+				top: 50%;
+				width: calc(50% - 8em);
+				height: 1px;
+				background: var(--rule);
+			}
+			.section-title::before { left: 0; }
+			.section-title::after { right: 0; }
+			.section-title span {
+				padding: 0 var(--s-2);
+				background: var(--paper);
+				position: relative;
+			}
+
+			/* ── "Continued" listing ─────────────────────────────── */
+			.cont-list {
 				list-style: none;
 				padding: 0;
 				margin: 0;
+				max-width: 760px;
+				margin: 0 auto;
 			}
-			.age-group li {
-				padding: 0.4em 0;
-				border-bottom: 1px solid rgba(var(--gray-light), 1);
+			.cont-list li {
+				display: grid;
+				grid-template-columns: 60px 1fr;
+				gap: var(--s-3);
+				padding: var(--s-3) 0;
+				border-bottom: 1px solid var(--rule);
+				align-items: baseline;
 			}
-			.age-group a {
-				text-decoration: none;
-				color: inherit;
+			.cont-list li:last-child { border-bottom: none; }
+			.cont-num {
+				font-family: var(--font-display);
+				font-size: 2rem;
+				color: var(--brick);
+				font-weight: 700;
+				line-height: 1;
+				font-feature-settings: "tnum";
 			}
-			.age-group a:hover {
-				color: var(--accent);
+			.cont-body h4 {
+				font-family: var(--font-display);
+				font-size: 1.25rem;
+				font-weight: 700;
+				margin: 0 0 0.3rem;
+				line-height: 1.35;
+				color: var(--ink);
+				letter-spacing: -0.01em;
 			}
-			.cta {
-				text-align: center;
-				margin: 2.5em 0 1em;
+			.cont-body a { text-decoration: none; color: inherit; transition: color var(--duration) var(--ease-out); }
+			.cont-body a:hover h4 { color: var(--brick); }
+			.cont-meta {
+				font-size: var(--text-sm);
+				color: var(--ink-light);
+				margin: 0;
+				display: flex;
+				gap: 0.6em;
+				align-items: center;
 			}
-			.cta-link {
-				display: inline-block;
-				padding: 0.7em 1.5em;
-				background: var(--accent);
-				color: white;
-				text-decoration: none;
-				border-radius: 8px;
+
+			/* ── Age curation grid ───────────────────────────────── */
+			.by-age { padding: var(--s-4) 0; }
+			.age-grid {
+				display: grid;
+				grid-template-columns: repeat(4, 1fr);
+				gap: var(--s-4);
+			}
+			.age-col {
+				padding: var(--s-3);
+				background: var(--paper-soft);
+				border-top: 3px solid var(--brick);
+				border-radius: 0;
+				transition: background var(--duration) var(--ease-out);
+			}
+			.age-col:hover { background: var(--cream); }
+			.age-head { margin-bottom: var(--s-2); padding-bottom: var(--s-1); border-bottom: 1px solid var(--rule); }
+			.age-label {
+				font-family: var(--font-display);
+				font-size: 1.25rem;
+				font-weight: 700;
+				color: var(--ink);
+				margin: 0;
+			}
+			.age-sub {
+				margin: 0.2em 0 0;
+				font-size: 0.78rem;
+				color: var(--ink-medium);
 				font-weight: 500;
+				letter-spacing: 0.02em;
 			}
-			.cta-link:hover {
-				background: var(--accent-dark);
+			.age-list { list-style: none; padding: 0; margin: 0; }
+			.age-list li {
+				font-size: 0.92rem;
+				line-height: 1.45;
+				padding: 0.6em 0;
+				border-bottom: 1px solid var(--rule-soft);
+			}
+			.age-list li:last-child { border-bottom: none; }
+			.age-list a {
+				color: var(--ink-soft);
+				text-decoration: none;
+				font-weight: 500;
+				display: -webkit-box;
+				-webkit-line-clamp: 2;
+				-webkit-box-orient: vertical;
+				overflow: hidden;
+			}
+			.age-list a:hover { color: var(--brick); }
+
+			/* ── Responsive ──────────────────────────────────────── */
+			@media (max-width: 900px) {
+				.lead-grid { grid-template-columns: 1fr; gap: var(--s-3); }
+				.lead-side { justify-content: flex-start; }
+				.folio { transform: rotate(-2deg); }
+				.two-col { grid-template-columns: 1fr; gap: var(--s-4); }
+				.two-col::after { display: none; }
+				.age-grid { grid-template-columns: repeat(2, 1fr); }
+				.section-title::before, .section-title::after { display: none; }
+			}
+			@media (max-width: 540px) {
+				.lead { padding: var(--s-4) 0 var(--s-3); }
+				.age-grid { grid-template-columns: 1fr; }
+				.cont-list li { grid-template-columns: 40px 1fr; gap: var(--s-2); }
+				.cont-num { font-size: 1.5rem; }
 			}
 		</style>
 	</body>

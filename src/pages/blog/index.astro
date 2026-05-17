@@ -1,114 +1,148 @@
 ---
-import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
 import BaseHead from '../../components/BaseHead.astro';
 import Footer from '../../components/Footer.astro';
-import FormattedDate from '../../components/FormattedDate.astro';
 import Header from '../../components/Header.astro';
+import FormattedDate from '../../components/FormattedDate.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../../consts';
 
 const posts = (await getCollection('blog')).sort(
 	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
+
+const ageLabel = (a: string) =>
+	a === '20-35' ? '20–35세' :
+	a === '35-55' ? '35–55세' :
+	a === '55+'   ? '55세 이상' : '전 세대';
 ---
 
 <!doctype html>
 <html lang="ko">
 	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-		<style>
-			main {
-				width: 960px;
-			}
-			ul {
-				display: flex;
-				flex-wrap: wrap;
-				gap: 2rem;
-				list-style-type: none;
-				margin: 0;
-				padding: 0;
-			}
-			ul li {
-				width: calc(50% - 1rem);
-			}
-			ul li * {
-				text-decoration: none;
-				transition: 0.2s ease;
-			}
-			ul li:first-child {
-				width: 100%;
-				margin-bottom: 1rem;
-				text-align: center;
-			}
-			ul li:first-child img {
-				width: 100%;
-			}
-			ul li:first-child .title {
-				font-size: 2.369rem;
-			}
-			ul li img {
-				margin-bottom: 0.5rem;
-				border-radius: 12px;
-			}
-			ul li a {
-				display: block;
-			}
-			.title {
-				margin: 0;
-				color: rgb(var(--black));
-				line-height: 1;
-			}
-			.date {
-				margin: 0;
-				color: rgb(var(--gray));
-			}
-			ul li a:hover h4,
-			ul li a:hover .date {
-				color: rgb(var(--accent));
-			}
-			ul a:hover img {
-				box-shadow: var(--box-shadow);
-			}
-			@media (max-width: 720px) {
-				ul {
-					gap: 0.5em;
-				}
-				ul li {
-					width: 100%;
-					text-align: center;
-				}
-				ul li:first-child {
-					margin-bottom: 0;
-				}
-				ul li:first-child .title {
-					font-size: 1.563em;
-				}
-			}
-		</style>
+		<BaseHead title={`전체 글 — ${SITE_TITLE}`} description={SITE_DESCRIPTION} />
 	</head>
 	<body>
 		<Header />
 		<main>
-			<section>
-				<ul>
-					{
-						posts.map((post) => (
-							<li>
-								<a href={`/blog/${post.id}/`}>
-									{post.data.heroImage && (
-										<Image width={720} height={360} src={post.data.heroImage} alt="" />
-									)}
-									<h4 class="title">{post.data.title}</h4>
-									<p class="date">
-										<FormattedDate date={post.data.pubDate} />
-									</p>
-								</a>
-							</li>
-						))
-					}
-				</ul>
-			</section>
+			<div class="container">
+				<header class="page-head">
+					<p class="eyebrow">아카이브 · ARCHIVE</p>
+					<h1 class="page-title">전체 글</h1>
+					<p class="page-sub">미국 스토리에 실린 모든 기사 — 가장 최근 글부터.</p>
+				</header>
+
+				<ol class="archive">
+					{posts.map((post, i) => (
+						<li class="archive-item">
+							<div class="num-col">
+								<span class="num">{String(posts.length - i).padStart(3, '0')}</span>
+							</div>
+							<a href={`/blog/${post.id}/`} class="entry">
+								<div class="entry-head">
+									<span class="age-pill">{ageLabel(post.data.ageGroup)}</span>
+									<FormattedDate date={post.data.pubDate} />
+								</div>
+								<h2>{post.data.title}</h2>
+								<p class="excerpt">{post.data.description}</p>
+								{post.data.tags.length > 0 && (
+									<div class="tags">
+										{post.data.tags.slice(0, 5).map(t => <span class="tag">#{t}</span>)}
+									</div>
+								)}
+							</a>
+						</li>
+					))}
+				</ol>
+			</div>
 		</main>
 		<Footer />
+
+		<style>
+			.page-head {
+				text-align: center;
+				padding: var(--s-6) 0 var(--s-4);
+				border-bottom: 1px solid var(--ink);
+				margin-bottom: var(--s-4);
+			}
+			.page-head .eyebrow { margin: 0 0 var(--s-2); }
+			.page-title {
+				font-family: var(--font-display);
+				font-size: clamp(3rem, 6vw, 4.5rem);
+				margin: 0 0 var(--s-2);
+				letter-spacing: -0.03em;
+			}
+			.page-sub {
+				color: var(--ink-light);
+				font-size: var(--text-base);
+				max-width: 32em;
+				margin: 0 auto;
+			}
+			.archive { list-style: none; padding: 0; margin: 0; }
+			.archive-item {
+				display: grid;
+				grid-template-columns: 90px 1fr;
+				gap: var(--s-4);
+				padding: var(--s-4) 0;
+				border-bottom: 1px solid var(--rule);
+			}
+			.archive-item:first-child { border-top: 1px solid var(--rule); }
+			.num-col { padding-top: 0.4em; }
+			.num {
+				font-family: var(--font-display);
+				font-size: 1.5rem;
+				color: var(--brick);
+				font-weight: 700;
+				letter-spacing: -0.02em;
+				font-feature-settings: "tnum";
+			}
+			.entry { text-decoration: none; color: inherit; display: block; }
+			.entry-head {
+				display: flex;
+				gap: var(--s-1);
+				align-items: center;
+				font-size: var(--text-sm);
+				color: var(--ink-light);
+				margin-bottom: var(--s-1);
+			}
+			.age-pill {
+				display: inline-block;
+				font-size: 0.68rem;
+				font-weight: 600;
+				padding: 0.15em 0.55em;
+				background: var(--ink);
+				color: var(--paper);
+				letter-spacing: 0.04em;
+				border-radius: 2px;
+			}
+			.entry h2 {
+				font-family: var(--font-display);
+				font-size: clamp(1.4rem, 2.6vw, 2rem);
+				font-weight: 700;
+				line-height: 1.2;
+				margin: 0 0 var(--s-1);
+				color: var(--ink);
+				letter-spacing: -0.02em;
+				transition: color var(--duration) var(--ease-out);
+			}
+			.entry:hover h2 { color: var(--brick); }
+			.excerpt {
+				font-size: 0.95rem;
+				color: var(--ink-medium);
+				line-height: 1.7;
+				margin: 0 0 var(--s-2);
+				max-width: 50em;
+				display: -webkit-box;
+				-webkit-line-clamp: 2;
+				-webkit-box-orient: vertical;
+				overflow: hidden;
+			}
+			.tags { display: flex; gap: 0.6em; flex-wrap: wrap; }
+			.tag { font-size: 0.78rem; color: var(--ink-light); }
+
+			@media (max-width: 720px) {
+				.archive-item { grid-template-columns: 50px 1fr; gap: var(--s-2); }
+				.num { font-size: 1.1rem; }
+			}
+		</style>
 	</body>
 </html>
