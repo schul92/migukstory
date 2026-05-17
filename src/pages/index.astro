@@ -37,45 +37,34 @@ const koDate = (d: Date) =>
 		<Header />
 
 		<main>
-			<!-- Issue intro strip -->
-			<section class="issue-intro">
-				<div class="container">
-					<p class="issue-line">
-						<span class="dot">●</span>
-						이번 호 · 한국계 미국인을 위한 이번 주 가장 중요한 뉴스 — 1차 출처에서 직접 확인합니다.
-					</p>
-				</div>
-			</section>
-
-			<!-- LEAD ARTICLE (oversized magazine cover style) -->
-			{lead && (
-				<section class="lead">
-					<div class="container lead-grid">
-						<div class="lead-text">
+			<!-- LEAD ARTICLE -->
+			{lead && (() => {
+				const leadCat = (CATEGORIES as any)[lead.data.category];
+				return (
+					<section class="lead">
+						<div class="container lead-inner">
 							<p class="eyebrow">오늘의 헤드라인</p>
 							<h1 class="lead-title">
 								<a href={`/blog/${lead.id}/`}>{lead.data.title}</a>
 							</h1>
 							<p class="lead-desc">{lead.data.description}</p>
 							<div class="lead-meta">
-								<FormattedDate date={lead.data.pubDate} />
+								{leadCat && (
+									<a class="cat-badge" href={`/category/${leadCat.slug}`} style={`background: ${leadCat.color}`}>
+										{leadCat.label}
+									</a>
+								)}
 								<span class="dot-sep">·</span>
-								<span class="age-pill">{lead.data.ageGroup}</span>
-								{lead.data.tags.slice(0, 3).map(t => (
+								<FormattedDate date={lead.data.pubDate} />
+								{lead.data.tags.slice(0, 3).map((t: string) => (
 									<span class="tag-inline">#{t}</span>
 								))}
 							</div>
 							<a class="read-link" href={`/blog/${lead.id}/`}>전문 읽기 →</a>
 						</div>
-						<div class="lead-side">
-							<div class="folio">
-								<span class="folio-no">No. {String(posts.length).padStart(3, '0')}</span>
-								<span class="folio-label">이번 호의 글</span>
-							</div>
-						</div>
-					</div>
-				</section>
-			)}
+					</section>
+				);
+			})()}
 
 			<div class="container divider-mark"></div>
 
@@ -179,38 +168,16 @@ const koDate = (d: Date) =>
 		<style>
 			main { padding-bottom: var(--s-6); }
 
-			/* ── Issue intro strip ────────────────────────────────── */
-			.issue-intro {
-				background: var(--cream);
-				border-bottom: 1px solid var(--rule);
-				padding: var(--s-1) 0;
-			}
-			.issue-line {
-				margin: 0;
-				font-size: var(--text-sm);
-				color: var(--ink-soft);
-				font-weight: 500;
-				letter-spacing: -0.005em;
-			}
-			.issue-line .dot {
-				color: var(--brick);
-				font-size: 0.6em;
-				vertical-align: middle;
-				margin-right: 0.4em;
-			}
-
 			/* ── Lead article ─────────────────────────────────────── */
 			.lead {
 				padding: var(--s-6) 0 var(--s-5);
 				border-bottom: 1px solid var(--rule);
 			}
-			.lead-grid {
-				display: grid;
-				grid-template-columns: 1fr 280px;
-				gap: var(--s-5);
-				align-items: start;
+			.lead-inner {
+				max-width: 900px;
+				margin: 0 auto;
 			}
-			.lead-text .eyebrow { margin: 0 0 var(--s-2); }
+			.lead-inner .eyebrow { margin: 0 0 var(--s-2); }
 			.lead-title {
 				font-family: var(--font-display);
 				font-size: clamp(2.5rem, 5.5vw, 4.25rem);
@@ -259,49 +226,18 @@ const koDate = (d: Date) =>
 			}
 			.read-link:hover { color: var(--brick-deep); border-bottom-color: var(--brick-deep); }
 
-			/* Side folio (issue number block) */
-			.lead-side {
-				display: flex;
-				justify-content: flex-end;
-			}
-			.folio {
-				padding: var(--s-3);
-				border: 1px solid var(--ink);
-				background: var(--paper-soft);
-				text-align: center;
-				font-family: var(--font-display);
-				transform: rotate(-1deg);
-			}
-			.folio-no {
-				display: block;
-				font-size: 2.75rem;
-				font-weight: 700;
-				color: var(--brick);
-				line-height: 1;
-				letter-spacing: -0.02em;
-			}
-			.folio-label {
-				display: block;
-				margin-top: 0.5rem;
-				font-family: var(--font-body);
-				font-size: 0.75rem;
-				text-transform: uppercase;
-				letter-spacing: 0.15em;
-				color: var(--ink-medium);
-			}
-
 			/* ── Meta utility pieces ──────────────────────────────── */
-			.age-pill {
+			.cat-badge {
 				display: inline-block;
 				font-size: 0.7rem;
-				font-weight: 600;
-				padding: 0.15em 0.55em;
-				background: var(--ink);
+				font-weight: 700;
+				padding: 0.18em 0.6em;
 				color: var(--paper);
 				letter-spacing: 0.04em;
 				border-radius: 2px;
+				text-decoration: none;
 			}
-			.age-pill.mini { font-size: 0.62rem; padding: 0.1em 0.45em; }
+			.cat-badge:hover { opacity: 0.85; }
 			.tag-inline {
 				font-size: 0.78rem;
 				color: var(--ink-light);
@@ -567,9 +503,6 @@ const koDate = (d: Date) =>
 
 			/* ── Responsive ──────────────────────────────────────── */
 			@media (max-width: 900px) {
-				.lead-grid { grid-template-columns: 1fr; gap: var(--s-3); }
-				.lead-side { justify-content: flex-start; }
-				.folio { transform: rotate(-2deg); }
 				.two-col { grid-template-columns: 1fr; gap: var(--s-4); }
 				.two-col::after { display: none; }
 				.cat-grid { grid-template-columns: repeat(2, 1fr); }

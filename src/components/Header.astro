@@ -1,28 +1,24 @@
 ---
-import { SITE_TITLE, ISSUE_NUMBER } from '../consts';
-const today = new Date();
-const dateStamp = `${today.getFullYear()}.${String(today.getMonth() + 1).padStart(2, '0')}.${String(today.getDate()).padStart(2, '0')}.`;
+import { SITE_TITLE, SITE_TAGLINE } from '../consts';
 ---
 
 <header class="masthead">
 	<div class="utility-strip">
 		<div class="container utility-inner">
-			<span class="utility-meta">VOL. 01 · NO. {ISSUE_NUMBER} · {dateStamp}</span>
-			<span class="utility-spacer">·</span>
-			<a href="mailto:editor@migukstory.com" class="utility-cta">✉ 문의·제보: editor@migukstory.com</a>
+			<a href="mailto:editor@migukstory.com" class="utility-cta">✉ 문의·제보 — editor@migukstory.com</a>
 		</div>
 	</div>
 
 	<div class="container masthead-inner">
 		<div class="meta-left">
-			<span class="issue">SINCE 2026 · 한국계 미국인을 위한 검증된 가이드</span>
+			<span class="tagline">{SITE_TAGLINE}</span>
 		</div>
 		<a href="/" class="brand">
 			<span class="brand-ko">{SITE_TITLE}</span>
 			<span class="brand-en">MIGUK&nbsp;STORY</span>
 		</a>
 		<div class="meta-right">
-			<a href="/contact" class="contact-pill">문의 →</a>
+			<a href="/contact" class="contact-pill">문의하기 →</a>
 		</div>
 	</div>
 
@@ -68,15 +64,20 @@ const dateStamp = `${today.getFullYear()}.${String(today.getMonth() + 1).padStar
 		gap: 0.7em;
 		flex-wrap: wrap;
 	}
-	.utility-meta { color: var(--ink-faint); }
-	.utility-spacer { color: var(--ink-medium); }
 	.utility-cta {
 		color: var(--paper);
 		text-decoration: none;
-		font-weight: 600;
-		font-family: var(--font-mono);
+		font-weight: 500;
+		letter-spacing: 0.04em;
 	}
 	.utility-cta:hover { color: var(--brick-soft); }
+	.tagline {
+		font-family: var(--font-body);
+		font-size: 0.78rem;
+		color: var(--ink-medium);
+		letter-spacing: 0;
+		text-transform: none;
+	}
 
 	.meta-left, .meta-right {
 		font-family: var(--font-body);
