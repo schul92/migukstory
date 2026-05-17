@@ -1,77 +1,66 @@
-# Astro Starter Kit: Blog
+# 미국 스토리 — Korean Immigrant Guide
 
-```sh
-npm create astro@latest -- --template blog
+Production site: **https://migukstory.com**
+
+Static blog for Korean-American immigrants — informative posts on immigration, taxes, healthcare, and Korean diaspora culture, sourced from legitimate news (USCIS, IRS, NPR, CNN, Korea Times, JoongAng, etc.).
+
+## Stack
+
+- **Framework:** [Astro](https://astro.build) 6.x — static site generator with content collections
+- **Hosting:** [Cloudflare Pages](https://pages.cloudflare.com/) (free, global CDN)
+- **Domain:** [migukstory.com](https://migukstory.com) (Cloudflare Registrar)
+- **Content:** Markdown files in `src/content/blog/`
+- **Diagrams:** [Mermaid.js](https://mermaid.js.org/) (client-side, lazy-loaded only when needed)
+- **Fonts:** Noto Sans KR + Noto Serif KR via Google Fonts (preloaded)
+- **Sitemap:** Auto-generated via `@astrojs/sitemap`
+- **RSS:** `/rss.xml`
+
+## Local development
+
+Requires Node.js >= 22.12
+
+```bash
+npm install
+npm run dev        # http://localhost:4321
+npm run build      # outputs to dist/
+npm run preview    # preview built site
 ```
 
-<!-- ASTRO:REMOVE:START -->
+## Add a new post
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/blog)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/blog)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/blog/devcontainer.json)
+1. Create `src/content/blog/your-slug-here.md` with frontmatter:
 
-<!-- ASTRO:REMOVE:END -->
-
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
-
-<!-- ASTRO:REMOVE:START -->
-
-![blog](https://github.com/withastro/astro/assets/2244813/ff10799f-a816-4703-b967-c78997e8323d)
-
-<!-- ASTRO:REMOVE:END -->
-
-Features:
-
-- ✅ Minimal styling (make it your own!)
-- ✅ 100/100 Lighthouse performance
-- ✅ SEO-friendly with canonical URLs and Open Graph data
-- ✅ Sitemap support
-- ✅ RSS Feed support
-- ✅ Markdown & MDX support
-
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-├── public/
-├── src/
-│   ├── assets/
-│   ├── components/
-│   ├── content/
-│   ├── layouts/
-│   └── pages/
-├── astro.config.mjs
-├── README.md
-├── package.json
-└── tsconfig.json
+```yaml
+---
+title: '한국어 제목'
+description: '메타 설명 120-155자'
+pubDate: '2026-05-17'
+tags: ['태그1', '태그2']
+ageGroup: '20-35' | '35-55' | '55+' | 'all'
+---
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+2. Write Korean markdown. Use Mermaid for diagrams:
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+  ````markdown
+  ```mermaid
+  flowchart LR
+      A[시작] --> B[다음]
+  ```
+  ````
 
-The `src/content/` directory contains "collections" of related Markdown and MDX documents. Use `getCollection()` to retrieve posts from `src/content/blog/`, and type-check your frontmatter using an optional schema. See [Astro's Content Collections docs](https://docs.astro.build/en/guides/content-collections/) to learn more.
+3. `git commit -am "add: your-slug-here"` → `git push` → Cloudflare auto-builds.
 
-Any static assets, like images, can be placed in the `public/` directory.
+## Manual deploy
 
-## 🧞 Commands
+```bash
+# Requires CLOUDFLARE_API_TOKEN with Pages:Edit + Account:Read
+npx wrangler pages deploy dist --project-name=migukstory --branch=main
+```
 
-All commands are run from the root of the project, from a terminal:
+## Editorial principles
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Check out [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
-
-## Credit
-
-This theme is based off of the lovely [Bear Blog](https://github.com/HermanMartinus/bearblog/).
+- **Source every claim** — government (USCIS, IRS, SSA), major news (NYT, NPR, CNN, Korea Times, JoongAng)
+- **No legal/tax/medical advice** — recommend "전문가 상담 권장"
+- **AI-assisted, human-verified** — drafts may be AI-generated but every fact is checked
+- **Disclose sponsorships** — mark `#광고`
