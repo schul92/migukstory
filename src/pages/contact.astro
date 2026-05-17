@@ -40,15 +40,15 @@ import { SITE_TITLE } from '../consts';
 				<section class="form-section">
 					<h2 class="section-h">메시지 보내기</h2>
 					<p class="section-sub">이메일이 불편하시면 아래 양식으로 문의해 주세요. 입력하신 이메일로 답변드립니다.</p>
-					<form class="contact-form" id="contact-form" onsubmit="return openMailto(event)">
+					<form class="contact-form" id="contact-form" action="mailto:editor@migukstory.com" method="post" enctype="text/plain" onsubmit="return openMailto(event)">
 						<div class="row">
 							<div class="field">
 								<label for="name">이름 *</label>
-								<input id="name" name="name" type="text" required />
+								<input id="name" name="name" type="text" placeholder="홍길동" autocomplete="name" required />
 							</div>
 							<div class="field">
 								<label for="email">답신받을 이메일 *</label>
-								<input id="email" name="email" type="email" required />
+								<input id="email" name="email" type="email" placeholder="name@example.com" autocomplete="email" required />
 							</div>
 						</div>
 						<div class="field">
@@ -68,11 +68,15 @@ import { SITE_TITLE } from '../consts';
 						</div>
 						<div class="field">
 							<label for="subject">제목 *</label>
-							<input id="subject" name="subject" type="text" required />
+							<input id="subject" name="subject" type="text" placeholder="간단한 제목 한 줄" required />
 						</div>
 						<div class="field">
 							<label for="message">내용 *</label>
-							<textarea id="message" name="message" rows="7" required></textarea>
+							<textarea id="message" name="message" rows="7" placeholder="문의 내용을 자유롭게 적어 주세요. 답신은 입력하신 이메일로 보내드립니다." required></textarea>
+							<!-- Honeypot for bots -->
+							<label style="position:absolute;left:-9999px;top:auto;" aria-hidden="true">
+								Leave this empty: <input type="text" name="website" tabindex="-1" autocomplete="off" />
+							</label>
 						</div>
 						<button type="submit" class="btn-primary">이메일 보내기</button>
 						<p class="form-note">
@@ -85,18 +89,17 @@ import { SITE_TITLE } from '../consts';
 						function openMailto(e) {
 							e.preventDefault();
 							const f = e.target;
-							const name = encodeURIComponent(f.name.value);
-							const email = encodeURIComponent(f.email.value);
-							const type = encodeURIComponent(f.type.value);
-							const subject = encodeURIComponent(`[${f.type.value}] ${f.subject.value}`);
+							// Honeypot — bots fill hidden 'website' field; humans don't see it
+							if (f.website && f.website.value) return false;
+							const subject = encodeURIComponent('[' + f.type.value + '] ' + f.subject.value);
 							const body = encodeURIComponent(
-								`보낸 사람: ${f.name.value}\n` +
-								`답신 이메일: ${f.email.value}\n` +
-								`문의 유형: ${f.type.value}\n\n` +
-								`────────\n\n` +
+								'보낸 사람: ' + f.name.value + '\n' +
+								'답신 이메일: ' + f.email.value + '\n' +
+								'문의 유형: ' + f.type.value + '\n\n' +
+								'────────\n\n' +
 								f.message.value
 							);
-							window.location.href = `mailto:editor@migukstory.com?subject=${subject}&body=${body}`;
+							window.location.href = 'mailto:editor@migukstory.com?subject=' + subject + '&body=' + body;
 							return false;
 						}
 					</script>

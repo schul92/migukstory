@@ -12,10 +12,12 @@ const today = new Date();
 				<span class="brand-en">MIGUK&nbsp;STORY</span>
 			</div>
 			<p class="tagline">{SITE_TAGLINE}</p>
+			<p class="hint">제보·편집·광고·정정 — 모두 한 곳으로 받습니다.</p>
+			<a class="email-link" href="mailto:editor@migukstory.com">editor@migukstory.com</a>
 		</div>
 
 		<div class="col">
-			<h4 class="col-title">섹션</h4>
+			<h4 class="col-title">카테고리</h4>
 			<ul>
 				<li><a href="/blog">전체 글</a></li>
 				<li><a href="/category/immigration">이민·비자</a></li>
@@ -23,27 +25,20 @@ const today = new Date();
 				<li><a href="/category/health">건강·보험</a></li>
 				<li><a href="/category/education">교육·자녀</a></li>
 				<li><a href="/category/retirement">은퇴·연금</a></li>
-				<li><a href="/category/community">한인 커뮤니티</a></li>
+				<li><a href="/category/real-estate">부동산·주거</a></li>
 			</ul>
 		</div>
 
 		<div class="col">
-			<h4 class="col-title">문의</h4>
+			<h4 class="col-title">사이트</h4>
 			<ul>
-				<li><a href="/contact">문의하기</a></li>
-				<li><a href="mailto:editor@migukstory.com" class="email-link">editor@migukstory.com</a></li>
-			</ul>
-			<p class="hint">제보·편집·광고·정정 — 모두 한 곳으로 받습니다.</p>
-		</div>
-
-		<div class="col">
-			<h4 class="col-title">정보</h4>
-			<ul>
-				<li><a href="/about">미국 스토리 소개</a></li>
-				<li><a href="/privacy">개인정보처리방침</a></li>
+				<li><a href="/first-30-days">도착 첫 30일</a></li>
+				<li><a href="/topics">전체 토픽</a></li>
+				<li><a href="/pros">추천 전문가</a></li>
+				<li><a href="/contribute">칼럼 기고</a></li>
+				<li><a href="/about">소개</a></li>
 				<li><a href="/disclosure">광고·제휴 고지</a></li>
-				<li><a href="/rss.xml">RSS 피드</a></li>
-				<li><a href="/sitemap-index.xml">사이트맵</a></li>
+				<li><a href="/privacy">개인정보</a></li>
 			</ul>
 		</div>
 
@@ -51,12 +46,15 @@ const today = new Date();
 			<h4 class="col-title">발행 정보</h4>
 			<p class="publisher-mini">
 				운영: <strong>ZOE STUDIO LLC</strong><br/>
-				이메일: <a href="mailto:editor@migukstory.com">editor@migukstory.com</a><br/>
 				전화: +1 (201) 962-1702<br/>
 				운영시간: 평일 9–18시 ET
 			</p>
 			<p class="disclaimer-mini">
 				본 사이트의 정보는 일반 정보 제공 목적이며, 법률·세무·의료 자문이 아닙니다.
+				구체적 사안은 면허 있는 전문가와 상담하시기 바랍니다.
+			</p>
+			<p class="feed-links">
+				<a href="/rss.xml">RSS</a> · <a href="/sitemap-index.xml">Sitemap</a>
 			</p>
 		</div>
 	</div>
@@ -78,11 +76,12 @@ const today = new Date();
 	}
 	.footer-grid {
 		display: grid;
-		grid-template-columns: 1.3fr 1fr 1fr 1fr 1.4fr;
+		grid-template-columns: 1.4fr 1fr 1fr 1.4fr;
 		gap: var(--s-4);
-		padding-bottom: var(--s-4);
+		padding-bottom: var(--s-3);
 		border-bottom: 1px solid var(--rule);
 	}
+	/* Merge sections into Brand column on desktop — fewer link buckets, lighter visual weight */
 	.publisher-mini { font-size: 0.78rem; line-height: 1.7; color: var(--ink-medium); margin: 0 0 var(--s-1); }
 	.publisher-mini strong { color: var(--ink); }
 	.publisher-mini a { color: var(--brick); text-decoration: none; border-bottom: 1px solid var(--brick-soft); }
@@ -155,11 +154,13 @@ const today = new Date();
 	}
 	.published { color: var(--brick); }
 
+	.feed-links { font-size: 0.7rem; margin: 0.5em 0 0; color: var(--ink-light); }
+	.feed-links a { color: var(--ink-medium); text-decoration: none; border-bottom: 1px solid var(--rule); }
+	.feed-links a:hover { color: var(--brick); border-color: currentColor; }
+	.col-brand .email-link { display: inline-block; margin-top: 0.4em; }
+
 	@media (max-width: 1100px) {
-		.footer-grid { grid-template-columns: 1fr 1fr 1fr; }
-	}
-	@media (max-width: 720px) {
-		.footer-grid { grid-template-columns: 1fr 1fr; }
+		.footer-grid { grid-template-columns: 1fr 1fr; gap: var(--s-3); }
 	}
 	@media (max-width: 540px) {
 		.footer-grid { grid-template-columns: 1fr; }

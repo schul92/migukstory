@@ -3,7 +3,6 @@ import '../styles/global.css';
 import type { ImageMetadata } from 'astro';
 import FallbackImage from '../assets/blog-placeholder-1.jpg';
 import { SITE_TITLE, SITE_AUTHOR, SITE_URL } from '../consts';
-import { Font } from 'astro:assets';
 
 interface Props {
 	title: string;
@@ -125,27 +124,31 @@ const howToSchema = howTo ? {
 />
 <meta name="generator" content={Astro.generator} />
 
-<!-- Display serif via Astro fonts (self-hosted, preloaded) -->
-<Font cssVariable="--font-display" preload />
-
 <!--
-  Body font strategy:
-  System Korean fonts (Apple SD Gothic Neo / Malgun Gothic) render immediately.
-  Pretendard Variable loads async via media-trick + onload swap.
-  Result: instant LCP on system font, swap-in to Pretendard when ready.
+  Font loading strategy (perf-tuned):
+  Body  = Pretendard Variable from jsdelivr CDN (Korean dynamic subset, async)
+  Display = Gowun Batang from Google Fonts (async, smart subset)
+  Both load with media=print → onload trick to avoid render-blocking.
+  System Korean fonts (Apple SD Gothic Neo / Malgun Gothic) render first.
 -->
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link
   rel="stylesheet"
   href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
   media="print"
   onload="this.media='all'; this.onload=null"
 />
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&display=swap"
+  media="print"
+  onload="this.media='all'; this.onload=null"
+/>
 <noscript>
-  <link
-    rel="stylesheet"
-    href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
-  />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&display=swap" />
 </noscript>
 
 <!-- Mermaid diagram loader (lazy, only when post has diagrams) -->

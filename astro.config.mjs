@@ -1,7 +1,7 @@
 // @ts-check
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
-import { defineConfig, fontProviders } from 'astro/config';
+import { defineConfig } from 'astro/config';
 
 // https://astro.build/config
 export default defineConfig({
@@ -15,14 +15,8 @@ export default defineConfig({
 	markdown: {
 		shikiConfig: { theme: 'github-light', wrap: true },
 	},
-	fonts: [
-		{
-			provider: fontProviders.google(),
-			name: 'Gowun Batang',
-			cssVariable: '--font-display',
-			fallbacks: ['Georgia', 'serif'],
-			weights: [400, 700],
-			styles: ['normal'],
-		},
-	],
+	// Note: Gowun Batang is loaded via direct Google Fonts CSS link in BaseHead
+	// (with display=swap). Astro's font subsetter aggressively splits Korean
+	// fonts into 180+ unicode-range subset files which bloats dist by 3MB.
+	// Direct Google CSS uses their smarter dynamic subsetter (~5-10 files).
 });

@@ -1,0 +1,159 @@
+---
+/**
+ * Auto-generated table of contents.
+ *
+ * Client-side script scans the .prose container for H2 elements after
+ * Markdown renders, builds nested <a> list with id-anchors, and injects.
+ * Korean long-form readers scan-first → strong scroll affordance for
+ * 1,500-2,500자 articles.
+ *
+ * Renders as collapsible <details> by default; opens on desktop.
+ */
+---
+
+<details class="toc" open id="article-toc">
+	<summary>
+		<span class="toc-label">목차</span>
+		<span class="toc-chev" aria-hidden="true">›</span>
+	</summary>
+	<nav aria-label="문서 목차">
+		<ol id="toc-list">
+			<!-- populated by inline script after content renders -->
+		</ol>
+	</nav>
+</details>
+
+<script is:inline>
+	(function () {
+		document.addEventListener('DOMContentLoaded', function () {
+			const prose = document.querySelector('.prose');
+			const list = document.getElementById('toc-list');
+			const wrap = document.getElementById('article-toc');
+			if (!prose || !list || !wrap) return;
+			const heads = prose.querySelectorAll('h2, h3');
+			if (heads.length < 3) {
+				wrap.style.display = 'none';
+				return;
+			}
+			let html = '';
+			heads.forEach(function (h, i) {
+				if (!h.id) {
+					h.id = 'sec-' + (i + 1) + '-' + (h.textContent || '')
+						.toLowerCase()
+						.replace(/[^a-z0-9가-힣]+/g, '-')
+						.replace(/^-|-$/g, '')
+						.slice(0, 40);
+				}
+				const lvl = h.tagName === 'H3' ? 'lvl-3' : 'lvl-2';
+				html += '<li class="' + lvl + '"><a href="#' + h.id + '">' + h.textContent + '</a></li>';
+			});
+			list.innerHTML = html;
+
+			// Active-section highlighting on scroll
+			const links = list.querySelectorAll('a');
+			const ioMap = {};
+			links.forEach(function (a) {
+				const id = a.getAttribute('href').slice(1);
+				ioMap[id] = a;
+			});
+			const io = new IntersectionObserver(function (entries) {
+				entries.forEach(function (entry) {
+					const a = ioMap[entry.target.id];
+					if (!a) return;
+					if (entry.isIntersecting) {
+						links.forEach(function (l) { l.classList.remove('active'); });
+						a.classList.add('active');
+					}
+				});
+			}, { rootMargin: '-20% 0% -70% 0%' });
+			heads.forEach(function (h) { io.observe(h); });
+
+			// Close TOC on mobile by default
+			if (window.matchMedia('(max-width: 720px)').matches) {
+				wrap.open = false;
+			}
+		});
+	})();
+</script>
+
+<style>
+	.toc {
+		max-width: var(--reading-width);
+		margin: var(--s-3) auto var(--s-4);
+		padding: var(--s-2) var(--s-3);
+		background: var(--paper-soft);
+		border: 1px solid var(--rule);
+		border-left: 3px solid var(--brick);
+		border-radius: 0 4px 4px 0;
+		font-family: var(--font-body);
+	}
+	.toc summary {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		cursor: pointer;
+		list-style: none;
+		font-size: 0.8rem;
+		font-weight: 700;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		color: var(--brick);
+		user-select: none;
+	}
+	.toc summary::-webkit-details-marker { display: none; }
+	.toc-chev {
+		font-size: 1.2rem;
+		line-height: 1;
+		transition: transform var(--duration) var(--ease-out);
+		color: var(--ink-light);
+	}
+	.toc[open] .toc-chev { transform: rotate(90deg); color: var(--brick); }
+
+	.toc nav {
+		margin-top: var(--s-2);
+		padding-top: var(--s-2);
+		border-top: 1px dotted var(--rule);
+	}
+	#toc-list {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		counter-reset: toc;
+	}
+	#toc-list li {
+		display: block;
+		font-size: 0.88rem;
+		line-height: 1.5;
+		margin: 0;
+	}
+	#toc-list li.lvl-2 {
+		counter-increment: toc;
+		padding: 0.35em 0;
+		border-bottom: 1px dotted var(--rule);
+	}
+	#toc-list li.lvl-2::before {
+		content: counter(toc, decimal-leading-zero) ".";
+		font-family: var(--font-display);
+		font-weight: 700;
+		color: var(--brick);
+		font-size: 0.85em;
+		margin-right: 0.6em;
+		font-feature-settings: "tnum";
+	}
+	#toc-list li.lvl-3 {
+		padding: 0.25em 0 0.25em 2.2em;
+		font-size: 0.82rem;
+		color: var(--ink-light);
+	}
+	#toc-list li:last-child { border-bottom: none; }
+	#toc-list a {
+		color: var(--ink-medium);
+		text-decoration: none;
+		transition: color var(--duration) var(--ease-out);
+	}
+	#toc-list a:hover { color: var(--brick); }
+	#toc-list a.active {
+		color: var(--brick);
+		font-weight: 600;
+	}
+</style>

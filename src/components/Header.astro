@@ -174,16 +174,33 @@ import { SITE_TITLE, SITE_TAGLINE } from '../consts';
 	}
 
 	@media (max-width: 720px) {
+		/* Mobile slim: utility-strip hidden (CTA lives in nav), brand row tightened,
+		   nav becomes horizontal scroll. Target header <120px so H1 lands above fold. */
+		.utility-strip { display: none; }
 		.masthead-inner {
-			grid-template-columns: 1fr;
-			text-align: center;
-			gap: var(--s-1);
+			grid-template-columns: 1fr auto;
+			text-align: left;
+			gap: var(--s-2);
+			padding: var(--s-1) var(--s-2);
 		}
-		.meta-left, .meta-right { text-align: center; font-size: 0.65rem; }
-		.meta-right { display: flex; justify-content: center; }
-		.brand-ko { font-size: 1.75rem; }
-		.nav-inner { gap: var(--s-2); font-size: 0.8rem; }
-		.utility-inner { gap: 0.4em; font-size: 0.65rem; }
-		.utility-spacer { display: none; }
+		.meta-left { display: none; }
+		.meta-right { text-align: right; font-size: 0.65rem; }
+		.brand { align-items: flex-start; }
+		.brand-ko { font-size: 1.4rem; line-height: 1; }
+		.brand-en { font-size: 0.5rem; letter-spacing: 0.3em; }
+		.contact-pill { font-size: 0.65rem; padding: 0.3em 0.6em; }
+		.primary-nav { border-top: 1px solid var(--rule); }
+		.nav-inner {
+			gap: var(--s-2);
+			font-size: 0.78rem;
+			padding: 0.4em var(--s-2);
+			flex-wrap: nowrap;
+			overflow-x: auto;
+			-webkit-overflow-scrolling: touch;
+			scrollbar-width: none;
+			justify-content: flex-start;
+		}
+		.nav-inner::-webkit-scrollbar { display: none; }
+		.nav-inner a { white-space: nowrap; padding: 0.25em 0; }
 	}
 </style>

@@ -11,6 +11,7 @@ import NewsletterSignup from '../components/NewsletterSignup.astro';
 import SocialShare from '../components/SocialShare.astro';
 import RelatedPosts from '../components/RelatedPosts.astro';
 import ArticleCTA from '../components/ArticleCTA.astro';
+import TableOfContents from '../components/TableOfContents.astro';
 import Comments from '../components/Comments.astro';
 import { SITE_AUTHOR, SITE_URL } from '../consts';
 import { estimateReadingTime } from '../utils/readingTime';
@@ -119,6 +120,11 @@ const breadcrumbs = [
 
 				<!-- ── Ad slot: header (above article) ──────────────────────── -->
 				<AdSlot position="header" />
+
+				<!-- ── Auto-generated table of contents ─────────────────────── -->
+				<div class="container">
+					<TableOfContents />
+				</div>
 
 				<!-- ── Article body ─────────────────────────────────────────── -->
 				<div class="container">
