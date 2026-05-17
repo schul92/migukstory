@@ -1,0 +1,149 @@
+---
+/**
+ * End-of-article CTA — routes high-intent readers to /pros directory.
+ *
+ * Modeled on the multi-channel CTA stack that Korean-American law firm /
+ * CPA sites (taeyangtax.com, righttaxservice.com, pauljoocpa.com) use to
+ * convert info-page readers into consultation leads. We aren't a service
+ * provider — we route to sponsored partners in /pros.
+ *
+ * Vertical-aware: pick a CTA framing based on the article's category.
+ */
+
+interface Props {
+	category?: string;
+}
+
+const { category } = Astro.props;
+
+const ctaByCategory: Record<string, { eyebrow: string; headline: string; body: string; href: string; cta: string }> = {
+	immigration: {
+		eyebrow: '이민 · 비자',
+		headline: '본인 케이스가 복잡하다면 변호사 상담이 가장 빠른 길입니다',
+		body: '비자 거절 이력, 복수 신분 변경, 가족 동시 신청 등 표준 케이스를 벗어나면 USCIS 답변 한 줄에 1년이 갈리기도 합니다. 한국어로 상담 가능한 한인 이민 변호사를 분야별로 정리한 디렉토리를 확인해 보세요.',
+		href: '/pros#immigration',
+		cta: '한인 이민 변호사 디렉토리 →',
+	},
+	tax: {
+		eyebrow: '세금 · 재테크',
+		headline: '한미 양국 신고는 한국어 가능한 CPA가 가장 효율적입니다',
+		body: 'FBAR, Form 8938, Form 3520, 한국 부동산 양도, 한미 조세조약 적용 — 미국 일반 CPA로는 까다로운 영역입니다. 한미 양국 세무를 다루는 한인 CPA를 분야별로 안내합니다.',
+		href: '/pros#cpa',
+		cta: '한인 세무사 · CPA 디렉토리 →',
+	},
+	'real-estate': {
+		eyebrow: '부동산 · 모기지',
+		headline: '첫 주택 구매는 한국어 가능한 리얼터와 모기지 전문가가 결정합니다',
+		body: '한국 송금 다운페이먼트, 비영주권자 융자, 한인 밀집 지역 매물 — 한국어로 디테일을 챙길 수 있는 한인 전문가가 시간을 가장 많이 아껴줍니다.',
+		href: '/pros#realtor',
+		cta: '한인 리얼터 · 모기지 디렉토리 →',
+	},
+	health: {
+		eyebrow: '건강 · 보험',
+		headline: '보험 선택은 한 번 잘못하면 1년 동안 갈아탈 수 없습니다',
+		body: 'ACA(오바마케어), 메디케어, Medicaid, 그룹보험 — 한인 가족 상황에 맞는 보험은 한국어로 상담 가능한 보험 에이전트가 가장 명료하게 안내합니다.',
+		href: '/pros#insurance',
+		cta: '한인 보험 에이전트 디렉토리 →',
+	},
+	retirement: {
+		eyebrow: '은퇴 · 연금',
+		headline: '한미 양국 연금·자산 설계는 전문가 상담이 안전합니다',
+		body: '소셜시큐리티, 401(k), IRA, 한국 국민연금 합산, 한국 부동산 처분 — 두 나라 제도를 모두 이해하는 한인 재무 전문가가 필요한 영역입니다.',
+		href: '/pros#finance',
+		cta: '한인 재무설계사 디렉토리 →',
+	},
+	education: {
+		eyebrow: '교육 · 자녀',
+		headline: '대학 입학 컨설팅 · 학자금 설계는 사례 기반 상담이 효과적입니다',
+		body: 'FAFSA, 529 플랜, 한국 학력 인정, 보딩 스쿨 — 한인 가정 사례를 다뤄본 전문가의 1시간 상담이 가장 큰 차이를 만듭니다.',
+		href: '/pros',
+		cta: '교육·재무 전문가 디렉토리 →',
+	},
+	community: {
+		eyebrow: '한인 커뮤니티',
+		headline: '구체적 도움이 필요한 사안은 분야별 한인 전문가에게',
+		body: '미국 스토리는 정보 매체이며 개별 상담은 제공하지 않습니다. 한국어로 상담 가능한 한인 전문가를 분야별로 정리한 디렉토리에서 다음 단계를 진행해 보세요.',
+		href: '/pros',
+		cta: '추천 전문가 디렉토리 →',
+	},
+};
+
+const cta = (category && ctaByCategory[category]) || ctaByCategory.community;
+---
+
+<aside class="art-cta">
+	<div class="art-cta-inner">
+		<p class="art-cta-eyebrow">{cta.eyebrow} · 다음 단계</p>
+		<h3>{cta.headline}</h3>
+		<p class="art-cta-body">{cta.body}</p>
+		<a class="art-cta-btn" href={cta.href}>{cta.cta}</a>
+		<p class="art-cta-disc">
+			추천 전문가 디렉토리는 유료 광고(Sponsored) 페이지입니다.
+			미국 스토리는 상담·계약의 당사자가 아닙니다.
+		</p>
+	</div>
+</aside>
+
+<style>
+	.art-cta {
+		max-width: var(--reading-width);
+		margin: var(--s-5) auto var(--s-4);
+		padding: 0 var(--s-2);
+	}
+	.art-cta-inner {
+		background: linear-gradient(180deg, var(--paper) 0%, var(--paper-soft) 100%);
+		border: 1px solid var(--rule);
+		border-top: 3px solid var(--brick);
+		padding: var(--s-4) var(--s-3);
+		text-align: center;
+	}
+	.art-cta-eyebrow {
+		font-size: 0.7rem;
+		font-weight: 700;
+		letter-spacing: 0.18em;
+		color: var(--brick);
+		text-transform: uppercase;
+		margin: 0 0 var(--s-2);
+	}
+	.art-cta h3 {
+		font-family: var(--font-display);
+		font-size: 1.45rem;
+		margin: 0 0 var(--s-2);
+		color: var(--ink);
+		letter-spacing: -0.02em;
+		line-height: 1.3;
+		max-width: 28ch;
+		margin-left: auto;
+		margin-right: auto;
+	}
+	.art-cta-body {
+		color: var(--ink-medium);
+		font-size: 0.94rem;
+		line-height: 1.7;
+		max-width: 38em;
+		margin: 0 auto var(--s-3);
+	}
+	.art-cta-btn {
+		display: inline-block;
+		font-size: 0.95rem;
+		font-weight: 700;
+		color: var(--paper);
+		background: var(--brick);
+		padding: 0.8em 1.5em;
+		border-radius: 3px;
+		text-decoration: none;
+		letter-spacing: 0.03em;
+		transition: background var(--duration) var(--ease-out);
+	}
+	.art-cta-btn:hover { background: var(--brick-deep); }
+	.art-cta-disc {
+		margin: var(--s-2) 0 0;
+		font-size: 0.74rem;
+		color: var(--ink-light);
+		line-height: 1.5;
+	}
+	@media (max-width: 720px) {
+		.art-cta-inner { padding: var(--s-3) var(--s-2); }
+		.art-cta h3 { font-size: 1.2rem; }
+	}
+</style>
