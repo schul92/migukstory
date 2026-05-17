@@ -30,6 +30,20 @@ const blog = defineCollection({
 				'retirement', 'community', 'real-estate',
 			]),
 			ageGroup: z.enum(['20-35', '35-55', '55+', 'all']).default('all'),
+			// Optional structured-data fields. Posts that include `faq` will emit
+			// FAQPage JSON-LD; `howTo` emits HowTo JSON-LD. Both improve AI/search citability.
+			faq: z.array(z.object({
+				q: z.string(),
+				a: z.string(),
+			})).optional(),
+			howTo: z.object({
+				name: z.string(),
+				totalTime: z.string().optional(), // ISO 8601, e.g., "PT30D" = 30 days
+				steps: z.array(z.object({
+					name: z.string(),
+					text: z.string(),
+				})),
+			}).optional(),
 		}),
 });
 

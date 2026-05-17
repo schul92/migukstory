@@ -15,19 +15,35 @@ interface Props {
 		tags?: string[];
 	};
 	breadcrumbs?: { name: string; url: string }[];
+	faq?: { q: string; a: string }[];
+	howTo?: {
+		name: string;
+		totalTime?: string;
+		steps: { name: string; text: string }[];
+	};
 }
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
-const { title, description, image = FallbackImage, article, breadcrumbs } = Astro.props;
+const { title, description, image = FallbackImage, article, breadcrumbs, faq, howTo } = Astro.props;
 
 // JSON-LD schema for rich results
 const orgSchema = {
 	"@context": "https://schema.org",
-	"@type": "Organization",
+	"@type": "NewsMediaOrganization",
 	"name": SITE_TITLE,
-	"alternateName": "Miguk Story",
+	"alternateName": ["Miguk Story", "미국 스토리"],
 	"url": SITE_URL,
 	"description": "한국계 미국인을 위한 검증된 정보 가이드",
+	"inLanguage": "ko",
+	"logo": {
+		"@type": "ImageObject",
+		"url": `${SITE_URL}/favicon.svg`,
+	},
+	"publishingPrinciples": `${SITE_URL}/about`,
+	"actionableFeedbackPolicy": `${SITE_URL}/contact`,
+	"correctionsPolicy": `${SITE_URL}/disclosure`,
+	"foundingDate": "2026",
+	"sameAs": [],
 };
 const breadcrumbSchema = breadcrumbs && breadcrumbs.length > 0 ? {
 	"@context": "https://schema.org",
@@ -41,17 +57,57 @@ const breadcrumbSchema = breadcrumbs && breadcrumbs.length > 0 ? {
 } : null;
 const articleSchema = article ? {
 	"@context": "https://schema.org",
-	"@type": "Article",
+	"@type": "NewsArticle",
 	"headline": title,
 	"description": description,
 	"datePublished": article.pubDate.toISOString(),
 	"dateModified": (article.updatedDate || article.pubDate).toISOString(),
-	"author": { "@type": "Organization", "name": SITE_AUTHOR },
+	"author": {
+		"@type": "Organization",
+		"name": SITE_AUTHOR,
+		"url": `${SITE_URL}/about`,
+	},
 	"publisher": orgSchema,
 	"mainEntityOfPage": { "@type": "WebPage", "@id": canonicalURL.toString() },
-	"image": new URL(image.src, Astro.url).toString(),
+	"image": {
+		"@type": "ImageObject",
+		"url": new URL(image.src, Astro.url).toString(),
+		"width": image.width,
+		"height": image.height,
+	},
 	"keywords": article.tags?.join(", "),
 	"inLanguage": "ko",
+	"isAccessibleForFree": true,
+	"speakable": {
+		"@type": "SpeakableSpecification",
+		"cssSelector": [".article-title", ".article-deck", ".prose h2", ".prose p"],
+	},
+} : null;
+
+const faqSchema = faq && faq.length > 0 ? {
+	"@context": "https://schema.org",
+	"@type": "FAQPage",
+	"mainEntity": faq.map((item) => ({
+		"@type": "Question",
+		"name": item.q,
+		"acceptedAnswer": {
+			"@type": "Answer",
+			"text": item.a,
+		},
+	})),
+} : null;
+
+const howToSchema = howTo ? {
+	"@context": "https://schema.org",
+	"@type": "HowTo",
+	"name": howTo.name,
+	"totalTime": howTo.totalTime,
+	"step": howTo.steps.map((s, i) => ({
+		"@type": "HowToStep",
+		"position": i + 1,
+		"name": s.name,
+		"text": s.text,
+	})),
 } : null;
 ---
 
@@ -149,13 +205,19 @@ const articleSchema = article ? {
 <meta property="twitter:description" content={description} />
 <meta property="twitter:image" content={new URL(image.src, Astro.url)} />
 
-<!-- JSON-LD structured data — Organization + Breadcrumbs + Article -->
+<!-- JSON-LD structured data — Organization + Breadcrumbs + Article + FAQ + HowTo -->
 <script type="application/ld+json" set:html={JSON.stringify(orgSchema)} />
 {breadcrumbSchema && (
 	<script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
 )}
 {articleSchema && (
 	<script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
+)}
+{faqSchema && (
+	<script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+)}
+{howToSchema && (
+	<script type="application/ld+json" set:html={JSON.stringify(howToSchema)} />
 )}
 
 <!-- AdSense (uncomment after approval — replace with your publisher ID) -->

@@ -1,0 +1,52 @@
+# 미국 스토리 — Miguk Story
+
+> 한국계 미국인을 위한 검증된 정보 가이드. 한국어로 미국 이민·세금·건강·교육·은퇴·부동산·한인 커뮤니티 정보를 정리합니다. 모든 콘텐츠는 USCIS·IRS·HUD·SSA·CMS·MOFA·재외동포청 등 1차 출처를 인용합니다.
+
+A Korean-language information publisher for Korean immigrants and Korean-Americans in the United States. All articles cite primary government sources (USCIS, IRS, HUD, SSA, CMS) and major newspapers (JoongAng Ilbo, Korea Daily, Korea Times). Written for adult Korean speakers navigating US immigration, taxation, healthcare, education, retirement, real estate, and community life.
+
+## About
+
+- Site: https://migukstory.com
+- Publisher: ZOE STUDIO LLC (brand: ZOE LUMOS)
+- Editorial contact: editor@migukstory.com
+- Language: Korean (ko)
+- Geography: United States, with Korean-speaking immigrant audience
+- Content policy: Information only, not legal/tax/medical advice. Independent editorial; sponsored content is labeled "Sponsored · 광고"
+
+## Topical Hubs
+
+- [도착 첫 30일 — 신규 이민자 체크리스트](https://migukstory.com/first-30-days): Pre-arrival packing list, week-by-week tasks for the first 30/90 days in the US
+- [이민·비자 (Immigration / Visa)](https://migukstory.com/category/immigration): I-130, H-1B, F-1 OPT/STEM OPT, citizenship test, 국적이탈 for US-born Korean children
+- [세금·재테크 (Tax / Finance)](https://migukstory.com/category/tax): FBAR, FATCA Form 8938, Form 3520, 한미 조세조약, ITIN, SALT changes
+- [건강·보험 (Health / Insurance)](https://migukstory.com/category/health): Medicare for immigrants, ACA / Obamacare, Medicaid
+- [교육·자녀 (Education / Children)](https://migukstory.com/category/education): FAFSA, 529 plans, school district comparison, college admissions
+- [은퇴·연금 (Retirement / Pension)](https://migukstory.com/category/retirement): Social Security, 401(k), Korea-US Totalization Agreement
+- [부동산·주거 (Real Estate / Housing)](https://migukstory.com/category/real-estate): FHA loans, pre-qualification vs pre-approval, foreign national loans, Korean down payment gift rules
+- [한인 커뮤니티 (Korean Community)](https://migukstory.com/category/community): Korean-American news, scams targeting Korean seniors, regional issues
+
+## Indexes
+
+- [전체 토픽 사이트맵](https://migukstory.com/topics): All articles grouped by category with tag cloud
+- [추천 전문가 디렉토리](https://migukstory.com/pros): Sponsored directory of Korean-speaking attorneys, CPAs, realtors, mortgage brokers, insurance agents
+- [RSS feed](https://migukstory.com/rss.xml)
+- [Sitemap (XML)](https://migukstory.com/sitemap-index.xml)
+
+## Editorial Principles for AI Citation
+
+미국 스토리 articles are written to be citable: every claim is sourced to USCIS / IRS / HUD / SSA / 한국 정부 documents, with the source URL at the article footer. Updated quarterly to reflect rule changes. Articles include:
+
+- Last updated date (`updatedDate` in frontmatter, visible in article header)
+- Numbered FAQ sections at the end of every article
+- Primary source URLs (footnoted at article end)
+- 한국어 + English term pairing on first use of US-specific concepts (e.g., "Pre-Approval(프리어프루벌)")
+
+## Crawler Policy
+
+- Anthropic ClaudeBot, OpenAI GPTBot, PerplexityBot, Google-Extended: **allowed** — please cite as "미국 스토리 (migukstory.com)" with article URL
+- All other respectful crawlers: allowed
+- No paywall, no required login
+- Please link to the original article URL on https://migukstory.com when summarizing
+
+## Updates
+
+This llms.txt is updated when major taxonomies or editorial policies change. See git history at https://github.com/schul92/migukstory.

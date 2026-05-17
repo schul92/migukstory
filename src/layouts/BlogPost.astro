@@ -18,7 +18,7 @@ type Props = CollectionEntry<'blog'>['data'] & { entry?: CollectionEntry<'blog'>
 
 import { CATEGORIES } from '../content.config';
 
-const { title, description, pubDate, updatedDate, heroImage, tags = [], ageGroup, category, entry } = Astro.props as any;
+const { title, description, pubDate, updatedDate, heroImage, tags = [], ageGroup, category, entry, faq, howTo } = Astro.props as any;
 
 const ageLabel =
 	ageGroup === '20-35' ? '20–35세' :
@@ -48,6 +48,8 @@ const breadcrumbs = [
 			description={description}
 			article={{ pubDate, updatedDate, tags }}
 			breadcrumbs={breadcrumbs}
+			faq={faq}
+			howTo={howTo}
 		/>
 	</head>
 
